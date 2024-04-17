@@ -5,8 +5,7 @@ import google from "@/assets/images/google.png";
 
 function page() {
   return (
-    <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[#F5F5F5]">
+      <div>
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <Image
             className="mx-auto h-10 w-auto"
@@ -173,8 +172,7 @@ function page() {
             </fieldset>
           </form>
         </div>
-      </div>
-    </>
+        </div>
   );
 }
 
