@@ -2,7 +2,6 @@ import { Inter } from "next/font/google";
 import "./globals.scss";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
-import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,31 +11,13 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const router = useRouter();
-
-  // List of routes where the layout should not be applied
-  const noLayoutRoutes = ['/login'];
-
-  // Check if the current route is in the list of routes without layout
-  const shouldUseNoLayout = noLayoutRoutes.includes(router.pathname);
-
-  if(shouldUseNoLayout){
-    return (
-      <html lang="en">
-        <body className={inter.className}>
-            {children}
-        </body>
-      </html>
-    )
-  }else{
-    return (
-      <html lang="en">
-        <body className={inter.className}>
-          <Navbar />
-            {children}
-          <Footer />
-        </body>
-      </html>
-    );
-  }
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <Navbar />
+          {children}
+        <Footer />
+      </body>
+    </html>
+  );
 }
