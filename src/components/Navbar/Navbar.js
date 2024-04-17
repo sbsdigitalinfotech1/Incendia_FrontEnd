@@ -2,15 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Logo from "@/assets/images/adidasLogo.png";
+import Logo from "@/assets/images/incendiaLogo.png";
 import Image from "next/image";
 import { FaRegHeart } from "react-icons/fa";
 import { BsCart } from "react-icons/bs";
 import SideCart from "@/components/SideCart/SideCart";
 import { XMarkIcon } from "@heroicons/react/20/solid";
-import ProductCard from "../ProductCard.js/ProductCard";
-import ProductRow from "../ProductRow/ProductRow";
-
 const Navbar = () => {
   const [open, setOpen] = useState(false);
 
@@ -20,7 +17,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center lg:px-20 pb-4">
           <div>
             <div>
-              <Image src={Logo} width={60} height={60} alt="logo" />
+              <Image src={Logo} width={120} height={120} alt="logo" />
             </div>
           </div>
           <div className="flex justify-items-center">
