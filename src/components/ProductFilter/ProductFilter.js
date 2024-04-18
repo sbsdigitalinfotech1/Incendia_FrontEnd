@@ -125,8 +125,8 @@ function ProductFilter({products}) {
                         role="list"
                         className="px-2 py-3 font-medium text-gray-900"
                       >
-                        {subCategories.map((category) => (
-                          <li key={category.name}>
+                        {subCategories.map((category,i) => (
+                          <li key={i}>
                             <a href={category.href} className="block px-2 py-3">
                               {category.name}
                             </a>
@@ -134,10 +134,10 @@ function ProductFilter({products}) {
                         ))}
                       </ul>
 
-                      {filters.map((section) => (
+                      {filters.map((section,i) => (
                         <Disclosure
                           as="div"
-                          key={section.id}
+                          key={i}
                           className="border-t border-gray-200 px-4 py-6"
                         >
                           {({ open }) => (
@@ -166,7 +166,7 @@ function ProductFilter({products}) {
                                 <div className="space-y-6">
                                   {section.options.map((option, optionIdx) => (
                                     <div
-                                      key={option.value}
+                                      key={optionIdx}
                                       className="flex items-center"
                                     >
                                       <input
@@ -227,8 +227,8 @@ function ProductFilter({products}) {
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div className="py-1">
-                        {sortOptions.map((option) => (
-                          <Menu.Item key={option.name}>
+                        {sortOptions.map((option,i) => (
+                          <Menu.Item key={i}>
                             {({ active }) => (
                               <a
                                 href={option.href}
@@ -281,17 +281,17 @@ function ProductFilter({products}) {
                     role="list"
                     className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900"
                   >
-                    {subCategories.map((category) => (
-                      <li key={category.name}>
+                    {subCategories.map((category,i) => (
+                      <li key={i}>
                         <a href={category.href}>{category.name}</a>
                       </li>
                     ))}
                   </ul>
 
-                  {filters.map((section) => (
+                  {filters.map((section,i) => (
                     <Disclosure
                       as="div"
-                      key={section.id}
+                      key={i}
                       className="border-b border-gray-200 py-6"
                     >
                       {({ open }) => (
@@ -320,7 +320,7 @@ function ProductFilter({products}) {
                             <div className="space-y-4">
                               {section.options.map((option, optionIdx) => (
                                 <div
-                                  key={option.value}
+                                  key={optionIdx}
                                   className="flex items-center"
                                 >
                                   <input
