@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import logo from "@/assets/images/adidasLogo.png";
+import logo from "@/assets/images/incendiaLogo.png";
 
 import {
   FaInstagram,
@@ -176,7 +176,7 @@ function Footer() {
           </div>
           <div>
             <Link href="#">
-              <Image className="mt-8" src={logo} width={100} />
+              <Image className="mt-8" src={logo} width={150} />
             </Link>
           </div>
         </div>
