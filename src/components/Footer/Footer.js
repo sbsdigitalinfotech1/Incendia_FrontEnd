@@ -116,8 +116,8 @@ function Footer() {
           <div className="w-100">
             <h3 className="text-medium font-semibold mb-4 ">SHOP</h3>
             <ul>
-              {footerContent.shop.map((item) => (
-                <Link href={item.link}>
+              {footerContent.shop.map((item,i) => (
+                <Link href={item.link} key={i}>
                   <li>{item.title}</li>
                 </Link>
               ))}
@@ -126,8 +126,8 @@ function Footer() {
           <div>
             <h3 className="text-medium font-semibold mb-4 ">CORPORATE INFO</h3>
             <ul>
-              {footerContent.corpInfo.map((item) => (
-                <Link href={item.link}>
+              {footerContent.corpInfo.map((item,i) => (
+                <Link href={item.link} key={i}>
                   <li>{item.title}</li>
                 </Link>
               ))}
@@ -136,8 +136,8 @@ function Footer() {
           <div>
             <h3 className="text-medium font-semibold mb-4 ">HELP</h3>
             <ul>
-              {footerContent.help.map((item) => (
-                <Link href={item.link}>
+              {footerContent.help.map((item,i) => (
+                <Link href={item.link} key={i}>
                   <li>{item.title}</li>
                 </Link>
               ))}
@@ -151,21 +151,21 @@ function Footer() {
         </div>
         <div className="flex flex-col sm:grid-cols-2 items-center justify-center mt-10">
           <ul className="flex gap-4 ">
-            {footerContent.socialMedia.map((item) => (
+            {footerContent.socialMedia.map((item,i) => (
               <>
-                {item.title=='insta'&&<Link href={item.link}>
+                {item.title=='insta'&&<Link href={item.link} key={i}>
                   <FaInstagram size={24} />
                 </Link>}
-                {item.title=='fb'&&<Link href="/">
+                {item.title=='fb'&&<Link href={item.link} key={i}>
                   <FaFacebook size={24} />
                 </Link>}
-                {item.title=='yt'&&<Link href="/">
+                {item.title=='yt'&&<Link href={item.link} key={i}>
                   <FaYoutube size={24} />
                 </Link>}
-                {item.title=='pintrest'&&<Link href="/">
+                {item.title=='pintrest'&&<Link href={item.link} key={i}>
                   <FaPinterest size={24} />
                 </Link>}
-                {item.title=='tiktok'&&<Link href="/">
+                {item.title=='tiktok'&&<Link href={item.link} key={i}>
                   <FaTiktok size={24} />
                 </Link>}
               </>
