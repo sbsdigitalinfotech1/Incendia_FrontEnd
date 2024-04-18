@@ -1,10 +1,31 @@
+"use client";
+
 import React from "react";
 import logo from "@/assets/images/incendiaLogo.png";
 import Image from "next/image";
 import google from "@/assets/images/google.png";
 import Link from "next/link";
+import { useFormik } from "formik";
+import { LoginSchema } from "@/models/authSchema";
+import { useRouter } from "next/navigation";
 
-function page() {
+const initialValues = {
+  email: "",
+  password: "",
+};
+
+function Login() {
+  const router = useRouter();
+
+  const formik = useFormik({
+    initialValues: initialValues,
+    validationSchema: LoginSchema,
+    onSubmit: (values) => {
+      console.log(values);
+      router.push("/");
+    },
+  });
+
   return (
     <>
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -20,7 +41,7 @@ function page() {
       </div>
 
       <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm shadow-sm">
-        <form className="space-y-6" action="#" method="POST ">
+        <form className="space-y-6" onSubmit={formik.handleSubmit}>
           <fieldset className="border bg-white p-6 rounded-md ">
             <div className="mt-5">
               <label
@@ -35,10 +56,17 @@ function page() {
                   name="email"
                   type="email"
                   autoComplete="email"
-                  required
+                  onChange={formik.handleChange}
+                  value={formik.values.email}
+                  onBlur={formik.handleBlur}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
+              <p className="min-h-4 me-1 text-xs text-red-500">
+                {formik.touched.email && formik.errors.email
+                  ? formik.errors.email
+                  : ""}
+              </p>
             </div>
 
             <div className="mt-5">
@@ -50,11 +78,13 @@ function page() {
                   Password
                 </label>
                 <div className="text-sm">
-                  <Link href='/forgetPassword' className="font-semibold text-indigo-600 hover:text-indigo-500">
-                  Forgot password?
+                  <Link
+                    href="/forgetPassword"
+                    tabIndex={1}
+                    className="font-semibold text-indigo-600 hover:text-indigo-500"
+                  >
+                    Forgot password?
                   </Link>
-                    
-                  
                 </div>
               </div>
               <div className="mt-2">
@@ -63,10 +93,17 @@ function page() {
                   name="password"
                   type="password"
                   autoComplete="current-password"
-                  required
+                  onChange={formik.handleChange}
+                  value={formik.values.password}
+                  onBlur={formik.handleBlur}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
+              <p className="min-h-4 me-1 text-xs text-red-500">
+                {formik.touched.password && formik.errors.password
+                  ? formik.errors.password
+                  : ""}
+              </p>
             </div>
 
             <div className="mt-5">
@@ -79,14 +116,14 @@ function page() {
             </div>
             <div className="relative w-100 mt-12">
               <hr className="w-100 h-2" />
-              <span className="absolute -top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/3 bg-white px-5 text-sm ">
-                Or Continue With
-              </span>
+              <div className="w-full flex justify-center absolute -top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/3  ">
+                <span className="bg-white px-5 text-sm">Or Continue With</span>
+              </div>
             </div>
-            <div className="mt-6 w-100 flex justify-center">
+            <div className="mt-5 w-100 flex justify-center">
               <button className="w-1/2 border-2 py-3 rounded-lg flex items-center justify-center text-sm text-gray font-medium hover:bg-slate-50">
-                <Image src={google} width={20} alt="googleLogo" />&nbsp;
-                Google
+                <Image src={google} width={20} alt="googleLogo" />
+                &nbsp; Google
               </button>
             </div>
           </fieldset>
@@ -96,4 +133,4 @@ function page() {
   );
 }
 
-export default page;
+export default Login;
