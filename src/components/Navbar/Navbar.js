@@ -7,20 +7,28 @@ import Image from "next/image";
 import { FaRegHeart } from "react-icons/fa";
 import { BsCart } from "react-icons/bs";
 import SideCart from "@/components/SideCart/SideCart";
-import { XMarkIcon } from "@heroicons/react/20/solid";
+import { Bars3BottomLeftIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import MobileNavbar from "@/components/Navbar/MobileNavbar";
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
 
   return (
     <>
       <nav className="pt-4">
-        <div className="flex justify-between items-center lg:px-20 pb-4">
+        <div className="flex justify-between items-center lg:px-20 pb-4 px-3">
+          <div className="flex md:hidden" onClick={()=>setOpen2(true)}>
+            <Bars3BottomLeftIcon
+              className="w-5 h-5 font-bold text-gray-900"
+              aria-hidden="true"
+            />
+          </div>
           <div>
             <div>
               <Image src={Logo} width={120} height={120} alt="logo" />
             </div>
           </div>
-          <div className="flex justify-items-center">
+          <div className="md:flex hidden justify-items-center">
             <ul className="flex gap-6 justify-center">
               <Link href="/">
                 <li>Home</li>
@@ -37,11 +45,12 @@ const Navbar = () => {
             </ul>
           </div>
           <div className="flex gap-4">
-            <FaRegHeart className="icon" />
-            <div className="relative">
+            <FaRegHeart className="icon hidden md:inline-block cursor-pointer" 
+                onClick={() => setOpen(true)}/>
+            <div className="relative me-3 md:me-0 inline-block cursor-pointer" 
+                onClick={() => setOpen(true)}>
               <BsCart
-                className="icon cursor-pointer"
-                onClick={() => setOpen(true)}
+                className="icon"
               />
               <span
                 className="absolute top-[-10px] right-[-10px] text-center rounded-full bg-red-500 px-2"
@@ -62,7 +71,7 @@ const Navbar = () => {
 
         <div className="relative isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
           <div
-            className="absolute left-[max(-7rem,calc(50%-52rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
+            className="absolute w-screen left-[max(-7rem,calc(50%-52rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
             aria-hidden="true"
           >
             <div
@@ -117,6 +126,7 @@ const Navbar = () => {
       </nav>
 
       <SideCart open={open} setOpen={setOpen} />
+      {/* <MobileNavbar open={open2} setOpen={setOpen2} /> */}
     </>
   );
 };
