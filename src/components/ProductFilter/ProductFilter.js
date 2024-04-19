@@ -68,7 +68,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function ProductFilter({products}) {
+function ProductFilter({ products }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   return (
     <>
@@ -125,7 +125,7 @@ function ProductFilter({products}) {
                         role="list"
                         className="px-2 py-3 font-medium text-gray-900"
                       >
-                        {subCategories.map((category,i) => (
+                        {subCategories.map((category, i) => (
                           <li key={i}>
                             <a href={category.href} className="block px-2 py-3">
                               {category.name}
@@ -134,7 +134,7 @@ function ProductFilter({products}) {
                         ))}
                       </ul>
 
-                      {filters.map((section,i) => (
+                      {filters.map((section, i) => (
                         <Disclosure
                           as="div"
                           key={i}
@@ -199,8 +199,8 @@ function ProductFilter({products}) {
           </Transition.Root>
 
           <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-              <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+            <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-5 md:pt-24">
+              <h1 className="text-xl md:text-4xl font-bold tracking-tight text-gray-900">
                 New Arrivals
               </h1>
 
@@ -227,7 +227,7 @@ function ProductFilter({products}) {
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div className="py-1">
-                        {sortOptions.map((option,i) => (
+                        {sortOptions.map((option, i) => (
                           <Menu.Item key={i}>
                             {({ active }) => (
                               <a
@@ -281,14 +281,14 @@ function ProductFilter({products}) {
                     role="list"
                     className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900"
                   >
-                    {subCategories.map((category,i) => (
+                    {subCategories.map((category, i) => (
                       <li key={i}>
                         <a href={category.href}>{category.name}</a>
                       </li>
                     ))}
                   </ul>
 
-                  {filters.map((section,i) => (
+                  {filters.map((section, i) => (
                     <Disclosure
                       as="div"
                       key={i}
@@ -349,7 +349,7 @@ function ProductFilter({products}) {
 
                 {/* Product grid */}
                 <div className="lg:col-span-3">
-                  <ProductRowFilter products={products}/>
+                  <ProductRowFilter products={products} />
                 </div>
               </div>
             </section>
