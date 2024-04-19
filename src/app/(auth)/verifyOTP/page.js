@@ -3,7 +3,7 @@
 import Image from "next/image";
 import logo from "@/assets/images/incendiaLogo.png";
 import OtpInput from "@/components/OtpInput/OtpInput";
-import { useState } from "react";r
+import { useState } from "react";
 
 const VerifyOtp = () => {
   const[value,setValue]= useState('');
