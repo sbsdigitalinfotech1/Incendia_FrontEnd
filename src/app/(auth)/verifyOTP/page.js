@@ -1,28 +1,15 @@
-"use client";
+"use client"
 
-import React, { useRef, useState } from "react";
 import Image from "next/image";
 import logo from "@/assets/images/incendiaLogo.png";
+import OtpInput from "@/components/OtpInput/OtpInput";
+import { useState } from "react";r
 
-const Page = () => {
-  const [otp, setOtp] = useState([0, 1, 2, 3]);
-  // Create refs for input fields
-  const inputRefs = useRef([]);
-
-  // Function to focus on next input field
-  const focusNextInput = (index) => {
-    if (index < 3) {
-      inputRefs.current[index + 1].focus();
-    }
-  };
-
-  // Function to handle key presses
-  const handleKeyDown = (event, index) => {
-    // Check if the key pressed is a number and the maximum length of the input field is reached
-    if (event.key >= "0" && event.key <= "9") {
-      focusNextInput(index);
-    }
-  };
+const VerifyOtp = () => {
+  const[value,setValue]= useState('');
+  const handleSubmit=()=>{
+  console.log(value);
+ }
 
   return (
     <>
@@ -40,21 +27,10 @@ const Page = () => {
         </div>
 
         <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm md:max-md">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <fieldset className="grid grid-cols-4 gap-3 py-6 rounded-md">
-              {otp.map((index) => (
-                <div className="w-full aspect-square" key={index}>
-                  <input
-                    ref={(el) => (inputRefs.current[index] = el)}
-                    type="text"
-                    maxLength={1}
-                    onKeyDown={(e) => handleKeyDown(e, index)}
-                    className="size-full rounded-md border-0 p-1.5 text-center text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-2xl"
-                  />
-                </div>
-              ))}
+              <OtpInput length={4} value={value} setValue={setValue} containerClassName="w-full aspect-square" inputFieldClassName="size-full rounded-md border-0 p-1.5 text-center text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-2xl"/>
             </fieldset>
-
             <div className="mt-5">
               <button
                 type="submit"
@@ -70,4 +46,5 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default VerifyOtp
+;
