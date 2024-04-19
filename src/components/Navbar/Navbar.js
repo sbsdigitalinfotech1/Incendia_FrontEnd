@@ -12,12 +12,30 @@ import MobileNavbar from "@/components/Navbar/MobileNavbar";
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
+  const navData = [
+    {
+      title: "Home",
+      link: "/",
+    },
+    {
+      title: "Products",
+      link: "/products",
+    },
+    {
+      title: "About Us",
+      link: "/aboutus",
+    },
+    {
+      title: "Contact",
+      link: "/contact",
+    },
+  ];
 
   return (
     <>
       <nav className="pt-4">
         <div className="flex justify-between items-center lg:px-20 pb-4 px-3">
-          <div className="flex md:hidden" onClick={()=>setOpen2(true)}>
+          <div className="flex md:hidden" onClick={() => setOpen2(true)}>
             <Bars3BottomLeftIcon
               className="w-5 h-5 font-bold text-gray-900"
               aria-hidden="true"
@@ -30,28 +48,23 @@ const Navbar = () => {
           </div>
           <div className="md:flex hidden justify-items-center">
             <ul className="flex gap-6 justify-center">
-              <Link href="/">
-                <li>Home</li>
-              </Link>
-              <Link href="/products">
-                <li>Products</li>
-              </Link>
-              <Link href="/aboutus">
-                <li>About Us</li>
-              </Link>
-              <Link href="contact">
-                <li>Contact</li>
-              </Link>
+              {navData.map((item, i) => (
+                <Link href={item.link} key={i}>
+                  <li>{item.title}</li>
+                </Link>
+              ))}
             </ul>
           </div>
           <div className="flex gap-4">
-            <FaRegHeart className="icon hidden md:inline-block cursor-pointer" 
-                onClick={() => setOpen(true)}/>
-            <div className="relative me-3 md:me-0 inline-block cursor-pointer" 
-                onClick={() => setOpen(true)}>
-              <BsCart
-                className="icon"
-              />
+            <FaRegHeart
+              className="icon hidden md:inline-block cursor-pointer"
+              onClick={() => setOpen(true)}
+            />
+            <div
+              className="relative me-3 md:me-0 inline-block cursor-pointer"
+              onClick={() => setOpen(true)}
+            >
+              <BsCart className="icon" />
               <span
                 className="absolute top-[-10px] right-[-10px] text-center rounded-full bg-red-500 px-2"
                 style={{
@@ -94,7 +107,7 @@ const Navbar = () => {
               }}
             />
           </div>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 animate-marquee md:animate-none whitespace-nowrap">
             <p className="text-sm leading-6 text-gray-900">
               <strong className="font-semibold">GeneriCon 2023</strong>
               <svg
@@ -104,14 +117,15 @@ const Navbar = () => {
               >
                 <circle cx={1} cy={1} r={1} />
               </svg>
-              Join us in Denver from June 7 – 9 to see what’s coming next.
+              Join us in Denver from June 7 – 9 to see what’s coming
+              next.&nbsp;&nbsp;&nbsp;
+              <a
+                href="#"
+                className="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+              >
+                Register now <span aria-hidden="true">&rarr;</span>
+              </a>
             </p>
-            <a
-              href="#"
-              className="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
-            >
-              Register now <span aria-hidden="true">&rarr;</span>
-            </a>
           </div>
           <div className="flex flex-1 justify-end">
             <button
@@ -126,7 +140,7 @@ const Navbar = () => {
       </nav>
 
       <SideCart open={open} setOpen={setOpen} />
-      {/* <MobileNavbar open={open2} setOpen={setOpen2} /> */}
+      <MobileNavbar open={open2} setOpen={setOpen2} data={navData} />
     </>
   );
 };
