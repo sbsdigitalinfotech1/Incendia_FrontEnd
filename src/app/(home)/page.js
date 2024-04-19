@@ -11,7 +11,7 @@ export default function Home() {
       imageAlt: "Front of men's Basic Tee in black.",
       price: "35",
       strikePrice: "355",
-      offPrice:"50",
+      offPrice: "50",
       color: "Black",
     },
     {
@@ -23,7 +23,7 @@ export default function Home() {
       imageAlt: "Front of men's Basic Tee in black.",
       price: "35",
       strikePrice: "355",
-      offPrice:"50",
+      offPrice: "50",
       color: "Black",
     },
     {
@@ -35,7 +35,7 @@ export default function Home() {
       imageAlt: "Front of men's Basic Tee in black.",
       price: "35",
       strikePrice: "355",
-      offPrice:"50",
+      offPrice: "50",
       color: "Black",
     },
     {
@@ -47,7 +47,7 @@ export default function Home() {
       imageAlt: "Front of men's Basic Tee in black.",
       price: "35",
       strikePrice: "355",
-      offPrice:"50",
+      offPrice: "50",
       color: "Black",
     },
 
@@ -64,7 +64,7 @@ export default function Home() {
       imageAlt: "Front of men's Basic Tee in black.",
       price: "35",
       strikePrice: "355",
-      offPrice:"50",
+      offPrice: "50",
       color: "Black",
     },
     {
@@ -76,7 +76,7 @@ export default function Home() {
       imageAlt: "Front of men's Basic Tee in black.",
       price: "35",
       strikePrice: "355",
-      offPrice:"50",
+      offPrice: "50",
       color: "Black",
     },
     {
@@ -88,7 +88,7 @@ export default function Home() {
       imageAlt: "Front of men's Basic Tee in black.",
       price: "35",
       strikePrice: "355",
-      offPrice:"50",
+      offPrice: "50",
       color: "Black",
     },
     {
@@ -100,17 +100,17 @@ export default function Home() {
       imageAlt: "Front of men's Basic Tee in black.",
       price: "35",
       strikePrice: "355",
-      offPrice:"50",
+      offPrice: "50",
       color: "Black",
     },
-  ]
+  ];
 
   return (
     // <main className="flex min-h-screen flex-col items-center justify-between">
     <>
       {/* hero section  */}
       <div className="relative overflow-hidden bg-white">
-        <div className="pb-80 pt-16 sm:pb-40 sm:pt-24 lg:pb-48 lg:pt-40">
+        <div className="pb-80 pt-5 sm:pb-40 sm:pt-24 lg:pb-48 lg:pt-40">
           <div className="relative mx-auto max-w-7xl px-4 sm:static sm:px-6 lg:px-8">
             <div className="sm:max-w-lg">
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
