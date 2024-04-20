@@ -1,5 +1,6 @@
 import React from "react";
 import ProductCard from "../ProductCard.js/ProductCard";
+import Link from "next/link";
 
 function ProductRow({ products, title }) {
   return (
@@ -11,9 +12,11 @@ function ProductRow({ products, title }) {
 
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {products.map((product, i) => (
-            <div key={i}>
-              <ProductCard product={product} />
-            </div>
+            <Link href={`/products/${product.id}`} key={i}>
+              <div key={i}>
+                <ProductCard product={product} />
+              </div>
+            </Link>
           ))}
         </div>
       </div>

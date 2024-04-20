@@ -13,10 +13,8 @@ function ProductCard({ product }) {
       <div className="mt-4">
         <div>
           <h3 className="text-sm font-semibold text-gray-900 line-clamp-1">
-            <a href={product?.href}>
               <span aria-hidden="true" className="absolute inset-0" />
               {product?.name}
-            </a>
           </h3>
           
           <p className="text-sm text-gray-500">{product?.color}</p>
