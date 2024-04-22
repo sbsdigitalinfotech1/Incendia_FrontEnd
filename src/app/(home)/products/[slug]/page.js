@@ -137,21 +137,21 @@ function page({ params }) {
                 </div>
               </div>
               <div className="flex flex-wrap gap-2 items-center mt-2 mb-5">
-                <div className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer">
+                <button className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer">
                   S
-                </div>
-                <div className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer ">
+                </button>
+                <button className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer ">
                   M
-                </div>
-                <div className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer  bg-gray-300 ">
+                </button>
+                <button className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer  bg-gray-300 ">
                   L
-                </div>
-                <div className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer ">
+                </button>
+                <button className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer ">
                   XL
-                </div>
-                <div className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer ">
+                </button>
+                <button className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer ">
                   XXL
-                </div>
+                </button>
               </div>
               <span className="text-sm font-bold">Sizes Not Available ? </span>{" "}
               &nbsp;
