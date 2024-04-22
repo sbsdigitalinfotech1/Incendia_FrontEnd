@@ -1,6 +1,6 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -17,35 +17,55 @@
   }
 }
 
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
 }
 
-nav{
+nav {
   position: sticky;
-  top:0;
+  top: 0;
   background: #fff;
   z-index: 9;
 }
 
-nav ul li{
+nav ul li {
   font-size: medium;
   font-weight: 500;
 }
 
-
-nav{
-  .icon{
+nav {
+  .icon {
     font-size: large;
     font-weight: 900;
   }
 }
 
-footer{
-  li{
+footer {
+  li {
     font-size: small;
+  }
+}
+
+// craousal
+
+.carousel .control-prev.control-arrow:before {
+  border-right: 8px solid #131313;
+}
+.carousel .control-next.control-arrow:before {
+  border-left: 8px solid #131313;
+}
+
+/* Hide the default arrow */
+.qty {
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* Add custom background and padding */
+    background-image: url("../assets/images/down-arrow.svg"); /* Replace 'custom-arrow.png' with your arrow image */
+    background-repeat: no-repeat;
+    background-position: calc(100% - 0.5rem) center; /* Adjust the position of the arrow */
   }
 }

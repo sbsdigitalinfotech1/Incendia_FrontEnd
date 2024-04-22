@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./globals.scss";
 import { Providers } from "./providers";
 

@@ -1,14 +1,71 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import { CiHeart } from "react-icons/ci";
-import voucherIcon from "@/assets/images/voucherIcon.png"
+import voucherIcon from "@/assets/images/voucherIcon.png";
+import { Carousel } from "react-responsive-carousel";
+import { BiSolidOffer } from "react-icons/bi";
+import { BsCartFill } from "react-icons/bs";
+import { FaRegArrowAltCircleRight } from "react-icons/fa";
+import ship from "@/assets/images/ship.jpg";
+import cod from "@/assets/images/cod.jpg";
 
 function page({ params }) {
+  const [show, setShow] = useState(false);
+  const handleShow = () => {
+    setShow(!show);
+  };
   return (
     <>
       <div className="mx-auto sm:px-6 max-w-2xl px-4 py-16 lg:max-w-7xl lg:px-8">
         <div className="md:grid grid-cols-12 gap-12">
-          <div className="grid col-span-6 grid-cols-12 gap-2 rounded-sm">
-            <div className="col-span-2 flex flex-col gap-2">
+          <div className="col-span-6  gap-2 rounded-sm">
+            <Carousel style={{ width: "100%" }}>
+              <div>
+                <img
+                  alt=""
+                  src="https://www.beyoung.in/api/cache/catalog/products/new_checked_shirt_image_9_12_2022/grey_cotton_solid_shirts_for_men_base_19_10_2023_700x933.jpg"
+                />
+              </div>
+              <div>
+                <img
+                  alt=""
+                  src="https://www.beyoung.in/api/cache/catalog/products/shirt_squre_image_update_14_3_2022/grey_cotton_solid_shirts_for_men_full_view_3_2_2023_700x933.jpg"
+                />
+              </div>
+              <div>
+                <img
+                  alt=""
+                  src="https://www.beyoung.in/api/cache/catalog/products/shirt_squre_image_update_14_3_2022/grey_cotton_solid_shirts_for_men_neck_3_2_2023_700x933.jpg"
+                />
+              </div>
+              <div>
+                <img
+                  alt=""
+                  src="https://www.beyoung.in/api/cache/catalog/products/shirt_squre_image_update_14_3_2022/grey_cotton_solid_shirts_for_men_sleeve_2_3_2_2023_700x933.jpg"
+                />
+              </div>
+              <div>
+                <img
+                  alt=""
+                  src="https://www.beyoung.in/api/cache/catalog/products/shirt_squre_image_update_14_3_2022/grey_cotton_solid_shirts_for_men_back_3_2_2023_700x933.jpg"
+                />
+              </div>
+              <div>
+                <img
+                  alt=""
+                  src="https://www.beyoung.in/api/cache/catalog/products/new_checked_shirt_image_9_12_2022/grey_cotton_solid_shirts_for_men_base_19_10_2023_700x933.jpg"
+                />
+              </div>
+              <div>
+                <img
+                  alt=""
+                  src="https://www.beyoung.in/api/cache/catalog/products/feature_images/grey_cotton_solid_shirts_for_men_hover_08_08_2023_700x933.jpg"
+                />
+              </div>
+            </Carousel>
+            {/* <div className="col-span-2 flex flex-col gap-2">
               <div className=" aspect-square rounded-sm relative">
                 <Image
                   src="https://www.beyoung.in/api/cache/catalog/products/shirt_squre_image_update_14_3_2022/grey_cotton_solid_shirts_for_men_full_view_3_2_2023_100x133.jpg"
@@ -59,7 +116,7 @@ function page({ params }) {
                 alt="companyLogo"
                 loading="lazy"
               />
-            </div>
+            </div> */}
           </div>
           <div className="rounded-sm col-span-6 px-2 md:px-5 md:py-3 py-6">
             <div className="flex items-center justify-between">
@@ -102,7 +159,7 @@ function page({ params }) {
             </div>
 
             <div className="flex gap-1 items-center  mt-3">
-            <Image src={voucherIcon} width={30} alt="icon" />
+              <Image src={voucherIcon} width={30} alt="icon" />
               <p className="text-xs font-semibold">
                 Extra ₹{100} OFF on ₹{999} (Code:BEYOUNG100)
               </p>
@@ -113,19 +170,45 @@ function page({ params }) {
               COLOR: <span className="text-gray-500">Elephand Grey</span>
             </h3>
             <div className="flex flex-wrap items-center gap-1 mt-3">
-              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg"><div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-orange-500"></div></div>
-              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg"><div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-green-500"></div></div>
-              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg"><div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-pink-500"></div></div>
-              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg"><div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-gray-500"></div></div>
-              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg"><div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-yellow-500"></div></div>
-              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg"><div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-white"></div></div>
-              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg"><div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-red-500"></div></div>
-              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg"><div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-blue-500"></div></div>
-              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg"><div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-slate-500"></div></div>
-              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg"><div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-lime-500"></div></div>
-              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg"><div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-teal-300"></div></div>
-              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg"><div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-green-400"></div></div>
-              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg"><div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-cyan-400"></div></div>
+              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg">
+                <div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-orange-500"></div>
+              </div>
+              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg">
+                <div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-green-500"></div>
+              </div>
+              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg">
+                <div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-pink-500"></div>
+              </div>
+              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg">
+                <div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-gray-500"></div>
+              </div>
+              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg">
+                <div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-yellow-500"></div>
+              </div>
+              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg">
+                <div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-white"></div>
+              </div>
+              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg">
+                <div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-red-500"></div>
+              </div>
+              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg">
+                <div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-blue-500"></div>
+              </div>
+              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg">
+                <div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-slate-500"></div>
+              </div>
+              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg">
+                <div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-lime-500"></div>
+              </div>
+              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg">
+                <div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-teal-300"></div>
+              </div>
+              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg">
+                <div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-green-400"></div>
+              </div>
+              <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg">
+                <div className="rounded-full cursor-pointer border-2 border-white w-12 h-12 bg-cyan-400"></div>
+              </div>
             </div>
 
             <div>
@@ -137,21 +220,21 @@ function page({ params }) {
                 </div>
               </div>
               <div className="flex flex-wrap gap-2 items-center mt-2 mb-5">
-                <div className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer">
+                <button className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer">
                   S
-                </div>
-                <div className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer ">
+                </button>
+                <button className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer ">
                   M
-                </div>
-                <div className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer  bg-gray-300 ">
+                </button>
+                <button className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer  bg-gray-300 ">
                   L
-                </div>
-                <div className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer ">
+                </button>
+                <button className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer ">
                   XL
-                </div>
-                <div className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer ">
+                </button>
+                <button className="aspect-square rounded-md border-2 border-inherit w-12 flex justify-center items-center text-xs hover:bg-gray-300 cursor-pointer ">
                   XXL
-                </div>
+                </button>
               </div>
               <span className="text-sm font-bold">Sizes Not Available ? </span>{" "}
               &nbsp;
@@ -162,9 +245,9 @@ function page({ params }) {
 
             <div className="flex justify-start items-center gap-1 mt-5">
               <p className="mr-1">QTY:</p>
-              <span>
-                <select className="px-6 py-2 border-1 border-gray-600">
-                  <option>1</option>
+              <span className="qty">
+                <select className="ps-4 pr-10 py-2 border-1 border-gray-600 cursor-pointer">
+                  <option selected>1</option>
                   <option>2</option>
                   <option>3</option>
                   <option>4</option>
@@ -178,9 +261,15 @@ function page({ params }) {
               </span>
             </div>
 
-            <div className="relative shadow-md mt-6">
-              <div className="block w-full px-6 py-2 border text-md font-semibold border-gray-600 bg-white rounded-md appearance-none focus:outline-none focus:border-blue-500">
-                OFFERS FOR YOU
+            <button
+              className="relative w-full shadow-md mt-6 cursor-pointer"
+              onClick={handleShow}
+            >
+              <div className="block w-full ps-3 pr-6 py-2 border text-md font-semibold border-gray-600 bg-white rounded-md appearance-none focus:outline-none focus:border-blue-500">
+                <div className="flex items-center gap-2">
+                  <BiSolidOffer size={20} />
+                  OFFERS FOR YOU
+                </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                 <svg
@@ -197,6 +286,50 @@ function page({ params }) {
                   ></path>
                 </svg>
               </div>
+            </button>
+            {show && (
+              <div className="bg-gray-100 p-6">
+                <h3 className="font-semibold">Cred</h3>
+                <p className="text-sm mb-3">
+                  Get Cashback upto Rs 500/- on using Cred pay.
+                </p>
+                <h3 className="font-semibold">Freecharge</h3>
+                <p className="text-sm mb-3">
+                  Get Cashback upto Rs 50/- on using Freecharge UPI.
+                </p>
+                <h3 className="font-semibold">Mobikwik</h3>
+                <p className="text-sm mb-3">
+                  Get Upto ₹250/- Cashback on Mobikwik Wallet.
+                </p>
+              </div>
+            )}
+            <div className="md:relative fixed bottom-0 left-0 w-screen md:w-full shadow-md z-10 ">
+              <div className="w-full mt-5 grid grid-cols-12 gap-0 md:gap-2">
+                <button className="col-span-6 md:col-span-12 lg:col-span-5 p-3 font-semibold bg-indigo-700 hover:bg-indigo-600 text-white flex items-center justify-center gap-1">
+                  <BsCartFill className="inline" size={20} />
+                  ADD TO CART
+                </button>
+                <button className="col-span-6 md:col-span-12 lg:col-span-7 p-3 bg-yellow-300 hover:bg-yellow-400 text-black font-semibold flex items-center justify-center gap-1">
+                  <FaRegArrowAltCircleRight className="inline" size={20} /> BUY
+                  NOW
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-5">
+              <h3 className="text-sm font-semibold">DELIVERY OPTIONS</h3>
+              <div className="border w-full px-3 pt-3 mt-2">
+                <ul>
+                  <li className="text-sm mb-3 flex gap-3 items-center">
+                    <Image src={cod} width={30} alt="cod" />
+                    Cash On Delivery
+                  </li>
+                  <li className="text-sm mb-3 flex gap-3 items-center">
+                    <Image src={ship} width={30} alt="cod" />
+                    Express Shipping
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -204,6 +337,91 @@ function page({ params }) {
 
       <div className="mx-auto sm:px-6 max-w-2xl px-4 py-16 lg:max-w-7xl lg:px-8">
         <h2 className="text-2xl font-bold"> Product Details</h2>
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-2  mt-3">
+          <div className="bg-gray-100 py-6">
+            <div className="px-6">
+              <h2 className="font-semibold mb-3">Product Highlights</h2>
+              <table className="min-w-full divide-y divide-gray-200">
+                <tbody className=" divide-gray-200 text-sm mt-5">
+                  <tr>
+                    <td className=" py-2 whitespace-nowrap font-semibold">
+                      Fabric:
+                    </td>
+                    <td className=" py-2 whitespace-nowrap">Carbon Cotton</td>
+                  </tr>
+                  <tr>
+                    <td className=" py-2 whitespace-nowrap font-semibold">
+                      Neck:
+                    </td>
+                    <td className=" py-2 whitespace-nowrap">Classic Collar</td>
+                  </tr>
+                  <tr>
+                    <td className=" py-2 whitespace-nowrap font-semibold">
+                      Pattern:
+                    </td>
+                    <td className=" py-2 whitespace-nowrap">Solid</td>
+                  </tr>
+                  <tr>
+                    <td className=" py-2 whitespace-nowrap font-semibold">
+                      Sleeve:
+                    </td>
+                    <td className=" py-2 whitespace-nowrap">Full-Sleeves</td>
+                  </tr>
+                  <tr>
+                    <td className=" py-2 whitespace-nowrap font-semibold">
+                      Fit:
+                    </td>
+                    <td className=" py-2 whitespace-nowrap">Regular-fit</td>
+                  </tr>
+                  <tr>
+                    <td className=" py-2 whitespace-nowrap font-semibold">
+                      Style:
+                    </td>
+                    <td className=" py-2 whitespace-nowrap">
+                      Formal & Casual Wear
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="bg-gray-100 py-6">
+            <div className="px-6">
+              <h2 className="font-semibold mb-3">Product Description</h2>
+              <ul className="list-disc px-4 text-sm">
+                <li className="py-2">
+                  Constructed with World’s Finest Carbon Cotton
+                </li>
+                <li className="py-2">
+                  Pinnacle smoothness & comfort by Carbon molecules
+                </li>
+                <li className="py-2">Renowned as light-weight formals</li>
+                <li className="py-2">
+                  Refined tailored fit with precise stitching
+                </li>
+                <li className="py-2">
+                  Available in 10 eternal & premium shades
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="bg-gray-100 py-6">
+            <div className="px-6">
+              <h2 className="font-semibold mb-3">Delivery & Return Policy</h2>
+              <p className="list-disc text-sm">
+                We provide free shipping on all orders. Pay online to avoid
+                charges of ₹50/product applicable on COD orders. The return or
+                exchange can be done within 15 days after delivery. Every
+                delivery from Beyoung is processed under excellent condition and
+                in the fastest time possible. For our beloved customer’s care,
+                we give contactless delivery. Refer to FAQ for more information.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="mx-auto sm:px-6 max-w-2xl px-4 py-16 lg:max-w-7xl lg:px-8">
+        <h2 className="text-2xl font-bold">Rating & Reviews</h2>
         <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-2  mt-3">
           <div className="bg-gray-100 py-6">
             <div className="px-6">
