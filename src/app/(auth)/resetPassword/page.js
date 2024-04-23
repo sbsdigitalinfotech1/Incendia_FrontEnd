@@ -1,11 +1,14 @@
 "use client";
 
-import React from "react";
+import React,{useState} from "react";
 import logo from "@/assets/images/incendiaLogo.png";
 import Image from "next/image";
 import { useFormik } from "formik";
 import { ResetSchema } from "@/models/authSchema";
 import { useRouter } from "next/navigation";
+import { IoEye } from "react-icons/io5";
+import { IoEyeOff } from "react-icons/io5";
+
 
 const initialValues = {
   password: "",
@@ -13,6 +16,7 @@ const initialValues = {
 };
 
 const ResetPassword = () => {
+  const [show , setShow] = useState(false);
   const router = useRouter();
 
   const formik = useFormik({
@@ -41,52 +45,58 @@ const ResetPassword = () => {
       <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-6" onSubmit={formik.handleSubmit}>
           <fieldset className="border bg-white p-6 rounded-md">
-            <div className="mt-5">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Password
-              </label>
-              <div className="mt-2">
+          <div className="">
+              <div className="flex items-center justify-between">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Password
+                </label>
+              </div>
+              <div className="mt-2 relative">
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={show?'text':'password'}
+                  autoComplete="password"
                   onChange={formik.handleChange}
                   value={formik.values.password}
                   onBlur={formik.handleBlur}
-                  className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
                 />
+                {show?<button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={()=>{setShow(false)}}><IoEye size={20}/></button>:
+                <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={()=>{setShow(true)}}><IoEyeOff size={20}/></button>}
+              
               </div>
-              <p className="text-xs text-red-500">
+              <p className="min-h-4 me-1 text-xs text-red-500">
                 {formik.touched.password && formik.errors.password
                   ? formik.errors.password
                   : ""}
               </p>
             </div>
 
-            <div className="mt-5">
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="confirmPassword"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Confirm Password
-                </label>
-              </div>
-              <div className="mt-2">
+            <div className="">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Confirm Password
+              </label>
+              <div className="mt-2 relative">
                 <input
                   id="confirmPassword"
                   name="confirmPassword"
-                  type="password"
+                  type={show?'text':'password'}
                   onChange={formik.handleChange}
                   value={formik.values.confirmPassword}
                   onBlur={formik.handleBlur}
-                  className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
                 />
+                 {show?<button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={()=>{setShow(false)}}><IoEye size={20}/></button>:
+                <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={()=>{setShow(true)}}><IoEyeOff size={20}/></button>}
               </div>
-              <p className="min-h-4 me-1  text-xs  text-red-500">
+              <p className="min-h-4 me-1 text-xs text-red-500">
                 {formik.touched.confirmPassword && formik.errors.confirmPassword
                   ? formik.errors.confirmPassword
                   : ""}
