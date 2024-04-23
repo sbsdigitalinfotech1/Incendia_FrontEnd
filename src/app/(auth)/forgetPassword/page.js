@@ -57,7 +57,7 @@ const ForgetPassword = () => {
                     onChange={formik.handleChange}
                     value={formik.values.email}
                     onBlur={formik.handleBlur}
-                    className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
                   />
                 </div>
                 <p className="text-xs min-h-4 me-1 text-red-500">
