@@ -11,7 +11,7 @@ import { FaRegArrowAltCircleRight } from "react-icons/fa";
 import ship from "@/assets/images/ship.jpg";
 import cod from "@/assets/images/cod.jpg";
 
-function page({ params }) {
+function Product({ params }) {
   const [show, setShow] = useState(false);
   const handleShow = () => {
     setShow(!show);
@@ -303,7 +303,7 @@ function page({ params }) {
                 </p>
               </div>
             )}
-            <div className="md:relative fixed bottom-0 left-0 w-screen md:w-full shadow-md z-10 ">
+            <div className="md:relative fixed bottom-0 left-0 w-screen md:w-full shadow-md z-10 md:z-0 ">
               <div className="w-full mt-5 grid grid-cols-12 gap-0 md:gap-2">
                 <button className="col-span-6 md:col-span-12 lg:col-span-5 p-3 font-semibold bg-indigo-700 hover:bg-indigo-600 text-white flex items-center justify-center gap-1">
                   <BsCartFill className="inline" size={20} />
@@ -509,4 +509,4 @@ function page({ params }) {
   );
 }
 
-export default page;
+export default Product;
