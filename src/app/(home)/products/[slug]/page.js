@@ -10,18 +10,48 @@ import { BsCartFill } from "react-icons/bs";
 import { FaRegArrowAltCircleRight } from "react-icons/fa";
 import ship from "@/assets/images/ship.jpg";
 import cod from "@/assets/images/cod.jpg";
+import { Slider } from "@nextui-org/react";
+import { FaRegStar } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 
 function Product({ params }) {
   const [show, setShow] = useState(false);
   const handleShow = () => {
     setShow(!show);
   };
+
+  const rating = {
+    row: [
+      {
+        id: 5,
+        value: 16,
+      },
+      {
+        id: 4,
+        value: 2,
+      },
+      {
+        id: 3,
+        value: 1,
+      },
+      {
+        id: 2,
+        value: 1,
+      },
+      {
+        id: 1,
+        value: 1,
+      },
+    ],
+    totalRating: 21,
+  };
+
   return (
     <>
-      <div className="mx-auto sm:px-6 max-w-2xl px-4 py-16 lg:max-w-7xl lg:px-8">
+      <div className="mx-auto sm:px-6 max-w-2xl px-4 py-6 md:py-10 lg:max-w-7xl lg:px-8">
         <div className="md:grid grid-cols-12 gap-12">
           <div className="col-span-6  gap-2 rounded-sm">
-            <Carousel style={{ width: "100%" }}>
+            <Carousel style={{ width: "100%" }} emulateTouch infiniteLoop>
               <div>
                 <img
                   alt=""
@@ -303,13 +333,13 @@ function Product({ params }) {
                 </p>
               </div>
             )}
-            <div className="md:relative fixed bottom-0 left-0 w-screen md:w-full shadow-md z-10 md:z-0 ">
-              <div className="w-full mt-5 grid grid-cols-12 gap-0 md:gap-2">
-                <button className="col-span-6 md:col-span-12 lg:col-span-5 p-3 font-semibold bg-indigo-700 hover:bg-indigo-600 text-white flex items-center justify-center gap-1">
+            <div className="md:relative fixed bottom-0 left-0 w-screen md:w-full shadow-2xl md:shadow-none z-10 md:z-0 bg-white md:bg-none py-2 md:py-0 px-2 md:px-0 ">
+              <div className="w-full mt-0 md:mt-5 grid grid-cols-12 gap-2 md:gap-2">
+                <button className="col-span-6 md:col-span-12 lg:col-span-5 p-3 font-semibold bg-indigo-700 hover:bg-indigo-600 text-white flex items-center justify-center gap-1 rounded-md">
                   <BsCartFill className="inline" size={20} />
                   ADD TO CART
                 </button>
-                <button className="col-span-6 md:col-span-12 lg:col-span-7 p-3 bg-yellow-300 hover:bg-yellow-400 text-black font-semibold flex items-center justify-center gap-1">
+                <button className="col-span-6 md:col-span-12 lg:col-span-7 p-3 bg-yellow-300 hover:bg-yellow-400 text-black font-semibold flex items-center justify-center gap-1 rounded-md">
                   <FaRegArrowAltCircleRight className="inline" size={20} /> BUY
                   NOW
                 </button>
@@ -335,7 +365,7 @@ function Product({ params }) {
         </div>
       </div>
 
-      <div className="mx-auto sm:px-6 max-w-2xl px-4 py-16 lg:max-w-7xl lg:px-8">
+      <div className="mx-auto sm:px-6 max-w-2xl px-4 py-5 lg:max-w-7xl lg:px-8">
         <h2 className="text-2xl font-bold"> Product Details</h2>
         <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-2  mt-3">
           <div className="bg-gray-100 py-6">
@@ -420,87 +450,127 @@ function Product({ params }) {
           </div>
         </div>
       </div>
-      <div className="mx-auto sm:px-6 max-w-2xl px-4 py-16 lg:max-w-7xl lg:px-8">
+      <div className="mx-auto sm:px-6 max-w-2xl px-4 py-5 lg:max-w-7xl lg:px-8">
         <h2 className="text-2xl font-bold">Rating & Reviews</h2>
-        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-2  mt-3">
-          <div className="bg-gray-100 py-6">
-            <div className="px-6">
-              <h2 className="font-semibold mb-3">Product Highlights</h2>
-              <table className="min-w-full divide-y divide-gray-200">
-                <tbody className=" divide-gray-200 text-sm mt-5">
-                  <tr>
-                    <td className=" py-2 whitespace-nowrap font-semibold">
-                      Fabric:
-                    </td>
-                    <td className=" py-2 whitespace-nowrap">Carbon Cotton</td>
-                  </tr>
-                  <tr>
-                    <td className=" py-2 whitespace-nowrap font-semibold">
-                      Neck:
-                    </td>
-                    <td className=" py-2 whitespace-nowrap">Classic Collar</td>
-                  </tr>
-                  <tr>
-                    <td className=" py-2 whitespace-nowrap font-semibold">
-                      Pattern:
-                    </td>
-                    <td className=" py-2 whitespace-nowrap">Solid</td>
-                  </tr>
-                  <tr>
-                    <td className=" py-2 whitespace-nowrap font-semibold">
-                      Sleeve:
-                    </td>
-                    <td className=" py-2 whitespace-nowrap">Full-Sleeves</td>
-                  </tr>
-                  <tr>
-                    <td className=" py-2 whitespace-nowrap font-semibold">
-                      Fit:
-                    </td>
-                    <td className=" py-2 whitespace-nowrap">Regular-fit</td>
-                  </tr>
-                  <tr>
-                    <td className=" py-2 whitespace-nowrap font-semibold">
-                      Style:
-                    </td>
-                    <td className=" py-2 whitespace-nowrap">
-                      Formal & Casual Wear
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+        <div className="grid grid-cols-12 gap-2  mt-3 bg-gray-100">
+          <div className="col-span-12 lg:col-span-4 p-7">
+            <div className="bg-gray-900 text-yellow-300 flex flex-col items-center justify-center py-10 px-6 gap-3">
+              <h1 className="text-6xl">4.8</h1>
+              <div class="flex gap-1 items-center text-2xl">
+                <span>★</span>
+                <span>★</span>
+                <span>★</span>
+                <span>★</span>
+                <span>★</span>
+              </div>
+              <h3 className="text-center text-lg font-semibold">
+                Based on 43K+ ratings and 10K+ reviews
+              </h3>
             </div>
           </div>
-          <div className="bg-gray-100 py-6">
-            <div className="px-6">
-              <h2 className="font-semibold mb-3">Product Description</h2>
-              <ul className="list-disc px-4 text-sm">
-                <li className="py-2">
-                  Constructed with World’s Finest Carbon Cotton
-                </li>
-                <li className="py-2">
-                  Pinnacle smoothness & comfort by Carbon molecules
-                </li>
-                <li className="py-2">Renowned as light-weight formals</li>
-                <li className="py-2">
-                  Refined tailored fit with precise stitching
-                </li>
-                <li className="py-2">
-                  Available in 10 eternal & premium shades
-                </li>
-              </ul>
+          <div className="col-span-12 lg:col-span-8 flex flex-col p-7">
+            <div className="text-xl font-semibold">
+              <h3>PRODUCT REVIEWS</h3>
+            </div>
+            <div className="flex flex-col gap-2 mt-3 md:mt-auto my-auto">
+              {rating?.row.map((item, i) => (
+                <div
+                  className="flex items-center gap-3 text-lg font-medium w-full"
+                  key={i}
+                >
+                  <p>{item.id}</p>
+                  <FaRegStar />
+                  <Slider
+                    isDisabled
+                    size="sm"
+                    aria-label="Player progress"
+                    color="foreground"
+                    hideThumb={true}
+                    defaultValue={(item.value / rating.totalRating) * 100}
+                    className="max-w-sm md:max-w-xl"
+                  />
+                  <p>{item.value}+</p>
+                </div>
+              ))}
             </div>
           </div>
-          <div className="bg-gray-100 py-6">
-            <div className="px-6">
-              <h2 className="font-semibold mb-3">Delivery & Return Policy</h2>
-              <p className="list-disc text-sm">
-                We provide free shipping on all orders. Pay online to avoid
-                charges of ₹50/product applicable on COD orders. The return or
-                exchange can be done within 15 days after delivery. Every
-                delivery from Beyoung is processed under excellent condition and
-                in the fastest time possible. For our beloved customer’s care,
-                we give contactless delivery. Refer to FAQ for more information.
+
+          <div className="col-span-12 p-7">
+            <hr className="mb-6 h-1 border-white bg-white" />
+            <h3 className="text-lg font-semibold mb-12">
+              Hear What Our Customers Say
+            </h3>
+            <div className="flex flex-col mt-4 gap-3">
+              <div className="flex justify-between">
+                <div className="flex gap-1">
+                  <FaStar />
+                  <FaStar />
+                  <FaStar />
+                  <FaStar />
+                  <FaRegStar />
+                </div>
+                <div className="text-xs">Sanjay Khanna | 23 July 2023</div>
+              </div>
+              <p>
+                The Shirt Maintains Oxford&apos;s Legacy. Sleek, Comfortable,
+                And Versatile. Set The Standard For Refined Fashion. Best
+                Beyoung Shirt Ever Ordered!
               </p>
+              <hr className="mt-6 h-1 border-yellow-100 bg-yellow-100" />
+            </div>
+            <div className="flex flex-col mt-4 gap-3">
+              <div className="flex justify-between">
+                <div className="flex gap-1">
+                  <FaStar />
+                  <FaStar />
+                  <FaStar />
+                  <FaStar />
+                  <FaRegStar />
+                </div>
+                <div className="text-xs">Sanjay Khanna | 23 July 2023</div>
+              </div>
+              <p>
+                The Shirt Maintains Oxford&apos;s Legacy. Sleek, Comfortable,
+                And Versatile. Set The Standard For Refined Fashion. Best
+                Beyoung Shirt Ever Ordered!
+              </p>
+              <hr className="mt-6 h-1 border-yellow-100 bg-yellow-100" />
+            </div>
+            <div className="flex flex-col mt-4 gap-3">
+              <div className="flex justify-between">
+                <div className="flex gap-1">
+                  <FaStar />
+                  <FaStar />
+                  <FaStar />
+                  <FaStar />
+                  <FaRegStar />
+                </div>
+                <div className="text-xs">Sanjay Khanna | 23 July 2023</div>
+              </div>
+              <p>
+                The Shirt Maintains Oxford&apos;s Legacy. Sleek, Comfortable,
+                And Versatile. Set The Standard For Refined Fashion. Best
+                Beyoung Shirt Ever Ordered!
+              </p>
+              <hr className="mt-6 h-1 border-yellow-100 bg-yellow-100" />
+            </div>
+            <div className="flex flex-col mt-4 gap-3">
+              <div className="flex justify-between">
+                <div className="flex gap-1">
+                  <FaStar />
+                  <FaStar />
+                  <FaStar />
+                  <FaStar />
+                  <FaRegStar />
+                </div>
+                <div className="text-xs">Sanjay Khanna | 23 July 2023</div>
+              </div>
+              <p>
+                The Shirt Maintains Oxford&apos;s Legacy. Sleek, Comfortable,
+                And Versatile. Set The Standard For Refined Fashion. Best
+                Beyoung Shirt Ever Ordered!
+              </p>
+              <hr className="mt-6 h-1 border-yellow-100 bg-yellow-100" />
             </div>
           </div>
         </div>
