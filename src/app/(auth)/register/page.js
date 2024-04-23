@@ -1,12 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import logo from "@/assets/images/incendiaLogo.png";
 import Image from "next/image";
 import google from "@/assets/images/google.png";
 import { useFormik } from "formik";
 import { SignupSchema } from "@/models/authSchema";
 import { useRouter } from "next/navigation";
+import { IoEye } from "react-icons/io5";
+import { IoEyeOff } from "react-icons/io5";
 // import { redirect } from "next/navigation";
 
 const initialValues = {
@@ -20,6 +22,7 @@ const initialValues = {
 
 function Register() {
   const router = useRouter();
+  const [show,setShow]=useState(false);
 
   const formik = useFormik({
     validationSchema: SignupSchema,
@@ -64,7 +67,7 @@ function Register() {
                     onChange={formik.handleChange}
                     value={formik.values.firstName}
                     onBlur={formik.handleBlur}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
                   />
                 </div>
                 <p className=" min-h-4 me-1 text-xs text-red-500">
@@ -90,7 +93,7 @@ function Register() {
                     onChange={formik.handleChange}
                     value={formik.values.lastName}
                     onBlur={formik.handleBlur}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
                   />
                 </div>
                 <p className=" min-h-4 me-1 text-xs text-red-500">
@@ -117,7 +120,7 @@ function Register() {
                   value={formik.values.email}
                   onBlur={formik.handleBlur}
                   autoComplete="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
                 />
               </div>
               <p className="min-h-4 me-1 text-xs text-red-500">
@@ -147,7 +150,7 @@ function Register() {
                   }}
                   value={formik.values.phone}
                   onBlur={formik.handleBlur}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
                 />
               </div>
               <p className="min-h-4 me-1 text-xs text-red-500">
@@ -166,17 +169,20 @@ function Register() {
                   Password
                 </label>
               </div>
-              <div className="mt-2">
+              <div className="mt-2 relative">
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={show?'text':'password'}
                   autoComplete="password"
                   onChange={formik.handleChange}
                   value={formik.values.password}
                   onBlur={formik.handleBlur}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
                 />
+                {show?<button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={()=>{setShow(false)}}><IoEye size={20}/></button>:
+                <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={()=>{setShow(true)}}><IoEyeOff size={20}/></button>}
+              
               </div>
               <p className="min-h-4 me-1 text-xs text-red-500">
                 {formik.touched.password && formik.errors.password
@@ -192,16 +198,18 @@ function Register() {
               >
                 Confirm Password
               </label>
-              <div className="mt-2">
+              <div className="mt-2 relative">
                 <input
                   id="confirmPassword"
                   name="confirmPassword"
-                  type="password"
+                  type={show?'text':'password'}
                   onChange={formik.handleChange}
                   value={formik.values.confirmPassword}
                   onBlur={formik.handleBlur}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
                 />
+                 {show?<button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={()=>{setShow(false)}}><IoEye size={20}/></button>:
+                <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={()=>{setShow(true)}}><IoEyeOff size={20}/></button>}
               </div>
               <p className="min-h-4 me-1 text-xs text-red-500">
                 {formik.touched.confirmPassword && formik.errors.confirmPassword
@@ -220,9 +228,9 @@ function Register() {
             </div>
             <div className="relative w-100 mt-12">
               <hr className="w-100 h-2" />
-              <span className="absolute -top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/3 bg-white px-5 text-sm ">
-                Or Continue With
-              </span>
+              <div className="w-full flex justify-center absolute -top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/3  ">
+                <span className="bg-white px-5 text-sm">Or Continue With</span>
+              </div>
             </div>
             <div className="mt-5 w-100 flex justify-center">
               <button className="w-1/2 border-2 py-3 rounded-lg flex items-center justify-center text-sm text-gray font-medium hover:bg-slate-50">

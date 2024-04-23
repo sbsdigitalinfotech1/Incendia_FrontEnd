@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React,{useState} from "react";
 import logo from "@/assets/images/incendiaLogo.png";
 import Image from "next/image";
 import google from "@/assets/images/google.png";
@@ -8,6 +8,8 @@ import Link from "next/link";
 import { useFormik } from "formik";
 import { LoginSchema } from "@/models/authSchema";
 import { useRouter } from "next/navigation";
+import { IoEye } from "react-icons/io5";
+import { IoEyeOff } from "react-icons/io5";
 
 const initialValues = {
   email: "",
@@ -15,6 +17,8 @@ const initialValues = {
 };
 
 function Login() {
+  const [show,setShow] = useState(false);
+
   const router = useRouter();
 
   const formik = useFormik({
@@ -59,7 +63,7 @@ function Login() {
                   onChange={formik.handleChange}
                   value={formik.values.email}
                   onBlur={formik.handleBlur}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
                 />
               </div>
               <p className="min-h-4 me-1 text-xs text-red-500">
@@ -69,7 +73,7 @@ function Login() {
               </p>
             </div>
 
-            <div className="mt-5">
+            <div className="">
               <div className="flex items-center justify-between">
                 <label
                   htmlFor="password"
@@ -77,27 +81,21 @@ function Login() {
                 >
                   Password
                 </label>
-                <div className="text-sm">
-                  <Link
-                    href="/forgetPassword"
-                    tabIndex={1}
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot password?
-                  </Link>
-                </div>
               </div>
-              <div className="mt-2">
+              <div className="mt-2 relative">
                 <input
                   id="password"
                   name="password"
-                  type="password"
-                  autoComplete="current-password"
+                  type={show?'text':'password'}
+                  autoComplete="password"
                   onChange={formik.handleChange}
                   value={formik.values.password}
                   onBlur={formik.handleBlur}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
                 />
+                {show?<button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={()=>{setShow(false)}}><IoEye size={20}/></button>:
+                <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={()=>{setShow(true)}}><IoEyeOff size={20}/></button>}
+              
               </div>
               <p className="min-h-4 me-1 text-xs text-red-500">
                 {formik.touched.password && formik.errors.password
