@@ -17,10 +17,11 @@ const page = () => {
         </div>
 
         <div className="rounded-lg bg-gray-100 mt-6">
-          <div className="flex items-center justify-between px-6 pt-3 text-sm">
+          <Link href='orders/1'><div className="flex items-center justify-between px-6 pt-3 text-sm">
             <p className="">Order #4195330</p>
             <FaChevronRight />
           </div>
+          </Link>
           <div className="grid grid-cols-12 gap-5  p-6">
             <div className=" col-span-4 md:col-span-2">
               <div className="relative aspect-[3/4]">
