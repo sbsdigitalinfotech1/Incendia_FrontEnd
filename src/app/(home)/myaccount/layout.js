@@ -50,7 +50,7 @@ export default function RootLayout({ children }) {
               </div>
             </div>
           </div>
-          <div className="col-span-12 md:col-span-9 pl-0 md:pl-32">
+          <div className="col-span-12 md:col-span-9 pl-0 md:pl-8 lg:pl-28">
             {children}
           </div>
         </div>
