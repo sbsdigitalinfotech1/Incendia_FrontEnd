@@ -1,5 +1,7 @@
+"use client"
+
 import React from "react";
-import ProductCard from "../ProductCard.js/ProductCard";
+import ProductCard from "../ProductCard/ProductCard";
 import Link from "next/link";
 
 function ProductRowFilter({ products }) {
@@ -14,7 +16,7 @@ function ProductRowFilter({ products }) {
           </Link>
         ))}
       </div>
-    </>
+    </> 
   );
 }
 
