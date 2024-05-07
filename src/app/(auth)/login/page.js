@@ -24,9 +24,8 @@ function Login() {
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: LoginSchema,
-    onSubmit: (values) => {
-      console.log(values);
-      router.push("/");
+    onSubmit: async(values) => {
+      console.log(values)
     },
   });
 

@@ -1,15 +1,19 @@
 import React from "react";
+import { CiHeart } from "react-icons/ci";
 
 function ProductCard({ product }) {
   return (
     <div className="group relative">
-      <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200  group-hover:opacity-75 lg:h-100">
+      <div className="relative w-full overflow-hidden rounded-md bg-gray-200  group-hover:opacity-75 lg:h-100">
         <img
           src={product?.imageSrc}
           alt={product?.imageAlt}
           className="h-full w-full object-cover object-center lg:h-full lg:w-full"
         />
       </div>
+      <button className="absolute top-1.5 right-1.5 py-0.5 px-2 text-sm cursor-pointer z-10">
+      <CiHeart size={20}/>
+      </button>
       <div className="mt-4">
         <div>
           <h3 className="text-sm font-semibold text-gray-900 line-clamp-1">
