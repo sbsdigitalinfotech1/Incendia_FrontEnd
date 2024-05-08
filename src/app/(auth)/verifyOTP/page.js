@@ -1,15 +1,63 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import logo from "@/assets/images/incendiaLogo.png";
 import OtpInput from "@/components/OtpInput/OtpInput";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { verifyRegistration, login } from "@/config/Api";
+import { useGlobalState } from "@/store/GlobalContext";
+import { toast } from "react-hot-toast";
+import Cookies from "js-cookie";
 
 const VerifyOtp = () => {
-  const[value,setValue]= useState('');
-  const handleSubmit=()=>{
-  console.log(value);
- }
+  const [value, setValue] = useState("");
+  const router = useRouter();
+  const GlobalState = useGlobalState();
+
+
+  const handlelogin = async (values) => {
+    await login(values)
+      .then((res) => {
+        if (res.data.success) {
+          toast.success("log in succesfully");
+          Cookies.set("userData", JSON.stringify(res.data), {
+            expires: 7,
+          });
+          router.replace("/");
+        }
+      })
+      .catch((err) => {
+        if (err.response.data.message) {
+          return toast.error(err.response.data.message);
+        }
+        toast.error(err.message);
+      });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (GlobalState.from == "register") {
+      const data = {
+        email: GlobalState.email,
+        password: GlobalState.password,
+        otp: value,
+      };
+      await verifyRegistration(data)
+        .then(async (res) => {
+          if (res.data.success) {
+            toast.success("otp verified");
+            await handlelogin(data);
+          }
+        })
+        .catch((err) => {
+          if (err.response.data.message) {
+            return toast.error(err.response.data.message);
+          }
+          toast.error(err.message);
+        });
+    }
+  };
 
   return (
     <>
@@ -29,7 +77,13 @@ const VerifyOtp = () => {
         <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm md:max-md">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <fieldset className="grid grid-cols-4 gap-3 py-6 rounded-md">
-              <OtpInput length={4} value={value} setValue={setValue} containerClassName="w-full aspect-square" inputFieldClassName="size-full rounded-md border-0 p-1.5 text-center text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-2xl"/>
+              <OtpInput
+                length={4}
+                value={value}
+                setValue={setValue}
+                containerClassName="w-full aspect-square"
+                inputFieldClassName="size-full rounded-md border-0 p-1.5 text-center text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-2xl"
+              />
             </fieldset>
             <div className="mt-5">
               <button
@@ -46,5 +100,4 @@ const VerifyOtp = () => {
   );
 };
 
-export default VerifyOtp
-;
+export default VerifyOtp;

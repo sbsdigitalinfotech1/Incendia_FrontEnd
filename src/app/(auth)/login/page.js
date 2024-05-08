@@ -1,6 +1,6 @@
 "use client";
 
-import React,{useState} from "react";
+import React, { useState } from "react";
 import logo from "@/assets/images/incendiaLogo.png";
 import Image from "next/image";
 import google from "@/assets/images/google.png";
@@ -10,6 +10,9 @@ import { LoginSchema } from "@/models/authSchema";
 import { useRouter } from "next/navigation";
 import { IoEye } from "react-icons/io5";
 import { IoEyeOff } from "react-icons/io5";
+import { login } from "@/config/Api";
+import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 
 const initialValues = {
   email: "",
@@ -17,15 +20,29 @@ const initialValues = {
 };
 
 function Login() {
-  const [show,setShow] = useState(false);
-
+  const [show, setShow] = useState(false);
   const router = useRouter();
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: LoginSchema,
-    onSubmit: async(values) => {
-      console.log(values)
+    onSubmit: async (values) => {
+      await login(values)
+        .then((res) => {
+          if (res.data.success) {
+            toast.success("log in succesfully");
+            Cookies.set("userData", JSON.stringify(res.data), {
+              expires: 7,
+            });
+            router.replace("/");
+          }
+        })
+        .catch((err) => {
+          if (err.response.data.message) {
+            return toast.error(err.response.data.message);
+          }
+          toast.error(err.message);
+        });
     },
   });
 
@@ -81,8 +98,11 @@ function Login() {
                   Password
                 </label>
                 <div className="text-sm">
-                  <Link href='forgetPassword' className="font-semibold text-indigo-600 hover:text-indigo-500">
-                  Forgot password?
+                  <Link
+                    href="forgetPassword"
+                    className="font-semibold text-indigo-600 hover:text-indigo-500"
+                  >
+                    Forgot password?
                   </Link>
                 </div>
               </div>
@@ -90,16 +110,34 @@ function Login() {
                 <input
                   id="password"
                   name="password"
-                  type={show?'text':'password'}
+                  type={show ? "text" : "password"}
                   autoComplete="password"
                   onChange={formik.handleChange}
                   value={formik.values.password}
                   onBlur={formik.handleBlur}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
                 />
-                {show?<button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={()=>{setShow(false)}}><IoEye size={20}/></button>:
-                <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={()=>{setShow(true)}}><IoEyeOff size={20}/></button>}
-              
+                {show ? (
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                    onClick={() => {
+                      setShow(false);
+                    }}
+                  >
+                    <IoEye size={20} />
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                    onClick={() => {
+                      setShow(true);
+                    }}
+                  >
+                    <IoEyeOff size={20} />
+                  </button>
+                )}
               </div>
               <p className="min-h-4 me-1 text-xs text-red-500">
                 {formik.touched.password && formik.errors.password
