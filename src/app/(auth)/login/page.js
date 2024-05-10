@@ -31,7 +31,7 @@ function Login() {
         .then((res) => {
           if (res.data.success) {
             toast.success("log in succesfully");
-            Cookies.set("userData", JSON.stringify(res.data), {
+            Cookies.set("userData", JSON.stringify(res.data.data), {
               expires: 7,
             });
             router.replace("/");
@@ -154,7 +154,14 @@ function Login() {
                 Sign in
               </button>
             </div>
-            <div className="relative w-100 mt-12">
+            <p className="text-sm text-gray-400 mt-4 flex items-center justify-center">
+              Don’t have an account yet? &nbsp;
+              <Link className="font-semibold text-indigo-600" href="/register">
+                {" "}
+                Sign up{" "}
+              </Link>{" "}
+            </p>
+            {/* <div className="relative w-100 mt-12">
               <hr className="w-100 h-2" />
               <div className="w-full flex justify-center absolute -top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/3  ">
                 <span className="bg-white px-5 text-sm">Or Continue With</span>
@@ -165,7 +172,7 @@ function Login() {
                 <Image src={google} width={20} alt="googleLogo" />
                 &nbsp; Google
               </button>
-            </div>
+            </div> */}
           </fieldset>
         </form>
       </div>

@@ -19,3 +19,14 @@ export const sendOTP = async(data)=>{
 export const verifyRegistration = async(data)=>{
     return await axios.post(`${BASE_URL}user/verifyRegistration`,data);
 }
+export const VerifyOtpAPI = async(data)=>{
+    return await axios.post(`${BASE_URL}user/verifyOTP`,data);
+}
+
+export const resetPassword = async(data)=>{
+    return await axios.post(`${BASE_URL}user/resetPassword`,data);
+}
+
+export const generateGuestId = async(data)=>{
+    return await axios.get(`${BASE_URL}user/generateGuestId`,data);
+}

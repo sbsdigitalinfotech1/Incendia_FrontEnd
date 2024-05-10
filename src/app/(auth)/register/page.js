@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import logo from "@/assets/images/incendiaLogo.png";
 import Image from "next/image";
-import google from "@/assets/images/google.png";
+// import google from "@/assets/images/google.png";
 import { useFormik } from "formik";
 import { SignupSchema } from "@/models/authSchema";
 import { useRouter } from "next/navigation";
@@ -43,7 +43,8 @@ function Register() {
       await register(data)
         .then(async (res) => {
           if (res.data.success) {
-            await sendOTP(data);
+            await sendOTP(data); // Sending Otp
+
             GlobalState.setEmail(data.email);
             GlobalState.setPassword(data.password);
             GlobalState.setFrom("register");
@@ -289,7 +290,7 @@ function Register() {
                 Sign up
               </button>
             </div>
-            <div className="relative w-100 mt-12">
+            {/* <div className="relative w-100 mt-12">
               <hr className="w-100 h-2" />
               <div className="w-full flex justify-center absolute -top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/3  ">
                 <span className="bg-white px-5 text-sm">Or Continue With</span>
@@ -300,7 +301,7 @@ function Register() {
                 <Image src={google} width={20} alt="googleLogo" />
                 &nbsp; Google
               </button>
-            </div>
+            </div> */}
           </fieldset>
         </form>
       </div>

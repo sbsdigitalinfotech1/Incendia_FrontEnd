@@ -3,18 +3,24 @@
 import Image from "next/image";
 import logo from "@/assets/images/incendiaLogo.png";
 import OtpInput from "@/components/OtpInput/OtpInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { verifyRegistration, login } from "@/config/Api";
-import { useGlobalState } from "@/store/GlobalContext";
+import {
+  verifyRegistration,
+  VerifyOtpAPI,
+  login,
+  resetPassword,
+} from "@/config/Api";
+import { GlobalStateProvider, useGlobalState } from "@/store/GlobalContext";
 import { toast } from "react-hot-toast";
 import Cookies from "js-cookie";
 
 const VerifyOtp = () => {
   const [value, setValue] = useState("");
+  const [loaded, setLoaded] = useState(false);
+
   const router = useRouter();
   const GlobalState = useGlobalState();
-
 
   const handlelogin = async (values) => {
     await login(values)
@@ -38,7 +44,7 @@ const VerifyOtp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (GlobalState.from == "register") {
-      const data = {
+      var data = {
         email: GlobalState.email,
         password: GlobalState.password,
         otp: value,
@@ -56,8 +62,36 @@ const VerifyOtp = () => {
           }
           toast.error(err.message);
         });
+    } 
+    else if (GlobalState.from == "forgetPassword") {
+      var data = {
+        email: GlobalState.email,
+        otp: value,
+      };
+      await VerifyOtpAPI(data)
+        .then((res) => {
+          if (res.data.success) {
+            toast.success("OTP Verified");
+            router.push("/resetPassword");
+          }
+        })
+        .catch((err) => {
+          if (err.response.data.message) {
+            return toast.error(err.response.data.message);
+          }
+          toast.error(err.message);
+        });
     }
   };
+
+  useEffect(() => {
+    if (!loaded) {
+      return setLoaded(true);
+    }
+    if (GlobalState.from == "" || GlobalState.email== "") {
+      router.back();
+    }
+  }, [loaded]);
 
   return (
     <>

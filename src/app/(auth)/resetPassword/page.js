@@ -1,6 +1,6 @@
 "use client";
 
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import logo from "@/assets/images/incendiaLogo.png";
 import Image from "next/image";
 import { useFormik } from "formik";
@@ -8,6 +8,9 @@ import { ResetSchema } from "@/models/authSchema";
 import { useRouter } from "next/navigation";
 import { IoEye } from "react-icons/io5";
 import { IoEyeOff } from "react-icons/io5";
+import { useGlobalState } from "@/store/GlobalContext";
+import { resetPassword } from "@/config/Api";
+import toast from "react-hot-toast";
 
 
 const initialValues = {
@@ -17,16 +20,47 @@ const initialValues = {
 
 const ResetPassword = () => {
   const [show , setShow] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const router = useRouter();
+
+  const GlobalState = useGlobalState();
 
   const formik = useFormik({
     validationSchema: ResetSchema,
     initialValues: initialValues,
-    onSubmit: (values) => {
-      console.log(values);
-      router.push("/login");
+    onSubmit: async(values) => {
+       const data = {
+        email:GlobalState.email,
+        password: values.password,
+       }
+
+       await resetPassword(data)
+       .then((res) => {
+        if (res.data.success) {
+          toast.success("Password reset successfully");
+          GlobalState.setEmail("");
+          GlobalState.setFrom("");
+          router.replace("/login");
+        }
+      })
+      .catch((err) => {
+        if (err.response.data.message) {
+          return toast.error(err.response.data.message);
+        }
+        toast.error(err.message);
+      });
     },
   });
+
+  useEffect(() => {
+    if (!loaded) {
+      return setLoaded(true);
+    }
+    if (GlobalState.from == ""|| GlobalState.email=="") {
+      router.back();
+    }
+  }, [loaded]);
+
 
   return (
     <>
