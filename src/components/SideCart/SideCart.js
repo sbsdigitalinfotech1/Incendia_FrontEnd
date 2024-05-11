@@ -4,6 +4,7 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import Image from "next/image";
 
 const products = [
   {
@@ -89,11 +90,12 @@ export default function SideCart({ open, setOpen }) {
                           >
                             {products.map((product, i) => (
                               <li key={i} className="flex py-6">
-                                <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                  <img
+                                <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 relative">
+                                  <Image
                                     src={product.imageSrc}
                                     alt={product.imageAlt}
                                     className="h-full w-full object-cover object-center"
+                                    fill
                                   />
                                 </div>
 
