@@ -6,6 +6,10 @@ import Image from "next/image";
 import { useFormik } from "formik";
 import { ForgetSchema } from "@/models/authSchema";
 import { useRouter } from "next/navigation";
+import { sendOTP } from "@/config/Api";
+import { useGlobalState } from "@/store/GlobalContext";
+import Link from "next/link";
+// import { useGlobalState } from "@/store/GlobalContext";
 
 const initialValues = {
   email: "",
@@ -13,12 +17,19 @@ const initialValues = {
 
 const ForgetPassword = () => {
   const router = useRouter();
+  const GlobalState = useGlobalState();
 
   const formik = useFormik({
     validationSchema: ForgetSchema,
     initialValues: initialValues,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      const data = {
+        email: values.email,
+      };
+
+      await sendOTP(data);
+      GlobalState.setEmail(data.email);
+      GlobalState.setFrom("forgetPassword");
       router.push("/verifyOTP");
     },
   });
@@ -83,9 +94,13 @@ const ForgetPassword = () => {
                 </span>
               </div>
               <div className="mt-5 w-100 flex justify-center">
+                
                 <button className="w-1/2 border-2 py-3 rounded-lg flex items-center justify-center text-sm text-gray font-medium hover:bg-slate-50">
+                <Link href="/login">
                   Back to login
+                  </Link>
                 </button>
+               
               </div>
             </fieldset>
           </form>

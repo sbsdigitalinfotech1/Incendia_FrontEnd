@@ -20,27 +20,27 @@ export default function RootLayout({ children }) {
                 <span className="text-base text-gray-400 "> #BeIncane</span>
               </div>
               <div className="flex flex-col">
-                <Link href="orders" className="p-4 text-sm cursor-pointer">
+                <Link href="/myaccount/orders" className="p-4 text-sm cursor-pointer">
                   Order
                 </Link>
                 <hr />
-                <Link href="address" className="p-4 text-sm cursor-pointer">
+                <Link href="/myaccount/address" className="p-4 text-sm cursor-pointer">
                   Address
                 </Link>
                 <hr />
-                <Link href="profile" className="p-4 text-sm cursor-pointer">
+                <Link href="/myaccount/profile" className="p-4 text-sm cursor-pointer">
                   Profile
                 </Link>
                 <hr />
-                <Link href="favourites" className="p-4 text-sm cursor-pointer">
+                <Link href="/myaccount/favourites" className="p-4 text-sm cursor-pointer">
                   Favourites
                 </Link>
                 <hr />
-                <Link href="coupons" className="p-4 text-sm cursor-pointer">
+                <Link href="/myaccount/coupons" className="p-4 text-sm cursor-pointer">
                   Coupons
                 </Link>
                 <hr />
-                <Link href="tickets" className="p-4 text-sm cursor-pointer">
+                <Link href="/myaccount/tickets" className="p-4 text-sm cursor-pointer">
                   Tickets
                 </Link>
                 <hr />

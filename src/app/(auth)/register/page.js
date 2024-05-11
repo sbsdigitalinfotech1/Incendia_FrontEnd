@@ -3,12 +3,15 @@
 import React, { useState } from "react";
 import logo from "@/assets/images/incendiaLogo.png";
 import Image from "next/image";
-import google from "@/assets/images/google.png";
+// import google from "@/assets/images/google.png";
 import { useFormik } from "formik";
 import { SignupSchema } from "@/models/authSchema";
 import { useRouter } from "next/navigation";
 import { IoEye } from "react-icons/io5";
 import { IoEyeOff } from "react-icons/io5";
+import { register, sendOTP } from "@/config/Api";
+import { toast } from "react-hot-toast";
+import { useGlobalState } from "@/store/GlobalContext";
 // import { redirect } from "next/navigation";
 
 const initialValues = {
@@ -22,14 +25,38 @@ const initialValues = {
 
 function Register() {
   const router = useRouter();
-  const [show,setShow]=useState(false);
+  const [show, setShow] = useState(false);
+  const GlobalState = useGlobalState();
 
   const formik = useFormik({
     validationSchema: SignupSchema,
     initialValues: initialValues,
-    onSubmit: (values) => {
-      console.log(values);
-      router.push("/login");
+    onSubmit: async (values) => {
+      const data = {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        phone: values.phone,
+        password: values.password,
+      };
+
+      await register(data)
+        .then(async (res) => {
+          if (res.data.success) {
+            await sendOTP(data); // Sending Otp
+
+            GlobalState.setEmail(data.email);
+            GlobalState.setPassword(data.password);
+            GlobalState.setFrom("register");
+            router.replace("/verifyOTP");
+          }
+        })
+        .catch((err) => {
+          if (err.response.data.message) {
+            return toast.error(err.response.data.message);
+          }
+          toast.error(err.message);
+        });
     },
   });
 
@@ -173,16 +200,34 @@ function Register() {
                 <input
                   id="password"
                   name="password"
-                  type={show?'text':'password'}
+                  type={show ? "text" : "password"}
                   autoComplete="password"
                   onChange={formik.handleChange}
                   value={formik.values.password}
                   onBlur={formik.handleBlur}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
                 />
-                {show?<button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={()=>{setShow(false)}}><IoEye size={20}/></button>:
-                <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={()=>{setShow(true)}}><IoEyeOff size={20}/></button>}
-              
+                {show ? (
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                    onClick={() => {
+                      setShow(false);
+                    }}
+                  >
+                    <IoEye size={20} />
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                    onClick={() => {
+                      setShow(true);
+                    }}
+                  >
+                    <IoEyeOff size={20} />
+                  </button>
+                )}
               </div>
               <p className="min-h-4 me-1 text-xs text-red-500">
                 {formik.touched.password && formik.errors.password
@@ -202,14 +247,33 @@ function Register() {
                 <input
                   id="confirmPassword"
                   name="confirmPassword"
-                  type={show?'text':'password'}
+                  type={show ? "text" : "password"}
                   onChange={formik.handleChange}
                   value={formik.values.confirmPassword}
                   onBlur={formik.handleBlur}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2"
                 />
-                 {show?<button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={()=>{setShow(false)}}><IoEye size={20}/></button>:
-                <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={()=>{setShow(true)}}><IoEyeOff size={20}/></button>}
+                {show ? (
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                    onClick={() => {
+                      setShow(false);
+                    }}
+                  >
+                    <IoEye size={20} />
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                    onClick={() => {
+                      setShow(true);
+                    }}
+                  >
+                    <IoEyeOff size={20} />
+                  </button>
+                )}
               </div>
               <p className="min-h-4 me-1 text-xs text-red-500">
                 {formik.touched.confirmPassword && formik.errors.confirmPassword
@@ -226,7 +290,7 @@ function Register() {
                 Sign up
               </button>
             </div>
-            <div className="relative w-100 mt-12">
+            {/* <div className="relative w-100 mt-12">
               <hr className="w-100 h-2" />
               <div className="w-full flex justify-center absolute -top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/3  ">
                 <span className="bg-white px-5 text-sm">Or Continue With</span>
@@ -237,7 +301,7 @@ function Register() {
                 <Image src={google} width={20} alt="googleLogo" />
                 &nbsp; Google
               </button>
-            </div>
+            </div> */}
           </fieldset>
         </form>
       </div>

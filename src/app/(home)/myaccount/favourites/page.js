@@ -1,8 +1,5 @@
-"use client"
-
-import React,{useState} from "react";
-import { MdOutlineShoppingBag } from "react-icons/md";
-import AddToCard from "@/components/AddToCard/AddToCard"
+import React from "react";
+import Link from "next/link";
 
 const FavProducts = [
   {
@@ -70,28 +67,19 @@ const FavProducts = [
 ];
 
 function Favourites() {
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {FavProducts.map((item, index) => (
-            <div className=" " key={index}>
+          <div key={index}>
+            <Link href="/products/1">
               <div className=" relative aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200  group-hover:opacity-75 lg:h-100">
                 <img
                   src={item?.imageSrc}
                   alt={item?.imageAlt}
                   className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                 />
+
                 <button className="absolute top-1.5 right-1.5 py-0.5 px-2 bg-white rounded-full text-sm cursor-pointer">
                   X
                 </button>
@@ -100,14 +88,12 @@ function Favourites() {
               <div className="mt-4">
                 <div>
                   <h3 className="text-sm font-semibold text-gray-900 line-clamp-1">
-                    <span aria-hidden="true" className="absolute inset-0" />
                     {item?.name}
                   </h3>
 
                   <p className="text-sm text-gray-500">{item?.color}</p>
                   <div className="mt-2">
                     <strong className="text-sm font-semibold text-gray-900">
-                      {" "}
                       ₹ {item?.price}
                     </strong>
                     &nbsp;&nbsp;
@@ -119,15 +105,10 @@ function Favourites() {
                       [{item?.offPrice}% off]
                     </span>
                   </div>
-                  {isModalOpen && <AddToCard onClose={closeModal} />}
-                  <div className="flex items-center justify-center cursor-pointer gap-1 bg-gray-200 rounded-lg text-sm mt-3 p-2.5" onClick={openModal}>
-                    <MdOutlineShoppingBag size={15} />
-                    <p>Add To Cart </p>
-                  </div>
-                  
                 </div>
               </div>
-            </div>
+            </Link>
+          </div>
         ))}
       </div>
     </>
