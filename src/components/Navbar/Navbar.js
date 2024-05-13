@@ -9,9 +9,14 @@ import { BsCart } from "react-icons/bs";
 import SideCart from "@/components/SideCart/SideCart";
 import { Bars3BottomLeftIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import MobileNavbar from "@/components/Navbar/MobileNavbar";
+import { IoPersonCircleSharp } from "react-icons/io5";
+import Cookies from "js-cookie";
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
+
+  const [isLogedIn, setisLogedIn] = useState(null);
+
   const navData = [
     {
       title: "Home",
@@ -35,7 +40,13 @@ const Navbar = () => {
     <>
       <nav className="pt-4">
         <div className="flex justify-between items-center lg:px-20 pb-4 px-3">
-          <div className="flex md:hidden" onClick={() => setOpen2(true)}>
+          <div
+            className="flex md:hidden"
+            onClick={() => {
+              setOpen2(true);
+              setisLogedIn(Cookies.get("userData"));
+            }}
+          >
             <Bars3BottomLeftIcon
               className="w-5 h-5 font-bold text-gray-900"
               aria-hidden="true"
@@ -55,11 +66,10 @@ const Navbar = () => {
               ))}
             </ul>
           </div>
-          <div className="flex gap-4">
-            <FaRegHeart
-              className="icon hidden md:inline-block cursor-pointer"
-              onClick={() => setOpen(true)}
-            />
+          <div className="flex gap-4 items-center">
+            <Link href="/myaccount/favourites">
+              <FaRegHeart className="icon hidden md:inline-block cursor-pointer" />
+            </Link>
             <div
               className="relative me-3 md:me-0 inline-block cursor-pointer"
               onClick={() => setOpen(true)}
@@ -77,6 +87,16 @@ const Navbar = () => {
                 2
               </span>
             </div>
+            {
+              <Link
+                href={Cookies.get("userData") ? "/myaccount/profile" : "/login"}
+              >
+                <IoPersonCircleSharp
+                  size={25}
+                  className="icon hidden md:inline-block cursor-pointer"
+                />
+              </Link>
+            }
           </div>
         </div>
 
@@ -140,7 +160,12 @@ const Navbar = () => {
       </nav>
 
       <SideCart open={open} setOpen={setOpen} />
-      <MobileNavbar open={open2} setOpen={setOpen2} data={navData} />
+      <MobileNavbar
+        open={open2}
+        setOpen={setOpen2}
+        data={navData}
+        isLogedIn={isLogedIn}
+      />
     </>
   );
 };
