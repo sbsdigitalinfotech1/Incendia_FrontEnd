@@ -4,6 +4,7 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 const products = [
   {
@@ -33,7 +34,26 @@ const products = [
   // More products...
 ];
 
-export default function MobileNavbar({ open, setOpen, data }) {
+const ProfileData = [
+  {
+    title: "Profile",
+    link: "/myaccount/profile",
+  },
+  {
+    title: "Orders",
+    link: "/myaccount/orders",
+  },
+  {
+    title: "Favourites",
+    link: "/myaccount/favourites",
+  },
+  {
+    title: "Address",
+    link: "/myaccount/address",
+  },
+];
+
+export default function MobileNavbar({ open, setOpen, data, isLogedIn }) {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
@@ -100,20 +120,51 @@ export default function MobileNavbar({ open, setOpen, data }) {
                                 </Link>
                               </li>
                             ))}
+
+                            {isLogedIn &&
+                              ProfileData.map((item, i) => (
+                                <li key={i}>
+                                  <Link
+                                    href={item.link}
+                                    className="flex py-3 px-4"
+                                    onClick={() => setOpen(false)}
+                                  >
+                                    <div className="flex justify-between text-base font-medium text-gray-900">
+                                      <h3 className="min-w-max">
+                                        {item.title}
+                                      </h3>
+                                    </div>
+                                  </Link>
+                                </li>
+                              ))}
                           </ul>
                         </div>
                       </div>
                     </div>
 
                     <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-                      <div className="mt-6">
-                        <a
-                          href="#"
-                          className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-                        >
-                          Logout
-                        </a>
-                      </div>
+                      {isLogedIn ? (
+                        <div className="mt-6">
+                          <div
+                            onClick={() => {
+                              Cookies.remove("userData");
+                              setOpen(false);
+                            }}
+                            className="flex items-center justify-center bg-gray-900 text-white py-2 rounded-md"
+                          >
+                            Logout
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="mt-6">
+                          <Link
+                            href="/login"
+                            className="flex items-center justify-center bg-gray-900 text-white py-2 rounded-md"
+                          >
+                            Login
+                          </Link>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </Dialog.Panel>
