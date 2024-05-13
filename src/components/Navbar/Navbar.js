@@ -11,6 +11,7 @@ import { Bars3BottomLeftIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import MobileNavbar from "@/components/Navbar/MobileNavbar";
 import { IoPersonCircleSharp } from "react-icons/io5";
 import Cookies from "js-cookie";
+
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -139,12 +140,12 @@ const Navbar = () => {
               </svg>
               Join us in Denver from June 7 – 9 to see what’s coming
               next.&nbsp;&nbsp;&nbsp;
-              <a
+              <Link
                 href="#"
                 className="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
               >
                 Register now <span aria-hidden="true">&rarr;</span>
-              </a>
+              </Link>
             </p>
           </div>
           <div className="flex flex-1 justify-end">
