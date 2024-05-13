@@ -7,22 +7,16 @@ function Page() {
   const faqs = [
     {
       question: "How long does shipping take?",
-      colorHead: "#84cc16",
-      colorPara: "#bef264",
       answer:
         "Shipping times vary depending on your location and the shipping method chosen. We offer standard and expedited shipping options. Please refer to our Shipping Policy page for more information.",
     },
     {
       question: "What is your return policy?",
-      colorHead: "#dc2626",
-      colorPara: "#ef4444",
       answer:
         "We offer a hassle-free return policy within 30 days of purchase. Items must be returned in their original condition. For more details, please visit our Returns & Exchanges page.",
     },
     {
       question: "Do you offer international shipping?",
-      colorHead: "#c026d3",
-      colorPara: "#e879f9",
       answer:
         "Yes, we offer international shipping to select countries. Shipping rates and delivery times vary depending on the destination. Please contact our customer support for more information.",
     },
@@ -68,8 +62,8 @@ function Page() {
         </div>
       </div>
       <div className="md:px-24 px-6 flex items-center justify-center ">
-        <div className="grid md:grid-cols-3 md:gap-8 grid-cols-1 gap-4 text-white">
-          <div className="p-4 rounded-md shadow-sm bg-gray-400 text-white">
+        <div className="grid md:grid-cols-3 md:gap-8 grid-cols-1 gap-4 ">
+          <div className="p-4 rounded-md shadow-sm bg-gray-300 ">
             <h3 className="font-bold text-xl ">1. Our Story</h3>
             <p className="text-sm max-w-3/4 mt-3 ">
               Our team consists of passionate individuals dedicated to curating
@@ -80,7 +74,7 @@ function Page() {
               We appreciate your support and look forward to serving you!
             </p>
           </div>
-          <div className="p-4 rounded-md shadow-sm bg-gray-400 text-white">
+          <div className="p-4 rounded-md shadow-sm bg-gray-300 ">
             <h3 className="font-bold text-xl ">2. Our Mission</h3>
             <p className="text-sm max-w-3/4 mt-3 ">
               Our team consists of passionate individuals dedicated to curating
@@ -88,7 +82,7 @@ function Page() {
               interests. Whether you are shopping
             </p>
           </div>
-          <div className="p-4 rounded-md shadow-sm bg-gray-400 text-white">
+          <div className="p-4 rounded-md shadow-sm bg-gray-300 ">
             <h3 className="font-bold text-xl ">3. Why To Choose Us</h3>
             <p className="text-sm max-w-3/4 mt-3 ">
               Our team consists of passionate individuals dedicated to curating
@@ -101,15 +95,14 @@ function Page() {
       <div className="px-6 md:px-24 mt-12 ">
         <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
         {faqs.map((faq, index) => (
-          <div key={index} className="mb-6 border-2 p-3 pr-12 rounded-md">
-            <div
-              className="flex items-center justify-between cursor-pointer"
-              onClick={() => handleClick(index)}
-            >
-              <h3 className="text-lg font-semibold mb-2" style={{backgroundColor: faq.colorHead}}>{faq.question}</h3>
-              <FaChevronDown size={18} className={show[index] ? "rotate-180" : ""} />
+          <div key={index} className="mb-6 border-2 p-5 rounded-md">
+            <div className="flex items-center justify-between cursor-pointer" onClick={() => handleClick(index)} >
+              <h3 className="text-lg font-semibold mb-2">{faq.question}</h3>
+              <FaChevronDown size={18} className={show[index] ? "rotate-180 transition-transform duration-300" : "transition-transform duration-75"} />
             </div>
-            {show[index] && <p style={{backgroundColor: faq.colorPara, width:'100%'}} >{faq.answer}</p>}
+
+            {show[index] && <p>{faq.answer}</p>}
+            
           </div>
         ))}
       </div>
