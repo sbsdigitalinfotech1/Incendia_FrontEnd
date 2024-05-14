@@ -168,6 +168,7 @@ export default function MobileNavbar({ open, setOpen, data, isLogedIn }) {
                     </div>
                   </div>
                 </Dialog.Panel>
+                
               </Transition.Child>
             </div>
           </div>

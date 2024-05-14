@@ -67,10 +67,7 @@ function Footer() {
         title: "Find a store",
         link: "/",
       },
-      {
-        title: "legal & privacy",
-        link: "/",
-      },
+      
       {
         title: "Contact",
         link: "/",
@@ -78,6 +75,10 @@ function Footer() {
       {
         title: "Report a scam",
         link: "/",
+      },
+      {
+        title: "Privacy & Policy",
+        link: "/privacyPolicy",
       },
     ],
     sideText: `Sign up now and be the first to know about exclusive offers,
