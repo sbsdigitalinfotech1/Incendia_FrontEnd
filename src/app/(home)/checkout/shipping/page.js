@@ -6,14 +6,18 @@ import { useFormik } from "formik";
 import { ShippingSchema } from "@/models/authSchema";
 import { useRouter } from "next/navigation";
 import { toggle } from "@nextui-org/react";
+import { addAddress } from "@/config/Api";
+import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 
 const initialValues = {
   firstName: "",
   lastName: "",
   email: "",
   phone: "",
+  pincode: "",
   town: "",
-  district: "",
+  city: "",
   state: "",
   Address: "",
 };
@@ -39,7 +43,7 @@ const Shipping = () => {
   const [show, setShow] = useState(false);
 
   const handleDropDown = () => {
-   setShow(!show);
+    setShow(!show);
   };
 
   const handleOptionChange = (index) => {
@@ -51,9 +55,39 @@ const Shipping = () => {
   const formik = useFormik({
     validationSchema: ShippingSchema,
     initialValues: initialValues,
-    onSubmit: (values) => {
-      console.log(values);
-      router.push("/login");
+    onSubmit: async (values) => {
+      const userDataString = Cookies.get("userData");
+      if (userDataString) {
+        const userData = JSON.parse(userDataString);
+        const userId = userData.id;
+        console.log(userId);
+
+        const data = {
+          userId: userId,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          phone: values.phone,
+          pincode: values.pincode,
+          addressLine1: values.Address,
+          addressLine2: values.town,
+          city: values.city,
+          state: values.state,
+        };
+
+        await addAddress(data)
+          .then((res) => {
+            if (res.data.success) {
+              toast.success("Saved Succesfully");
+            }
+          })
+          .catch((err) => {
+            if (err.response.data.message) {
+              return toast.error(err.response.data.message);
+            }
+            toast.error(err.message);
+          });
+      }
     },
   });
 
@@ -290,26 +324,26 @@ const Shipping = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <div className="">
                     <label
-                      htmlFor="district"
+                      htmlFor="city"
                       className="block text-xs font-medium leading-6 text-gray-900"
                     >
                       City/District
                     </label>
                     <div className="">
                       <input
-                        id="district"
-                        name="district"
+                        id="city"
+                        name="city"
                         type="text"
-                        autoComplete="district"
+                        autoComplete="city"
                         onChange={formik.handleChange}
-                        value={formik.values.district}
+                        value={formik.values.city}
                         onBlur={formik.handleBlur}
                         className="block w-full pl-2 focus:outline-none rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
                     <p className=" min-h-4 me-1 text-xs text-red-500">
-                      {formik.touched.district && formik.errors.district
-                        ? formik.errors.district
+                      {formik.touched.city && formik.errors.city
+                        ? formik.errors.city
                         : ""}
                     </p>
                   </div>
@@ -365,12 +399,20 @@ const Shipping = () => {
                       : ""}
                   </p>
                 </div>
+                <div className="mt-2">
+                  <button
+                    type="submit"
+                    className="flex w-full justify-center rounded-md bg-gray-900 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
+                  >
+                    Save
+                  </button>
+                </div>
               </form>
             ) : (
               ""
             )}
           </div>
-          
+
           <div className="lg:col-span-5 m-3 bg-white p-0 md:p-6 rounded-md col-span-12 md:shadow-lg ">
             <CheckOutPaymentDetails />
           </div>

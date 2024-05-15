@@ -177,7 +177,7 @@ function Footer() {
           </div>
           <div>
             <Link href="#">
-              <Image className="mt-8" src={logo} width={150} />
+              <Image className="mt-8" src={logo} width={150} alt="" />
             </Link>
           </div>
         </div>

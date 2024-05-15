@@ -30,3 +30,14 @@ export const resetPassword = async(data)=>{
 export const generateGuestId = async(data)=>{
     return await axios.get(`${BASE_URL}user/generateGuestId`,data);
 }
+
+// get api
+export const getAddress = async(data)=>{
+    return await axios.post(`${BASE_URL}user/getAddress`);
+}
+
+
+// post api
+export const addAddress = async(data)=>{
+    return await axios.post(`${BASE_URL}user/addAddress`,data);
+}

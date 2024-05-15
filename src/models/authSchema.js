@@ -54,10 +54,10 @@ export const ShippingSchema = Yup.object().shape({
   phone: Yup.string()
     .matches(/^\d{10}$/, "Invalid phone no")
     .required("Required*"),
-  pincode: Yup.string().matches(/^\d{6}$/, "Invalid phone no")
+  pincode: Yup.string().matches(/^\d{6}$/, "Invalid Pincode")
   .required("Required*"),
-  town: Yup.string().email("Invalid email").required("Required*"),
-  district: Yup.string().required("Required*"),
+  town: Yup.string().required("Required*"),
+  city: Yup.string().required("Required*"),
   state: Yup.string().required("Required*"),
   Address: Yup.string().min(4, "Too Short!").required("Required*"),
 });
