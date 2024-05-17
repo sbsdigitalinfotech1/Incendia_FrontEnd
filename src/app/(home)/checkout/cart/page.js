@@ -37,10 +37,11 @@ const page = () => {
                   <p className="text-gray-500 text-xs">Plain Shirts</p>
                   <div className=" mt-2 text-sm md:text-md">
                     <strong className=""> ₹799</strong> &nbsp;
-                    <samll className="line-through text-gray-300">₹1300</samll>
-                    <small className="text-green-500 tracking-tight font-semibold">
+                    <span className="line-through text-gray-300">₹1300</span>
+                    
+                    <span className="text-green-500 tracking-tight font-semibold">
                       (40% off)
-                    </small>
+                    </span>
                   </div>
 
                   <p className="text-xs mb-5">
@@ -100,7 +101,7 @@ const page = () => {
                   <p className="text-gray-500 text-xs">Plain Shirts</p>
                   <div className=" mt-2 text-sm md:text-md">
                     <strong className=""> ₹799</strong> &nbsp;
-                    <samll className="line-through text-gray-300">₹1300</samll>
+                    <p className="line-through text-gray-300">₹1300</p>
                     <small className="text-green-500 tracking-tight font-semibold">
                       (40% off)
                     </small>
