@@ -19,6 +19,7 @@ export const sendOTP = async(data)=>{
 export const verifyRegistration = async(data)=>{
     return await axios.post(`${BASE_URL}user/verifyRegistration`,data);
 }
+
 export const VerifyOtpAPI = async(data)=>{
     return await axios.post(`${BASE_URL}user/verifyOTP`,data);
 }
@@ -43,5 +44,5 @@ export const addAddress = async(data)=>{
 
 // update api
 export const updateAddress = async(data)=>{
-    return await axios.patch(`${BASE_URL}user/updateAddress`,data);
+    return await axios.patch(`${BASE_URL}user/updateAddress?id=${id}`,data);
 }
