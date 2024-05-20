@@ -1,93 +1,135 @@
 "use client";
 
-import React, { useState } from "react";
+import EditAddressPopup from "@/components/EditAddressPopup/EditAddressPopup";
+import React, { useEffect, useState } from "react";
 import CheckOutPaymentDetails from "@/components/CheckOutPaymentDetails/CheckOutPaymentDetails";
 import { useFormik } from "formik";
 import { ShippingSchema } from "@/models/authSchema";
 import { useRouter } from "next/navigation";
 import { toggle } from "@nextui-org/react";
+import { addAddress, getAddress, updateAddress } from "@/config/Api";
+import Cookies from "js-cookie";
+import toast from "react-hot-toast";
+import Loader from "./Loader";
 
 const initialValues = {
   firstName: "",
   lastName: "",
   email: "",
   phone: "",
+  pincode: "",
   town: "",
-  district: "",
+  city: "",
   state: "",
   Address: "",
 };
 
-const addressData = {
-  selectedId: 1,
-  row: [
-    {
-      id: 1,
-      address: "Avavav, Aligarh, Uttar Pradesh 202280",
-      contact: "8529637410",
-    },
-    {
-      id: 2,
-      address: "Dbdbdb, Aligarh, Uttar Pradesh 202280",
-      contact: "8965858581",
-    },
-  ],
-};
-
 const Shipping = () => {
-  const [selectedOption, setSelectedOption] = useState(addressData.selectedId);
   const [show, setShow] = useState(false);
+  const [rows, setRows] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [editPopupVisible, setEditPopupVisible] = useState(false);
+
+  const [selectedOption, setSelectedOption] = useState(rows.selectedId);
+  const [addrToUpdate, setAddrToUpdate] = useState([]);
 
   const handleDropDown = () => {
-   setShow(!show);
+    setShow(!show);
   };
 
-  const handleOptionChange = (index) => {
-    setSelectedOption(index);
+  const handleOptionChange = (id) => {
+    setSelectedOption(id);
   };
 
-  const router = useRouter();
+  // const handleEdit = () => {};
+
+  const handleCloseEditPopup = () => {
+    setEditPopupVisible(false);
+  };
 
   const formik = useFormik({
     validationSchema: ShippingSchema,
     initialValues: initialValues,
-    onSubmit: (values) => {
-      console.log(values);
-      router.push("/login");
+    onSubmit: async (values) => {
+      const userDataString = Cookies.get("userData");
+      if (userDataString) {
+        const userData = JSON.parse(userDataString);
+        const userId = userData.id;
+
+        const data = {
+          userId: userId,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          phone: values.phone,
+          pincode: values.pincode,
+          addressLine1: values.Address,
+          addressLine2: values.town,
+          city: values.city,
+          state: values.state,
+        };
+
+        await addAddress(data)
+          .then((res) => {
+            if (res?.data.success) {
+              setLoaded(false);
+              toast.success("Saved Succesfully");
+              formik.setValues(initialValues);
+              formik.setTouched(initialValues);
+              formik.setErrors(initialValues);
+              handleDropDown();
+              window.scrollTo(0, 0);
+            }
+          })
+          .catch((err) => {
+            toast.error(err.message);
+          });
+      }
     },
   });
+
+  const getAddressData = async (userId) => {
+    await getAddress(userId)
+      .then((res) => {
+        if (res?.data?.success) {
+          // console.log(res?.data?.data?.rows);
+          setRows(res.data.data.rows);
+        }
+      })
+      .catch((err) => {
+        if (err.response.data.message) {
+          return toast.error(err.response.data.message);
+        }
+        toast.error(err.message);
+      });
+  };
+
+  const [loaded, setLoaded] = React.useState(false);
+  React.useEffect(() => {
+    if (!loaded) {
+      return setLoaded(true);
+    }
+    const userDataString = Cookies.get("userData");
+
+    if (userDataString) {
+      const userData = JSON.parse(userDataString);
+      const userId = userData.id;
+      getAddressData(userId);
+    }
+  }, [loaded]);
 
   return (
     <>
       <div className="mx-auto px-2 max-w-2xl md:px-4 py-6 md:py-10 lg:max-w-7xl lg:px-8 h-full p-0">
         <div className="grid grid-cols-12 ">
           <div className="lg:col-span-7 bg-white md:m-3 rounded-md col-span-12 md:p-6 p-4 shadow-lg">
-            {/* <div className="flex items-center justify-center gap-2 opacity-75">
-              <h4 className="text-sm font-semibold">
-                Already have an account?
-              </h4>
-              <button className="flex items-center justify-center text-xs border-2 border-teal-500 text-teal-500 p-2 rounded-sm font-semibold">
-                Login/SignUp
-              </button>
-            </div>
-            <span className="flex items-center justify-center text-sm mt-2">
-              Or
-            </span>
-            <div className="flex items-center justify-center mt-2 text-sm">
-              Checkout as Guest
-            </div>
-            <h3 className=" mt-3 text-xl font-bold opacity-85">
-              Delivery Address
-            </h3> */}
-
             <div className="flex flex-col gap-2">
-              {addressData?.row.map((item, index) => (
+              {rows.map((item) => (
                 <div
-                  key={index}
-                  className={`relative text-sm p-6 pl-12 cursor-pointer
-                border-2 rounded-lg shadow-sm ${
-                  selectedOption === item.id ? "border-green-400" : ""
-                }`}
+                  key={item.id}
+                  className={`relative text-sm p-6 pl-12 cursor-pointer border-2 rounded-lg shadow-sm ${
+                    selectedOption === item.id ? "border-green-400" : ""
+                  }`}
                   onClick={() => handleOptionChange(item.id)}
                 >
                   <div className="absolute top-9 left-5 transform -translate-x-2 -translate-y-2">
@@ -101,13 +143,20 @@ const Shipping = () => {
                       )}
                     </div>
                   </div>
-                  <p>{item.address}</p>
-                  <p className="mt-2">Contact Number:{item.contact} </p>
+                  <p>{`${item.firstName} ${item.lastName}, ${item.addressLine1}, ${item.addressLine2},${item.town}, ${item.city}, ${item.state}, PIN: ${item.pincode}`}</p>
+                  <p className="mt-2">Contact Number: {item.phone}</p>
                   <div className="flex items-center justify-start gap-2 mt-3">
                     <button className="flex items-center justify-center px-5 py-1 rounded-lg border-2 border-gray-400">
                       Remove
                     </button>
-                    <button className="flex items-center justify-center px-5 py-1 rounded-lg border-2 border-gray-400">
+                    <button
+                      className="flex items-center justify-center px-5 py-1 rounded-lg border-2 border-gray-400"
+                      onClick={() => {
+                        setEditPopupVisible(true);
+                        setAddrToUpdate(item);
+                        // console.log(item);
+                      }}
+                    >
                       Edit
                     </button>
                   </div>
@@ -115,10 +164,7 @@ const Shipping = () => {
               ))}
             </div>
 
-            <div
-              className="text-xl font-semibold opacity-85 p-5 mt-3 cursor-pointer border-2 rounded-lg shadow-sm flex
-            items-center justify-start "
-            >
+            <div className="text-xl font-semibold opacity-85 p-5 mt-3 cursor-pointer border-2 rounded-lg shadow-sm flex items-center justify-start">
               <button onClick={handleDropDown}>+ Add New Address</button>
             </div>
 
@@ -290,26 +336,26 @@ const Shipping = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <div className="">
                     <label
-                      htmlFor="district"
+                      htmlFor="city"
                       className="block text-xs font-medium leading-6 text-gray-900"
                     >
                       City/District
                     </label>
                     <div className="">
                       <input
-                        id="district"
-                        name="district"
+                        id="city"
+                        name="city"
                         type="text"
-                        autoComplete="district"
+                        autoComplete="city"
                         onChange={formik.handleChange}
-                        value={formik.values.district}
+                        value={formik.values.city}
                         onBlur={formik.handleBlur}
                         className="block w-full pl-2 focus:outline-none rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
                     <p className=" min-h-4 me-1 text-xs text-red-500">
-                      {formik.touched.district && formik.errors.district
-                        ? formik.errors.district
+                      {formik.touched.city && formik.errors.city
+                        ? formik.errors.city
                         : ""}
                     </p>
                   </div>
@@ -365,17 +411,33 @@ const Shipping = () => {
                       : ""}
                   </p>
                 </div>
+                <div className="mt-2">
+                  <button
+                    type="submit"
+                    className="flex w-full justify-center rounded-md bg-gray-900 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
+                  >
+                    Save
+                  </button>
+                </div>
               </form>
             ) : (
               ""
             )}
           </div>
-          
+
           <div className="lg:col-span-5 m-3 bg-white p-0 md:p-6 rounded-md col-span-12 md:shadow-lg ">
             <CheckOutPaymentDetails />
           </div>
         </div>
       </div>
+      {/* Edit Popup */}
+      {editPopupVisible && (
+        <EditAddressPopup
+          handleCloseEditPopup={handleCloseEditPopup}
+          addrToUpdate={addrToUpdate}
+          setLoaded={setLoaded}
+        />
+      )}
     </>
   );
 };

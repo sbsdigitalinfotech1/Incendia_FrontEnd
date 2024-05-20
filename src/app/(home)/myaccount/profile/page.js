@@ -3,6 +3,7 @@ import React from "react";
 import { Formik } from "formik";
 import { useFormik } from "formik";
 import { ProfileSchema } from "@/models/authSchema";
+import { useRouter } from "next/navigation";
 
 const initialValues = {
   firstName: "",
@@ -12,7 +13,12 @@ const initialValues = {
   Birth: "",
 };
 
+
+
 const Profile = () => {
+
+  const router = useRouter();
+
   const formik = useFormik({
     validationSchema: ProfileSchema,
     initialValues: initialValues,

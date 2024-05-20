@@ -29,7 +29,7 @@ const page = () => {
                   src="https://www.beyoung.in/api/cache/catalog/products/new_checked_shirt_image_9_12_2022/grey_cotton_solid_shirts_for_men_base_19_10_2023_700x933.jpg"
                   fill={true}
                   style={{ objectFit: "cover", objectPosition: "center" }}
-                  alt="image"
+                  alt=""
                   className="rounded-lg"
                 />
               </div>

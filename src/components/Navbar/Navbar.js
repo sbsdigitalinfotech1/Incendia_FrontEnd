@@ -11,6 +11,7 @@ import { Bars3BottomLeftIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import MobileNavbar from "@/components/Navbar/MobileNavbar";
 import { IoPersonCircleSharp } from "react-icons/io5";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -36,6 +37,20 @@ const Navbar = () => {
       link: "/contact",
     },
   ];
+
+  const router = useRouter();
+
+  // Function to handle the link click event
+  const handleLinkClick = () => {
+    // Get the user data from cookies
+    const userData = Cookies.get("userData");
+
+    // Determine the destination URL based on the presence of user data
+    const destination = userData ? "/myaccount/profile" : "/login";
+
+    // Navigate to the destination URL
+    router.push(destination);
+  };
 
   return (
     <>
@@ -89,14 +104,15 @@ const Navbar = () => {
               </span>
             </div>
             {
-              <Link
-                href={Cookies.get("userData") ? "/myaccount/profile" : "/login"}
-              >
+              <div>
+              {/* Use a div with an onClick handler to simulate the Link component */}
+              <div onClick={handleLinkClick}>
                 <IoPersonCircleSharp
                   size={25}
                   className="icon hidden md:inline-block cursor-pointer"
                 />
-              </Link>
+              </div>
+            </div>
             }
           </div>
         </div>
