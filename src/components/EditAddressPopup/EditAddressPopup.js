@@ -1,10 +1,11 @@
 import { updateAddress } from "@/config/Api";
 import { EditAddressSchema } from "@/models/authSchema";
 import { useFormik } from "formik";
+import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-const EditAddressPopup = ({ handleCloseEditPopup, addrToUpdate }) => {
+const EditAddressPopup = ({ setLoaded, handleCloseEditPopup, addrToUpdate }) => {
   const [initialValues, setInitialValues] = useState({
     firstName: addrToUpdate.firstName,
     lastName: addrToUpdate.lastName,
@@ -27,20 +28,33 @@ const EditAddressPopup = ({ handleCloseEditPopup, addrToUpdate }) => {
         const userId = userData.id;
 
         const data = {
-          userId,
-          ...initialValues,
+          userId: userId,
+          id: addrToUpdate.id,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          phone: values.phone,
+          pincode: values.pincode,
+          addressLine1: values.Address,
+          addressLine2: values.town,
+          city: values.city,
+          state: values.state,
         };
 
-        await updateAddress(id, data)
+        console.log(data);
+
+        await updateAddress(data)
           .then((res) => {
             if (res?.data?.success) {
-              toast.success("Updated");
-              setInitialValues("");
+              handleCloseEditPopup();
+              toast.success("Saved Succesfully");
+              window.scrollTo(0, 0);
+              setLoaded(false);
             }
           })
           .catch((err) => {
             if (err.response.data.message) {
-              return toast.error(err.response.data.message);
+              return toast.error(err.response.data.message.type?err.response.data.message.type:err.response.data.message);
             }
             toast.error(err.message);
           });

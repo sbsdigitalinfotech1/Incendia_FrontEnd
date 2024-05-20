@@ -1,72 +1,36 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-
-const FavProducts = [
-  {
-    id: 1,
-    name: "Basic Tee",
-    href: "#",
-    imageSrc:
-      "https://www.beyoung.in/api/cache/catalog/products/new_shirt_upload_21_10_2022/mint_blue_striped_urban_shirt_for_men_base_02_03_2024_400x533.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: "35",
-    strikePrice: "355",
-    offPrice: "50",
-    color: "Black",
-  },
-  {
-    id: 1,
-    name: "Basic Red",
-    href: "#",
-    imageSrc:
-      "https://www.beyoung.in/api/cache/catalog/products/printed_oversized_t-shirt/drip_culture_printed_oversized_t-shirt_for_men_front_and_back_20_10_2023_400x533.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: "35",
-    strikePrice: "355",
-    offPrice: "50",
-    color: "Black",
-  },
-  {
-    id: 1,
-    name: "Basic green",
-    href: "#",
-    imageSrc:
-      "https://www.beyoung.in/api/cache/catalog/products/printed_oversized_t-shirt/black_yellow_color_block_oversized_t_shirt_for_men_base_02_02_2024_400x533.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: "35",
-    strikePrice: "355",
-    offPrice: "50",
-    color: "Black",
-  },
-  {
-    id: 1,
-    name: "Basic Tee",
-    href: "#",
-    imageSrc:
-      "https://www.beyoung.in/api/cache/catalog/products/new_shirt_upload_21_10_2022/black_colorblock_corduroy_shirt_for_men_base_19_01_2024_400x533.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: "35",
-    strikePrice: "355",
-    offPrice: "50",
-    color: "Black",
-  },
-  {
-    id: 1,
-    name: "Basic Tee",
-    href: "#",
-    imageSrc:
-      "https://www.beyoung.in/api/cache/catalog/products/printed_t-shirts_for_men_15_8_2022/relax_navy_blue_men_base_22_12_2023_700x933.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: "35",
-    strikePrice: "355",
-    offPrice: "50",
-    color: "Black",
-  },
-
-  // More products...
-];
+import { IMAGE_URL, getFavourite } from "@/config/Api";
+import toast from "react-hot-toast";
+import Cookies from "js-cookie";
 
 function Favourites() {
+  const [FavProducts, setFavProducts] = useState([]);
+
+  useEffect(() => {
+    const getFavouriteData = async () => {
+      const userDataString = Cookies.get("userData");
+      if (userDataString) {
+        const userData = JSON.parse(userDataString);
+        const userId = userData.id;
+
+        await getFavourite(userId)
+          .then((res) => {
+            if (res.data.success) {
+              console.log(res.data.data.rows);
+              setFavProducts(res.data.data.rows);
+            }
+          })
+          .catch((err) => {
+            toast.err(err);
+          });
+      }
+    };
+
+    getFavouriteData();
+  }, []);
+
   return (
     <>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -75,8 +39,11 @@ function Favourites() {
             <Link href="/products/1">
               <div className=" relative aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200  group-hover:opacity-75 lg:h-100">
                 <img
-                  src={item?.imageSrc}
-                  alt={item?.imageAlt}
+                  src={`${IMAGE_URL + item.variant.productPhotos.url}`}
+                  alt="product image" 
+                  onError={(e) => {
+                    e.target.src = "";
+                  }}
                   className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                 />
 
@@ -88,21 +55,23 @@ function Favourites() {
               <div className="mt-4">
                 <div>
                   <h3 className="text-sm font-semibold text-gray-900 line-clamp-1">
-                    {item?.name}
+                    {item?.variant.product.name}
                   </h3>
 
-                  <p className="text-sm text-gray-500">{item?.color}</p>
+                  <p className="text-sm text-gray-500">
+                    {item?.variant.colorName}
+                  </p>
                   <div className="mt-2">
                     <strong className="text-sm font-semibold text-gray-900">
-                      ₹ {item?.price}
+                      ₹ {item?.variant?.price}
                     </strong>
                     &nbsp;&nbsp;
                     <strike className="text-xs font-medium text-gray-900">
-                      ₹ {item?.strikePrice}
+                      ₹ {item?.variant?.mrp}
                     </strike>
                     &nbsp;&nbsp;
                     <span className="text-xs font-medium text-green-300">
-                      [{item?.offPrice}% off]
+                      0 % off
                     </span>
                   </div>
                 </div>

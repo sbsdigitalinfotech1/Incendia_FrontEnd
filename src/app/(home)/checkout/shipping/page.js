@@ -1,5 +1,6 @@
 "use client";
 
+import EditAddressPopup from "@/components/EditAddressPopup/EditAddressPopup";
 import React, { useEffect, useState } from "react";
 import CheckOutPaymentDetails from "@/components/CheckOutPaymentDetails/CheckOutPaymentDetails";
 import { useFormik } from "formik";
@@ -9,7 +10,6 @@ import { toggle } from "@nextui-org/react";
 import { addAddress, getAddress, updateAddress } from "@/config/Api";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
-import EditAddressPopup from "@/components/EditAddressPopup/EditAddressPopup";
 import Loader from "./Loader";
 
 const initialValues = {
@@ -154,6 +154,7 @@ const Shipping = () => {
                       onClick={() => {
                         setEditPopupVisible(true);
                         setAddrToUpdate(item);
+                        // console.log(item);
                       }}
                     >
                       Edit
@@ -429,12 +430,12 @@ const Shipping = () => {
           </div>
         </div>
       </div>
-
       {/* Edit Popup */}
       {editPopupVisible && (
         <EditAddressPopup
           handleCloseEditPopup={handleCloseEditPopup}
           addrToUpdate={addrToUpdate}
+          setLoaded={setLoaded}
         />
       )}
     </>
