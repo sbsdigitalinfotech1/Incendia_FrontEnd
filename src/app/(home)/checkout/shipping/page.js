@@ -96,7 +96,6 @@ const Shipping = () => {
           setRows(res.data.data.rows);
           console.log(res.data.data.rows);
           setSelectedOption(
-            
             res.data.data.rows.filter((item) => item.active == true)[0].id
           );
         }
@@ -146,11 +145,11 @@ const Shipping = () => {
       <div className="mx-auto px-2 max-w-2xl md:px-4 py-6 md:py-10 lg:max-w-7xl lg:px-8 h-full p-0">
         <div className="grid grid-cols-12 ">
           <div className="lg:col-span-7 bg-white md:m-3 rounded-md col-span-12 md:p-6 p-4 shadow-lg">
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 ">
               {rows.map((item) => (
                 <div
                   key={item.id}
-                  className={`relative text-sm p-6 pl-12 cursor-pointer border-2 rounded-lg shadow-sm ${
+                  className={`relative hover:shadow-xl text-sm p-6 pl-12 cursor-pointer border-2 rounded-lg shadow-sm ${
                     selectedOption === item.id ? "border-green-400" : ""
                   }`}
                   onClick={() => handleOptionChange(item.id)}
@@ -192,9 +191,11 @@ const Shipping = () => {
               ))}
             </div>
 
-            <div className="text-xl font-semibold opacity-85 p-5 mt-3 cursor-pointer border-2 rounded-lg shadow-sm flex items-center justify-start">
-              <button onClick={handleDropDown}>+ Add New Address</button>
+            <button onClick={handleDropDown} className="text-xl w-full hover:shadow-xl font-semibold opacity-85 p-5 mt-3 cursor-pointer border-2 rounded-lg shadow-sm flex items-center justify-start">
+            <div >
+              + Add New Address
             </div>
+            </button>
 
             {show ? (
               <form className="mt-3" onSubmit={formik.handleSubmit}>
