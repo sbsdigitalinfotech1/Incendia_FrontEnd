@@ -94,8 +94,10 @@ const Shipping = () => {
         if (res?.data?.success) {
           // console.log(res?.data?.data?.rows);
           setRows(res.data.data.rows);
+          console.log(res.data.data.rows);
           setSelectedOption(
-            res.data.data.rows.filter((item) => item.active)[0].id
+            
+            res.data.data.rows.filter((item) => item.active == true)[0].id
           );
         }
       })
@@ -105,7 +107,6 @@ const Shipping = () => {
         }
         toast.error(err.message);
       });
-      
   };
 
   const updateAddressFun = async (data) => {
