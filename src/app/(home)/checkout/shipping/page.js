@@ -94,6 +94,28 @@ const Shipping = () => {
         if (res?.data?.success) {
           // console.log(res?.data?.data?.rows);
           setRows(res.data.data.rows);
+          setSelectedOption(
+            res.data.data.rows.filter((item) => item.active)[0].id
+          );
+        }
+      })
+      .catch((err) => {
+        if (err.response.data.message) {
+          return toast.error(err.response.data.message);
+        }
+        toast.error(err.message);
+      });
+      
+  };
+
+  const updateAddressFun = async (data) => {
+    await updateAddress(data)
+      .then((res) => {
+        if (res.data.success) {
+          setLoaded(false);
+          if (data.status !== undefined) {
+            return toast.success("Address Removed");
+          }
         }
       })
       .catch((err) => {
@@ -146,7 +168,12 @@ const Shipping = () => {
                   <p>{`${item.firstName} ${item.lastName}, ${item.addressLine1}, ${item.addressLine2},${item.town}, ${item.city}, ${item.state}, PIN: ${item.pincode}`}</p>
                   <p className="mt-2">Contact Number: {item.phone}</p>
                   <div className="flex items-center justify-start gap-2 mt-3">
-                    <button className="flex items-center justify-center px-5 py-1 rounded-lg border-2 border-gray-400">
+                    <button
+                      className="flex items-center justify-center px-5 py-1 rounded-lg border-2 border-gray-400"
+                      onClick={() =>
+                        updateAddressFun({ id: item.id, status: false })
+                      }
+                    >
                       Remove
                     </button>
                     <button
@@ -426,7 +453,10 @@ const Shipping = () => {
           </div>
 
           <div className="lg:col-span-5 m-3 bg-white p-0 md:p-6 rounded-md col-span-12 md:shadow-lg ">
-            <CheckOutPaymentDetails />
+            <CheckOutPaymentDetails
+              updateAddressFun={updateAddressFun}
+              selectedOption={selectedOption}
+            />
           </div>
         </div>
       </div>

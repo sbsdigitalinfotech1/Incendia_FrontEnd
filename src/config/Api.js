@@ -52,3 +52,7 @@ export const updateAddress = async(data)=>{
     return await axios.patch(`${BASE_URL}user/updateAddress`,data);
 }
 
+export const updateFavourite = async(data)=>{
+    return await axios.patch(`${BASE_URL}user/updateFavourite`,data);
+}
+

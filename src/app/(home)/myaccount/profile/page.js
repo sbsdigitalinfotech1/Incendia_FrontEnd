@@ -4,19 +4,20 @@ import { Formik } from "formik";
 import { useFormik } from "formik";
 import { ProfileSchema } from "@/models/authSchema";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+
+const userDataString = Cookies.get("userData");
+const userData = JSON.parse(userDataString);
 
 const initialValues = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  Birth: "",
+  firstName: userData.firstName,
+  lastName: userData.lastName,
+  email: userData.email,
+  phone: userData.phone,
+  Birth: userData.Birth,
 };
 
-
-
 const Profile = () => {
-
   const router = useRouter();
 
   const formik = useFormik({
