@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { CiHeart } from "react-icons/ci";
 import voucherIcon from "@/assets/images/voucherIcon.png";
@@ -13,12 +13,45 @@ import cod from "@/assets/images/cod.jpg";
 import { Slider } from "@nextui-org/react";
 import { FaRegStar } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
+import { IMAGE_URL, getProducts } from "@/config/Api";
+import toast from "react-hot-toast";
 
-function Product({ params }) {
+function ProductPage({ params }) {
+  const id = params.slug;
   const [show, setShow] = useState(false);
+  const [product, setProduct] = useState({});
+  const [productPhotos, setproductPhotos] = useState([]);
+  const [productMainImage, setproductMainImage] = useState("");
+
   const handleShow = () => {
     setShow(!show);
   };
+
+  useEffect(() => {
+    const getProductsData = async (id) => {
+      await getProducts({ id: id })
+        .then((res) => {
+          if (res.data.success) {
+            setProduct(res.data.data.rows[0]);
+            setproductPhotos(res.data.data.rows[0]?.productPhotos);
+            setproductMainImage(
+              res.data.data.rows[0].productPhotos.filter(
+                (item) => item.main == true
+              )[0].url
+            );
+            console.log(res.data.data.rows[0]);
+          }
+        })
+        .catch((err) => {
+          if (err.response.data.message) {
+            return toast.error(err.response.data.message);
+          }
+          toast.error(err.message);
+        });
+    };
+
+    getProductsData(id);
+  }, [id]);
 
   const rating = {
     row: [
@@ -53,105 +86,22 @@ function Product({ params }) {
           <div className="col-span-6  gap-2 rounded-sm">
             <Carousel style={{ width: "100%" }} emulateTouch infiniteLoop>
               <div>
-                <img
-                  alt=""
-                  src="https://www.beyoung.in/api/cache/catalog/products/new_checked_shirt_image_9_12_2022/grey_cotton_solid_shirts_for_men_base_19_10_2023_700x933.jpg"
-                />
+                <img alt="" src={`${IMAGE_URL + productMainImage}`} />
               </div>
-              <div>
-                <img
-                  alt=""
-                  src="https://www.beyoung.in/api/cache/catalog/products/shirt_squre_image_update_14_3_2022/grey_cotton_solid_shirts_for_men_full_view_3_2_2023_700x933.jpg"
-                />
-              </div>
-              <div>
-                <img
-                  alt=""
-                  src="https://www.beyoung.in/api/cache/catalog/products/shirt_squre_image_update_14_3_2022/grey_cotton_solid_shirts_for_men_neck_3_2_2023_700x933.jpg"
-                />
-              </div>
-              <div>
-                <img
-                  alt=""
-                  src="https://www.beyoung.in/api/cache/catalog/products/shirt_squre_image_update_14_3_2022/grey_cotton_solid_shirts_for_men_sleeve_2_3_2_2023_700x933.jpg"
-                />
-              </div>
-              <div>
-                <img
-                  alt=""
-                  src="https://www.beyoung.in/api/cache/catalog/products/shirt_squre_image_update_14_3_2022/grey_cotton_solid_shirts_for_men_back_3_2_2023_700x933.jpg"
-                />
-              </div>
-              <div>
-                <img
-                  alt=""
-                  src="https://www.beyoung.in/api/cache/catalog/products/new_checked_shirt_image_9_12_2022/grey_cotton_solid_shirts_for_men_base_19_10_2023_700x933.jpg"
-                />
-              </div>
-              <div>
-                <img
-                  alt=""
-                  src="https://www.beyoung.in/api/cache/catalog/products/feature_images/grey_cotton_solid_shirts_for_men_hover_08_08_2023_700x933.jpg"
-                />
-              </div>
+              { productPhotos.map((item, i) => (
+                <div key={i}>
+                  <img
+                    alt=""
+                    src={`${IMAGE_URL + item.url}`}
+                  />
+                </div>
+              ))}
             </Carousel>
-            {/* <div className="col-span-2 flex flex-col gap-2">
-              <div className=" aspect-square rounded-sm relative">
-                <Image
-                  src="https://www.beyoung.in/api/cache/catalog/products/shirt_squre_image_update_14_3_2022/grey_cotton_solid_shirts_for_men_full_view_3_2_2023_100x133.jpg"
-                  fill={true}
-                  style={{ objectFit: "cover", objectPosition: "center" }}
-                  alt="companyLogo"
-                />
-              </div>
-              <div className=" aspect-square rounded-sm relative">
-                <Image
-                  src="https://www.beyoung.in/api/cache/catalog/products/shirt_squre_image_update_14_3_2022/grey_cotton_solid_shirts_for_men_back_3_2_2023_100x133.jpg"
-                  fill={true}
-                  style={{ objectFit: "cover", objectPosition: "center" }}
-                  alt="companyLogo"
-                />
-              </div>
-              <div className=" aspect-square rounded-sm relative">
-                <Image
-                  src="https://www.beyoung.in/api/cache/catalog/products/feature_images/grey_cotton_solid_shirts_for_men_hover_08_08_2023_700x933.jpg"
-                  fill={true}
-                  style={{ objectFit: "cover", objectPosition: "center" }}
-                  alt="companyLogo"
-                />
-              </div>
-              <div className=" aspect-square rounded-sm relative">
-                <Image
-                  src="https://www.beyoung.in/api/cache/catalog/products/shirt_squre_image_update_14_3_2022/grey_cotton_solid_shirts_for_men_neck_3_2_2023_100x133.jpg"
-                  fill={true}
-                  style={{ objectFit: "cover", objectPosition: "center" }}
-                  alt="companyLogo"
-                />
-              </div>
-              <div className=" aspect-square rounded-sm relative">
-                <Image
-                  src="https://www.beyoung.in/api/cache/catalog/products/shirt_squre_image_update_14_3_2022/grey_cotton_solid_shirts_for_men_back_3_2_2023_100x133.jpg"
-                  fill={true}
-                  style={{ objectFit: "cover", objectPosition: "center" }}
-                  alt="companyLogo"
-                />
-              </div>
-              <div className=" aspect-square rounded-sm"></div>
-            </div>
-            <div className="col-span-10 rounded-sm relative">
-              <Image
-                src="https://www.beyoung.in/api/cache/catalog/products/new_checked_shirt_image_9_12_2022/grey_cotton_solid_shirts_for_men_base_19_10_2023_700x933.jpg"
-                fill={true}
-                style={{ objectFit: "cover", objectPosition: "center" }}
-                alt="companyLogo"
-                loading="lazy"
-              />
-            </div> */}
           </div>
           <div className="rounded-sm col-span-6 px-2 md:px-5 md:py-3 py-6">
             <div className="flex items-center justify-between">
               <h1 className="font-bold text-xl truncate opacity-21">
-                Grey- Cotton Solid Shirts For Men
+                {product?.name}
               </h1>
               <CiHeart
                 size={40}
@@ -171,7 +121,7 @@ function Product({ params }) {
               Inclusive of All Taxes + Free Shipping
             </span>
             <div className="mt-1 flex items-center justify-start gap-3.5">
-              <div class="flex items-center text-yellow-500 text-2xl">
+              <div className="flex items-center text-yellow-500 text-2xl">
                 <span>★</span>
                 <span>★</span>
                 <span>★</span>
@@ -277,7 +227,7 @@ function Product({ params }) {
               <p className="mr-1">QTY:</p>
               <span className="qty">
                 <select className="ps-4 pr-10 py-2 border-1 border-gray-600 cursor-pointer">
-                  <option selected>1</option>
+                  <option defaultValue>1</option>
                   <option>2</option>
                   <option>3</option>
                   <option>4</option>
@@ -309,9 +259,9 @@ function Product({ params }) {
                   stroke="currentColor"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M19 9l-7 7-7-7"
                   ></path>
                 </svg>
@@ -456,7 +406,7 @@ function Product({ params }) {
           <div className="col-span-12 lg:col-span-4 p-7">
             <div className="bg-gray-900 text-yellow-300 flex flex-col items-center justify-center py-10 px-6 gap-3">
               <h1 className="text-6xl">4.8</h1>
-              <div class="flex gap-1 items-center text-2xl">
+              <div className="flex gap-1 items-center text-2xl">
                 <span>★</span>
                 <span>★</span>
                 <span>★</span>
@@ -579,4 +529,4 @@ function Product({ params }) {
   );
 }
 
-export default Product;
+export default ProductPage;

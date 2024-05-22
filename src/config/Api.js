@@ -42,6 +42,10 @@ export const getFavourite = async(userId)=>{
     return await axios.get(`${BASE_URL}user/getFavourite?userId=${userId}`);
 }
 
+export const getProducts = async(data)=>{
+    return await axios.get(`${BASE_URL}user/getProducts?page=${data?.page}&pageSize=${data?.pageSize}&id=${data?.id}`);
+}
+
 // post api
 export const addAddress = async(data)=>{
     return await axios.post(`${BASE_URL}user/addAddress`,data);
