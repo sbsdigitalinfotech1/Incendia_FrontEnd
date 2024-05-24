@@ -11,6 +11,8 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
 import ProductRowFilter from "../ProductRowFilter/ProductRowFilter";
+import Pagination from "@/components/Pagination/PaginationUI";
+import { Skeleton } from "@nextui-org/react";
 
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
@@ -31,12 +33,12 @@ const filters = [
     id: "color",
     name: "Color",
     options: [
-      { value: "white", label: "White", checked: false },
-      { value: "beige", label: "Beige", checked: false },
-      { value: "blue", label: "Blue", checked: true },
-      { value: "brown", label: "Brown", checked: false },
-      { value: "green", label: "Green", checked: false },
-      { value: "purple", label: "Purple", checked: false },
+      { value: "white", label: "White", checked: false, colorCode: "#FFFFFF" },
+      { value: "beige", label: "Beige", checked: false, colorCode: "#F5F5DC" },
+      { value: "blue", label: "Blue", checked: true, colorCode: "#0000FF" },
+      { value: "brown", label: "Brown", checked: false, colorCode: "#A52A2A" },
+      { value: "green", label: "Green", checked: false, colorCode: "#008000" },
+      { value: "purple", label: "Purple", checked: false, colorCode: "#800080" },
     ],
   },
   {
@@ -68,7 +70,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function ProductFilter({ products }) {
+function ProductFilter({ products, loading, count, page, pageSize, setPage }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   return (
     <>
@@ -348,9 +350,50 @@ function ProductFilter({ products }) {
                 </form>
 
                 {/* Product grid */}
-                <div className="lg:col-span-3">
-                  <ProductRowFilter products={products} />
-                </div>
+
+                {products.length && !loading ? (
+                  <div className="lg:col-span-3">
+                    <ProductRowFilter products={products} />
+                    <div className="mt-12 flex items-center justify-end">
+                      <Pagination
+                        count={count}
+                        page={page}
+                        pageSize={pageSize}
+                        setPage={setPage}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 md:col-span-3">
+                    <Skeleton className="h-64 md:h-96 rounded-md w-full">
+                      <div className="  bg-default rounded-md"></div>
+                    </Skeleton>
+                    <Skeleton className="h-64 md:h-96 rounded-md w-full">
+                      <div className="  bg-default rounded-md"></div>
+                    </Skeleton>
+                    <Skeleton className="h-64 md:h-96 rounded-md w-full">
+                      <div className="  bg-default rounded-md"></div>
+                    </Skeleton>
+                    <Skeleton className="h-64 md:h-96 rounded-md w-full">
+                      <div className="  bg-default rounded-md"></div>
+                    </Skeleton>
+                    <Skeleton className="h-64 md:h-96 rounded-md w-full">
+                      <div className="  bg-default rounded-md"></div>
+                    </Skeleton>
+                    <Skeleton className="h-64 md:h-96 rounded-md w-full">
+                      <div className="  bg-default rounded-md"></div>
+                    </Skeleton>
+                    <Skeleton className="h-64 md:h-96 rounded-md w-full">
+                      <div className="  bg-default rounded-md"></div>
+                    </Skeleton>
+                    <Skeleton className="h-64 md:h-96 rounded-md w-full">
+                      <div className="  bg-default rounded-md"></div>
+                    </Skeleton>
+                    <Skeleton className="h-64 md:h-96 rounded-md w-full">
+                      <div className="  bg-default rounded-md"></div>
+                    </Skeleton>
+                  </div>
+                )}
               </div>
             </section>
           </main>
