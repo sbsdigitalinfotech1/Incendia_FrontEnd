@@ -27,7 +27,7 @@ function ProductCard({ product }) {
           <p className="text-sm text-gray-500">{product?.colorName}</p>
           <div>
             <strong className="text-medium font-semibold text-gray-900">
-              ₹ {product?.offerPrice}
+              ₹ {product?.price}
             </strong>
             &nbsp;&nbsp;
             <strike className="text-sm font-medium text-gray-900">

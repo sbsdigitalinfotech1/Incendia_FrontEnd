@@ -11,6 +11,7 @@ export default function Home() {
 
   useEffect(() => {
     const getProductsData = async ({page, pageSize}) => {
+    
       await getProducts({page, pageSize})
         .then((res) => {
           if (res.data.success) {
@@ -19,13 +20,13 @@ export default function Home() {
           }
         })
         .catch((err) => {
-          if (err.response.data.message) {
+          if (err.response?.data?.message) {
             return toast.error(err.response.data.message);
           }
           toast.error(err.message);
         });
-    };
-    getProductsData({page:1,pageSize: 4});
+    }
+    getProductsData({page:1,pageSize: 7});
   }, []);
 
   // const products = [
