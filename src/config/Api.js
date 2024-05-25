@@ -60,3 +60,18 @@ export const updateFavourite = async(data)=>{
     return await axios.patch(`${BASE_URL}user/updateFavourite`,data);
 }
 
+// cart api's
+
+export const addToCart = async(data)=>{
+    return await axios.post(`${BASE_URL}user/addToCart`,data);
+}
+
+export const removeFromCart = async(data)=>{
+    return await axios.post(`${BASE_URL}user/removeFromCart`,data);
+}
+
+export const getCart = async(guestId)=>{
+    return await axios.get(`${BASE_URL}user/getCart?guestId=${guestId}`);
+}
+
+
