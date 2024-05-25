@@ -26,7 +26,7 @@ export default function Home() {
           toast.error(err.message);
         });
     }
-    getProductsData({page:1,pageSize: 7});
+    getProductsData({page:1,pageSize: 4});
   }, []);
 
   // const products = [

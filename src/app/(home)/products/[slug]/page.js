@@ -436,7 +436,7 @@ function ProductPage({ params }) {
               </div>
             </div>
 
-            <div className="col-span-12 p-7">
+            <div className="col-span-12 p-7 text-sm">
               <hr className="mb-6 h-1 border-white bg-white" />
               <h3 className="text-lg font-semibold mb-12">
                 Hear What Our Customers Say
