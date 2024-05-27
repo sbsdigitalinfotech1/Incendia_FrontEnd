@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Link from "next/link";
 import Logo from "@/assets/images/incendiaLogo.png";
 import Image from "next/image";
@@ -12,8 +12,10 @@ import MobileNavbar from "@/components/Navbar/MobileNavbar";
 import { IoPersonCircleSharp } from "react-icons/io5";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { GlobalStateContext } from "@/store/GlobalContext";
 
 const Navbar = () => {
+  const {count} = useContext(GlobalStateContext);
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
 
@@ -100,7 +102,7 @@ const Navbar = () => {
                   color: "white",
                 }}
               >
-                2
+                {count}
               </span>
             </div>
             {

@@ -1,40 +1,27 @@
 "use client";
-
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect, useRef, useContext } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Image from "next/image";
-
-const products = [
-  {
-    id: 1,
-    name: "Throwback Hip Bag",
-    href: "#",
-    color: "Salmon",
-    price: "$90.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-    imageAlt:
-      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-  },
-  {
-    id: 2,
-    name: "Medium Stuff Satchel",
-    href: "#",
-    color: "Blue",
-    price: "$32.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-    imageAlt:
-      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-  },
-  // More products...
-];
+import { GlobalStateContext } from "@/store/GlobalContext";
+import { Player } from "@lottiefiles/react-lottie-player";
+import empty from "@/assets/images/empty.json";
+import { IMAGE_URL, removeFromCart } from "@/config/Api";
 
 export default function SideCart({ open, setOpen }) {
+  const { cartData, removeItemFromCart, getCartData } = useContext(GlobalStateContext);
+  const lottieRef = useRef(null);
+
+  const handleRemoveItem = (variantId) => {
+    removeItemFromCart(variantId);
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    getCartData();
+  }, []);
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
@@ -88,40 +75,51 @@ export default function SideCart({ open, setOpen }) {
                             role="list"
                             className="-my-6 divide-y divide-gray-200"
                           >
-                            {products.map((product, i) => (
+                            {cartData.map((product, i) => (
                               <li key={i} className="flex py-6">
                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 relative">
                                   <Image
-                                    src={product.imageSrc}
-                                    alt={product.imageAlt}
+                                    src={`${
+                                      IMAGE_URL +
+                                      product.variant.productPhotos[0].url
+                                    }`}
+                                    alt="image"
                                     className="h-full w-full object-cover object-center"
                                     fill
+                                    style={{
+                                      objectFit: "cover",
+                                      objectPosition: "center",
+                                    }}
                                   />
                                 </div>
 
                                 <div className="ml-4 flex flex-1 flex-col">
                                   <div>
                                     <div className="flex justify-between text-base font-medium text-gray-900">
-                                      <h3>
-                                        <a href={product.href}>
-                                          {product.name}
-                                        </a>
-                                      </h3>
+                                      <h3>{product.variant.name}</h3>
                                       <p className="ml-4">{product.price}</p>
                                     </div>
                                     <p className="mt-1 text-sm text-gray-500">
-                                      {product.color}
+                                      {product.variant.product.name}
                                     </p>
                                   </div>
                                   <div className="flex flex-1 items-end justify-between text-sm">
                                     <p className="text-gray-500">
-                                      Qty {product.quantity}
+                                      <select className="cursor-pointer px-4 w-1/2 md:w-auto sm:px-8 py-1 border border-gray-300 bg-gray-100 rounded-md min-w-16">
+                                        <option>{product.qty}</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                      </select>
                                     </p>
 
                                     <div className="flex">
                                       <button
                                         type="button"
                                         className="font-medium text-indigo-600 hover:text-indigo-500"
+                                        onClick={() =>
+                                          handleRemoveItem(product.variantId)
+                                        }
                                       >
                                         Remove
                                       </button>

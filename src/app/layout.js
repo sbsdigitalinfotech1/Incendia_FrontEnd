@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className="light">
       <body className={inter.className}>
         <Providers>{children}</Providers>
-        <Toaster position="top-center" reverseOrder={false} />
+        <Toaster position ="top-center" reverseOrder={false} />
       </body>
     </html>
   );
