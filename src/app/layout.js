@@ -12,6 +12,7 @@ import { generateGuestId } from "@/config/Api";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }) {
+
   useEffect(() => {
     const setGuestIdInCookies = async () => {
       const guestId = Cookies.get("guestId");
@@ -36,4 +37,5 @@ export default function RootLayout({ children }) {
       </body>
     </html>
   );
+  
 }

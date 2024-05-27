@@ -14,9 +14,10 @@ import cod from "@/assets/images/cod.jpg";
 import { Skeleton, Slider } from "@nextui-org/react";
 import { FaRegStar } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
-import { IMAGE_URL, getProducts } from "@/config/Api";
+import { IMAGE_URL, addToCart, getProducts } from "@/config/Api";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 function ProductPage({ params }) {
   const id = params.slug;
@@ -24,6 +25,7 @@ function ProductPage({ params }) {
   const [product, setProduct] = useState(null);
   const [productPhotos, setproductPhotos] = useState([]);
   const [productMainImage, setproductMainImage] = useState("");
+  const [quantity, setQuantity] = useState(1);
 
   const handleShow = () => {
     setShow(!show);
@@ -59,6 +61,31 @@ function ProductPage({ params }) {
     getProductsData(id);
   }, [id]);
 
+  const handleAddTocart = async () => {
+    const guestId = Cookies.get("guestId");
+
+    const data = {
+      guestId: guestId,
+      variantId: id,
+      qty: quantity,
+    };
+
+    await addToCart(data)
+      .then((res) => {
+        if (res.data.success) {
+          toast.success(res.data.data);
+        } else {
+          toast.error(res.data.message);
+        }
+      })
+      .catch((err) => {
+        if (err.response.data.message) {
+          return toast.error(err.response.data.message);
+        }
+        toast.error(err.message);
+      });
+  };
+
   const rating = {
     row: [
       {
@@ -84,7 +111,7 @@ function ProductPage({ params }) {
     ],
     totalRating: 21,
   };
-  
+
   if (product) {
     return (
       <>
@@ -123,14 +150,24 @@ function ProductPage({ params }) {
                   ₹{product?.mrp}{" "}
                 </span>
                 &nbsp;
-                <span className="text-green-500 tracking-tight font-semibold">
-                  (
+                <span
+                  className={`text-sm font-medium text-green-300 ${
+                    Math.round(
+                      ((parseInt(product?.mrp) - parseInt(product?.price)) /
+                        parseInt(product?.mrp)) *
+                        100
+                    )
+                      ? ""
+                      : "hidden"
+                  }`}
+                >
+                  [
                   {Math.round(
                     ((parseInt(product?.mrp) - parseInt(product?.price)) /
                       parseInt(product?.mrp)) *
                       100
                   )}
-                  % off)
+                  % off]
                 </span>
               </div>
               <span className="text-gray-500 mt-3 items-center font-semibold text-sm">
@@ -169,16 +206,14 @@ function ProductPage({ params }) {
               <div className="flex flex-wrap items-center gap-2 mt-3">
                 {product.availableColors.rows.map((item, i) => (
                   <Link href={`/products/${item.id}`} key={i}>
-                    <div
-                      className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg"
-                    >
+                    <div className="rounded-full cursor-pointer border-2 border-gray-300 shadow-lg">
                       <div
                         className="rounded-full cursor-pointer border-2 border-white w-12 h-12"
                         style={{ backgroundColor: item.color }}
                         title={item.colorName}
                       ></div>
                     </div>
-                    </Link>
+                  </Link>
                 ))}
               </div>
 
@@ -212,17 +247,26 @@ function ProductPage({ params }) {
               <div className="flex justify-start items-center gap-1 mt-5">
                 <p className="mr-1">QTY:</p>
                 <span className="qty">
-                  <select className="ps-4 pr-10 py-2 border-1 border-gray-600 cursor-pointer">
-                    <option defaultValue>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>9</option>
-                    <option>10</option>
+                  <select
+                    className="ps-4 pr-10 py-2 border-1 border-gray-600 cursor-pointer"
+                    value={quantity}
+                    onChange={(e) => {
+                      setQuantity(e.target.value);
+                      console.log(e.target.value);
+                    }}
+                  >
+                    <option defaultValue value="1">
+                      1
+                    </option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
                   </select>
                 </span>
               </div>
@@ -271,7 +315,10 @@ function ProductPage({ params }) {
               )}
               <div className="md:relative fixed bottom-0 left-0 w-screen md:w-full shadow-2xl md:shadow-none z-10 md:z-0 bg-white md:bg-none py-2 md:py-0 px-2 md:px-0 ">
                 <div className="w-full mt-0 md:mt-5 grid grid-cols-12 gap-2 md:gap-2">
-                  <button className="col-span-6 md:col-span-12 lg:col-span-5 p-3 font-semibold bg-indigo-700 hover:bg-indigo-600 text-white flex items-center justify-center gap-1 rounded-md">
+                  <button
+                    className="col-span-6 md:col-span-12 lg:col-span-5 p-3 font-semibold bg-indigo-700 hover:bg-indigo-600 text-white flex items-center justify-center gap-1 rounded-md"
+                    onClick={() => handleAddTocart()}
+                  >
                     <BsCartFill className="inline" size={20} />
                     ADD TO CART
                   </button>
@@ -518,8 +565,7 @@ function ProductPage({ params }) {
         </div>
       </>
     );
-  } 
-  else {
+  } else {
     return (
       <>
         <div className="mx-auto sm:px-6 max-w-2xl px-4 py-6 md:py-10 lg:max-w-7xl lg:px-8">

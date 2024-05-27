@@ -9,6 +9,28 @@ function Favourites() {
   const [FavProducts, setFavProducts] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
+  const getFavouriteData = async () => {
+    const userDataString = Cookies.get("userData");
+    if (userDataString) {
+      const userData = JSON.parse(userDataString);
+      const userId = userData.id;
+
+      await getFavourite(userId)
+        .then((res) => {
+          if (res.data.success) {
+            console.log(res.data.data.rows);
+            setFavProducts(res.data.data.rows);
+          }
+        })
+        .catch((err) => {
+          if (err.response.data.message) {
+            return toast.error(err.response.data.message);
+          }
+          toast.error(err.message);
+        });
+    }
+  };
+
   const removeFav = async (id) => {
     const userDataString = Cookies.get("userData");
     if (userDataString) {
@@ -35,28 +57,6 @@ function Favourites() {
     }
   };
 
-  const getFavouriteData = async () => {
-    const userDataString = Cookies.get("userData");
-    if (userDataString) {
-      const userData = JSON.parse(userDataString);
-      const userId = userData.id;
-
-      await getFavourite(userId)
-        .then((res) => {
-          if (res.data.success) {
-            // console.log(res.data.data.rows);
-            setFavProducts(res.data.data.rows);
-          }
-        })
-        .catch((err) => {
-          if (err.response.data.message) {
-            return toast.error(err.response.data.message);
-          }
-          toast.error(err.message);
-        });
-    }
-  };
-
   useEffect(() => {
     if (!loaded) {
       return setLoaded(true);
@@ -69,7 +69,7 @@ function Favourites() {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {FavProducts.map((item, index) => (
           <div key={index} className="relative">
-            <Link href="/products/1">
+            <Link href={`/products/${item.variantId}`}>
               <div className=" relative aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200  group-hover:opacity-75 lg:h-100">
                 <img
                   src={`${IMAGE_URL + item.variant.productPhotos[0].url}`}

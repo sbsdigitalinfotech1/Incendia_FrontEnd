@@ -5,6 +5,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const products = [
   {
@@ -54,6 +55,8 @@ const ProfileData = [
 ];
 
 export default function MobileNavbar({ open, setOpen, data, isLogedIn }) {
+
+  const router = useRouter ();
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
@@ -149,6 +152,7 @@ export default function MobileNavbar({ open, setOpen, data, isLogedIn }) {
                             onClick={() => {
                               Cookies.remove("userData");
                               setOpen(false);
+                              router.push('/login');
                             }}
                             className="flex items-center justify-center bg-gray-900 text-white py-2 rounded-md"
                           >

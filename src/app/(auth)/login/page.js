@@ -27,22 +27,33 @@ function Login() {
     initialValues: initialValues,
     validationSchema: LoginSchema,
     onSubmit: async (values) => {
-      await login(values)
-        .then((res) => {
-          if (res.data.success) {
-            toast.success("log in succesfully");
-            Cookies.set("userData", JSON.stringify(res.data.data), {
-              expires: 7,
-            });
-            router.replace("/");
-          }
-        })
-        .catch((err) => {
-          if (err.response.data.message) {
-            return toast.error(err.response.data.message);
-          }
-          toast.error(err.message);
-        });
+      const guestIdData = Cookies.get("guestId");
+      if (guestIdData) {
+        const guestId = guestIdData;
+
+        const data = {
+          guestId: guestId,
+          email: values.email,
+          password: values.password,
+        };
+
+        await login(data)
+          .then((res) => {
+            if (res.data.success) {
+              toast.success("log in succesfully");
+              Cookies.set("userData", JSON.stringify(res.data.data), {
+                expires: 7,
+              });
+              router.replace("/");
+            }
+          })
+          .catch((err) => {
+            if (err.response.data.message) {
+              return toast.error(err.response.data.message);
+            }
+            toast.error(err.message);
+          });
+      }
     },
   });
 
