@@ -4,7 +4,8 @@ import React from "react";
 import { BiSolidDiscount } from "react-icons/bi";
 import Link from "next/link";
 
-const CheckOutPaymentDetails = ({ updateAddressFun, selectedOption }) => {
+const CheckOutPaymentDetails = ({ updateAddressFun, selectedOption, paymentDetails }) => {
+  console.log(paymentDetails);
   return (
     <>
       <div className="  bg-white border p-4 shadow-md rounded-md ">
@@ -43,16 +44,16 @@ const CheckOutPaymentDetails = ({ updateAddressFun, selectedOption }) => {
       </div>
       <div className="mt-6 bg-white border p-4 shadow-md rounded-md py-3 ">
         <h3 className="font-bold text-lg opacity-85">
-          PRICE DETAILS (2 items)
+          PRICE DETAILS 
         </h3>
         <hr />
         <div className="flex items-center justify-between text-sm my-3">
           <p>Total MRP (Inc. of Taxes)</p>
-          <p>₹4998</p>
+          <p>₹{paymentDetails.totalMrp}</p>
         </div>
         <div className="flex items-center justify-between text-sm my-3">
-          <p>Beyoung Discount</p>
-          <p>- ₹3002</p>
+          <p>Incendia Discount</p>
+          <p>- ₹{paymentDetails.totalDiscount}</p>
         </div>
         <div className="flex items-center justify-between text-sm my-3">
           <p>Shipping</p>
@@ -63,17 +64,17 @@ const CheckOutPaymentDetails = ({ updateAddressFun, selectedOption }) => {
         </div>
         <div className="flex items-center justify-between text-sm my-3">
           <p>Cart Total</p>
-          <p>₹1996</p>
+          <p>₹{paymentDetails.grandtotal}</p>
         </div>
       </div>
 
       <div className="mt-6 bg-white border p-4 shadow-md rounded-md py-3">
         <div className="flex justify-between items-center font-bold text-lg opacity-85">
           <p className="">Total Amount</p>
-          <p>₹1996</p>
+          <p>₹{paymentDetails.grandtotal}</p>
         </div>
         <p className="bg-green-600 text-white p-1.5 py-2 text-sm mt-2 flex items-center justify-center">
-          You Saved ₹3002 on this order
+          You Saved ₹{paymentDetails.totalDiscount} on this order
         </p>
        { updateAddressFun?<Link href="/">
           <button

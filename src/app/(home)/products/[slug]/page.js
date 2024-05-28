@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import DOMPurify from "dompurify";
 import Image from "next/image";
 import { CiHeart } from "react-icons/ci";
@@ -18,8 +18,10 @@ import { IMAGE_URL, addToCart, getProducts } from "@/config/Api";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import Cookies from "js-cookie";
+import { GlobalStateContext} from "@/store/GlobalContext";
 
 function ProductPage({ params }) {
+  const {getCartData} = useContext(GlobalStateContext);
   const id = params.slug;
   const [show, setShow] = useState(false);
   const [product, setProduct] = useState(null);
@@ -74,6 +76,7 @@ function ProductPage({ params }) {
       .then((res) => {
         if (res.data.success) {
           toast.success(res.data.data);
+          getCartData();
         } else {
           toast.error(res.data.message);
         }
