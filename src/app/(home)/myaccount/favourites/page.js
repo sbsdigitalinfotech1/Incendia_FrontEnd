@@ -45,7 +45,7 @@ function Favourites() {
         .then((res) => {
           if (res.data.success) {
             setLoaded(false);
-            toast.success("removed");
+            toast.success(res.data.data);
           }
         })
         .catch((err) => {
@@ -56,6 +56,7 @@ function Favourites() {
         });
     }
   };
+
 
   useEffect(() => {
     if (!loaded) {
@@ -70,14 +71,14 @@ function Favourites() {
         {FavProducts.map((item, index) => (
           <div key={index} className="relative">
             <Link href={`/products/${item.variantId}`}>
-              <div className=" relative aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200  group-hover:opacity-75 lg:h-100">
+              <div className=" relative  w-full overflow-hidden rounded-md bg-gray-200  group-hover:opacity-75 lg:h-100">
                 <img
                   src={`${IMAGE_URL + item.variant.productPhotos[0].url}`}
                   alt="product image"
                   onError={(e) => {
                     e.target.src = "";
                   }}
-                  className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                  className="h-full w-full object-cover object-center lg:h-full lg:w-full aspect-9/12"
                 />
               </div>
 

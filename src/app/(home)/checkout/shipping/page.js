@@ -1,16 +1,14 @@
 "use client";
 
 import EditAddressPopup from "@/components/EditAddressPopup/EditAddressPopup";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CheckOutPaymentDetails from "@/components/CheckOutPaymentDetails/CheckOutPaymentDetails";
 import { useFormik } from "formik";
 import { ShippingSchema } from "@/models/authSchema";
-import { useRouter } from "next/navigation";
-import { toggle } from "@nextui-org/react";
 import { addAddress, getAddress, updateAddress } from "@/config/Api";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
-import Loader from "./Loader";
+import { GlobalStateContext } from "@/store/GlobalContext";
 
 const initialValues = {
   firstName: "",
@@ -25,6 +23,7 @@ const initialValues = {
 };
 
 const Shipping = () => {
+  const {paymentDetails} = useContext(GlobalStateContext);
   const [show, setShow] = useState(false);
   const [rows, setRows] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -458,6 +457,7 @@ const Shipping = () => {
             <CheckOutPaymentDetails
               updateAddressFun={updateAddressFun}
               selectedOption={selectedOption}
+              paymentDetails={paymentDetails}
             />
           </div>
         </div>

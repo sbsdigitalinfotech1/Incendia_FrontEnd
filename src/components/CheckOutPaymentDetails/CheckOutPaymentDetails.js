@@ -5,7 +5,6 @@ import { BiSolidDiscount } from "react-icons/bi";
 import Link from "next/link";
 
 const CheckOutPaymentDetails = ({ updateAddressFun, selectedOption, paymentDetails }) => {
-  console.log(paymentDetails);
   return (
     <>
       <div className="  bg-white border p-4 shadow-md rounded-md ">
@@ -18,7 +17,7 @@ const CheckOutPaymentDetails = ({ updateAddressFun, selectedOption, paymentDetai
             Offers and discount
           </h3>
         </div>
-        <div className="mt-4 flex items-center ">
+        <div className="mt-4 flex items-center">
           <input
             type="text"
             placeholder="Enter Code"
@@ -83,14 +82,14 @@ const CheckOutPaymentDetails = ({ updateAddressFun, selectedOption, paymentDetai
             }
             className="bg-teal-500 hover:bg-teal-600 text-white p-1.5 py-3 mt-4 flex items-center justify-center w-full font-bold text-xl"
           >
-            CHECKOUT SECURELY
+            {paymentDetails && `CHECKOUT SECURELY`}
           </button>
         </Link>:
-        <Link href="/checkout/shipping">
+        <Link href={paymentDetails?.grandtotal != 0 ? `/checkout/shipping`: `/products`}>
           <button
             className="bg-teal-500 hover:bg-teal-600 text-white p-1.5 py-3 mt-4 flex items-center justify-center w-full font-bold text-xl"
           >
-            CHECKOUT SECURELY
+            {paymentDetails?.grandtotal != 0 ? `CHECKOUT SECURELY`: `CONTINUE SHOPPING`}
           </button>
         </Link>}
       </div>

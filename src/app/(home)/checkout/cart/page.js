@@ -8,18 +8,30 @@ import CheckOutPaymentDetails from "@/components/CheckOutPaymentDetails/CheckOut
 import { Player } from "@lottiefiles/react-lottie-player";
 import empty from "@/assets/images/empty.json";
 import { GlobalStateContext } from "@/store/GlobalContext";
+import Link from "next/link";
 
 const Cart = () => {
-  const { cartData, loading ,paymentDetails, removeItemFromCart, getCartData }= useContext(GlobalStateContext);
+  const {
+    cartData,
+    loading,
+    paymentDetails,
+    removeItemFromCart,
+    getCartData,
+    updateCartData,
+  } = useContext(GlobalStateContext);
   const lottieRef = useRef(null);
 
   const handleRemoveItem = (variantId) => {
     removeItemFromCart(variantId);
   };
 
-  useEffect(()=>{
-   getCartData()
-  },[])
+  const handleUpdateCart = (variantId, value) => {
+    updateCartData(variantId, value);
+  };
+
+  useEffect(() => {
+    getCartData();
+  }, []);
 
   return (
     <>
@@ -38,21 +50,24 @@ const Cart = () => {
                 >
                   <div className="grid grid-cols-12 gap-5">
                     <div className="col-span-4 md:col-span-3">
-                      <div className="relative aspect-[7/9]">
-                        <Image
-                          src={`${
-                            IMAGE_URL + item.variant.productPhotos[0].url
-                          }`}
-                          fill={true}
-                          style={{
-                            objectFit: "cover",
-                            objectPosition: "center",
-                          }}
-                          alt="image"
-                          className="rounded-lg"
-                        />
-                      </div>
+                      <Link href={`/products/${item.variantId}`}>
+                        <div className="relative aspect-[7/9]">
+                          <Image
+                            src={`${
+                              IMAGE_URL + item.variant.productPhotos[0].url
+                            }`}
+                            fill={true}
+                            style={{
+                              objectFit: "cover",
+                              objectPosition: "center",
+                            }}
+                            alt="image"
+                            className="rounded-lg"
+                          />
+                        </div>
+                      </Link>
                     </div>
+
                     <div className="col-span-8 md:col-span-9">
                       <div className="flex items-center justify-between">
                         <h3 className="font-semibold text-sm md:text-md truncate opacity-21">
@@ -119,11 +134,23 @@ const Cart = () => {
                       </div>
                       <hr />
                       <div className="flex items-center justify-between mt-2 gap-2">
-                        <select className="cursor-pointer px-4 w-1/2 md:w-auto sm:px-8 py-1 border border-gray-300 bg-gray-100 rounded-md">
-                          <option>{item.qty}</option>
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
+                        <select
+                          className="cursor-pointer px-4 w-1/2 md:w-auto sm:px-8 py-1 border border-gray-300 bg-gray-100 rounded-md"
+                          value={item.qty}
+                          onChange={(e) => {
+                            handleUpdateCart(item.variantId, e.target.value);
+                          }}
+                        >
+                          <option value={1}>1</option>
+                          <option value={2}>2</option>
+                          <option value={3}>3</option>
+                          <option value={4}>4</option>
+                          <option value={5}>5</option>
+                          <option value={6}>6</option>
+                          <option value={7}>7</option>
+                          <option value={8}>8</option>
+                          <option value={9}>9</option>
+                          <option value={10}>10</option>
                         </select>
                         <div>
                           <MdDelete
@@ -147,9 +174,22 @@ const Cart = () => {
                 src={empty}
                 style={{ height: "300px", width: "300px" }}
               />
-              <h2 className="flex items-center justify-center text-lg font-normal mt-4">
-                Your Cart is Empty!
-              </h2>
+              <div className="flex items-center justify-center mt-4">
+                <h2 className="text-lg font-normal ">
+                  Your Cart is Empty!
+                </h2> &nbsp; &nbsp;
+                <p>
+                  <Link href="/products">
+                    <button
+                      type="button"
+                      className="font-medium text-indigo-600 hover:text-indigo-500"
+                    >
+                      Continue Shopping
+                      <span className="font-bold"> &rarr;</span>
+                    </button>
+                  </Link>
+                </p>
+              </div>
             </div>
           )}
           <div className="lg:col-span-5 m-3 bg-white p-0 md:p-6 rounded-md col-span-12">

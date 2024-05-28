@@ -1,4 +1,5 @@
-import { getCart, removeFromCart } from "@/config/Api";
+"use client"
+import { generateGuestId, getCart, removeFromCart, updateCart } from "@/config/Api";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
@@ -8,7 +9,6 @@ export const GlobalStateContext = createContext();
 
 // Create a provider component
 export const GlobalStateProvider = ({ children }) => {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [from, setFrom] = useState("");
@@ -16,6 +16,22 @@ export const GlobalStateProvider = ({ children }) => {
   const [cartData, setCartData] = useState([]);
   const [paymentDetails, setPaymentDetails] = useState([]);
   const [count, setCount] = useState([]);
+
+  useEffect(() => {
+    const setGuestIdInCookies = async () => {
+      const guestId = Cookies.get("guestId");
+      if (!guestId) {
+        try {
+          const newGuestId = await generateGuestId();
+          Cookies.set("guestId", newGuestId.data.data.guestId, { expires: 7 });
+        } catch (error) {
+          console.error("Failed to generate guest ID:", error);
+        }
+      }
+    };
+
+    setGuestIdInCookies();
+  }, []);
 
   const getCartData = () => {
     const guestId = Cookies.get("guestId");
@@ -44,10 +60,6 @@ export const GlobalStateProvider = ({ children }) => {
     getCartData();
   }, []);
 
-  const updateCartData = (newCartData) => {
-    setCartData(newCartData); // Update cart data
-  };
-
   const removeItemFromCart = (variantId) => {
     const guestId = Cookies.get("guestId");
 
@@ -60,6 +72,28 @@ export const GlobalStateProvider = ({ children }) => {
       .then((res) => {
         if (res.data.success) {
           toast.success("Item removed");
+          getCartData(); // Refresh cart data after removal
+        }
+      })
+      .catch((err) => {
+        const errorMessage = err.response?.data?.message || err.message;
+        toast.error(errorMessage);
+      });
+  };
+
+  const updateCartData = (variantId, value) => {
+    const guestId = Cookies.get("guestId");
+
+    const data = {
+      guestId: guestId,
+      qty: value,
+      variantId: variantId,
+    };
+
+    updateCart(data)
+      .then((res) => {
+        if (res.data.success) {
+          toast.success("Item updated");
           getCartData(); // Refresh cart data after removal
         }
       })
@@ -84,17 +118,16 @@ export const GlobalStateProvider = ({ children }) => {
     setCartData,
     setLoading,
     setPaymentDetails,
-    updateCartData,
     removeFromCart,
     removeItemFromCart,
     getCartData,
+    updateCartData,
   };
 
   return (
     <GlobalStateContext.Provider value={contextValue}>
       {children}
     </GlobalStateContext.Provider>
-    
   );
 };
 
