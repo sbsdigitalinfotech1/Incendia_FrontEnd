@@ -5,17 +5,25 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Image from "next/image";
 import { GlobalStateContext } from "@/store/GlobalContext";
-import { Player } from "@lottiefiles/react-lottie-player";
-import empty from "@/assets/images/empty.json";
 import { IMAGE_URL, removeFromCart } from "@/config/Api";
 
 export default function SideCart({ open, setOpen }) {
-  const { cartData, removeItemFromCart, getCartData } = useContext(GlobalStateContext);
+  const {
+    cartData,
+    removeItemFromCart,
+    getCartData,
+    updateCartData,
+    paymentDetails,
+  } = useContext(GlobalStateContext);
   const lottieRef = useRef(null);
 
   const handleRemoveItem = (variantId) => {
     removeItemFromCart(variantId);
     setOpen(false);
+  };
+
+  const handleUpdateCart = (variantId, value) => {
+    updateCartData(variantId, value);
   };
 
   useEffect(() => {
@@ -78,19 +86,26 @@ export default function SideCart({ open, setOpen }) {
                             {cartData.map((product, i) => (
                               <li key={i} className="flex py-6">
                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 relative">
-                                  <Image
-                                    src={`${
-                                      IMAGE_URL +
-                                      product.variant.productPhotos[0].url
-                                    }`}
-                                    alt="image"
-                                    className="h-full w-full object-cover object-center"
-                                    fill
-                                    style={{
-                                      objectFit: "cover",
-                                      objectPosition: "center",
+                                  <Link
+                                    href={`/products/${product.variantId}`}
+                                    onClick={() => {
+                                      setOpen(false);
                                     }}
-                                  />
+                                  >
+                                    <Image
+                                      src={`${
+                                        IMAGE_URL +
+                                        product.variant.productPhotos[0].url
+                                      }`}
+                                      alt="image"
+                                      className="h-full w-full object-cover object-center"
+                                      fill
+                                      style={{
+                                        objectFit: "cover",
+                                        objectPosition: "center",
+                                      }}
+                                    />
+                                  </Link>
                                 </div>
 
                                 <div className="ml-4 flex flex-1 flex-col">
@@ -105,11 +120,26 @@ export default function SideCart({ open, setOpen }) {
                                   </div>
                                   <div className="flex flex-1 items-end justify-between text-sm">
                                     <p className="text-gray-500">
-                                      <select className="cursor-pointer px-4 w-1/2 md:w-auto sm:px-8 py-1 border border-gray-300 bg-gray-100 rounded-md min-w-16">
-                                        <option>{product.qty}</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
+                                      <select
+                                        className="cursor-pointer px-4 w-1/2 md:w-auto sm:px-8 py-1 border border-gray-300 bg-gray-100 rounded-md min-w-16"
+                                        value={product.qty}
+                                        onChange={(e) => {
+                                          handleUpdateCart(
+                                            product.variantId,
+                                            e.target.value
+                                          );
+                                        }}
+                                      >
+                                        <option value={1}>1</option>
+                                        <option value={2}>2</option>
+                                        <option value={3}>3</option>
+                                        <option value={4}>4</option>
+                                        <option value={5}>5</option>
+                                        <option value={6}>6</option>
+                                        <option value={7}>7</option>
+                                        <option value={8}>8</option>
+                                        <option value={9}>9</option>
+                                        <option value={10}>10</option>
                                       </select>
                                     </p>
 
@@ -136,7 +166,7 @@ export default function SideCart({ open, setOpen }) {
                     <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                       <div className="flex justify-between text-base font-medium text-gray-900">
                         <p>Subtotal</p>
-                        <p>$262.00</p>
+                        <p>₹{paymentDetails.totalMrp}</p>
                       </div>
                       <p className="mt-0.5 text-sm text-gray-500">
                         Shipping and taxes calculated at checkout.
@@ -153,14 +183,15 @@ export default function SideCart({ open, setOpen }) {
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>
                           or{" "}
-                          <button
-                            type="button"
-                            className="font-medium text-indigo-600 hover:text-indigo-500"
-                            onClick={() => setOpen(false)}
-                          >
-                            Continue Shopping
-                            <span> &rarr;</span>
-                          </button>
+                          <Link href="/products" onClick={() => setOpen(false)}>
+                            <button
+                              type="button"
+                              className="font-medium text-indigo-600 hover:text-indigo-500"
+                            >
+                              Continue Shopping
+                              <span> &rarr;</span>
+                            </button>
+                          </Link>
                         </p>
                       </div>
                     </div>

@@ -9,24 +9,31 @@ import { Carousel } from "react-responsive-carousel";
 import { BiSolidOffer } from "react-icons/bi";
 import { BsCartFill } from "react-icons/bs";
 import { FaRegArrowAltCircleRight } from "react-icons/fa";
+import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import ship from "@/assets/images/ship.jpg";
 import cod from "@/assets/images/cod.jpg";
 import { Skeleton, Slider } from "@nextui-org/react";
 import { FaRegStar } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
-import { IMAGE_URL, addToCart, getProducts } from "@/config/Api";
+import {
+  IMAGE_URL,
+  addToCart,
+  getProducts,
+  updateFavourite,
+} from "@/config/Api";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import Cookies from "js-cookie";
-import { GlobalStateContext} from "@/store/GlobalContext";
+import { GlobalStateContext } from "@/store/GlobalContext";
 
 function ProductPage({ params }) {
-  const {getCartData} = useContext(GlobalStateContext);
+  const { getCartData } = useContext(GlobalStateContext);
   const id = params.slug;
   const [show, setShow] = useState(false);
   const [product, setProduct] = useState(null);
   const [productPhotos, setproductPhotos] = useState([]);
   const [productMainImage, setproductMainImage] = useState("");
+  const [isFav, setIsFav] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
   const handleShow = () => {
@@ -49,7 +56,7 @@ function ProductPage({ params }) {
                 (item) => item.main == true
               )[0].url
             );
-            // console.log(res.data.data.rows[0]);
+            
           }
         })
         .catch((err) => {
@@ -87,6 +94,32 @@ function ProductPage({ params }) {
         }
         toast.error(err.message);
       });
+  };
+
+  // Add to Favourite *******************************************************
+  const addFav = async (id) => {
+    const userDataString = Cookies.get("userData");
+    if (userDataString) {
+      const userData = JSON.parse(userDataString);
+      const userId = userData.id;
+
+      const data = {
+        userId: userId,
+        id: id,
+      };
+      await updateFavourite(data)
+        .then((res) => {
+          if (res.data.success) {
+            toast.success(res.data.data);
+          }
+        })
+        .catch((err) => {
+          if (err?.response?.data?.message) {
+            return toast.error(err?.response?.data?.message);
+          }
+          toast.error(err.message);
+        });
+    }
   };
 
   const rating = {
@@ -137,10 +170,26 @@ function ProductPage({ params }) {
                 <h1 className="font-bold text-xl truncate opacity-21">
                   {product?.name}
                 </h1>
-                <CiHeart
-                  size={40}
-                  className="p-2.5 rounded-full cursor-pointer bg-gray-100 font-semibold"
-                />
+                {!isFav ? (
+                  <IoMdHeartEmpty
+                    onClick={() => {
+                      addFav(product?.id);
+                      setIsFav(!isFav);
+                    }}
+                    size={40}
+                    className={`p-1.5 rounded-full cursor-pointer bg-gray-100 font-semibold`}
+                  />
+                ) : (
+                  <IoMdHeart
+                    onClick={() => {
+                      addFav(product?.id);
+                      setIsFav(!isFav);
+                    }}
+                    size={40}
+                    color="red"
+                    className={`p-1.5 rounded-full cursor-pointer bg-gray-100 font-semibold`}
+                  />
+                )}
               </div>
               <span className="text-gray-400 font-normal leading-4">
                 {" "}
@@ -255,7 +304,6 @@ function ProductPage({ params }) {
                     value={quantity}
                     onChange={(e) => {
                       setQuantity(e.target.value);
-                      console.log(e.target.value);
                     }}
                   >
                     <option defaultValue value="1">

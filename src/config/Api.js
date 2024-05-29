@@ -74,4 +74,10 @@ export const getCart = async(guestId)=>{
     return await axios.get(`${BASE_URL}user/getCart?guestId=${guestId}`);
 }
 
+export const updateCart = async(data)=>{
+    return await axios.patch(`${BASE_URL}user/updateCart`,data);
+}
+
+
+
 
