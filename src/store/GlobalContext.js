@@ -1,8 +1,15 @@
-"use client"
-import { generateGuestId, getCart, removeFromCart, updateCart } from "@/config/Api";
+"use client";
+import {
+  generateGuestId,
+  getCart,
+  login,
+  removeFromCart,
+  updateCart,
+} from "@/config/Api";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 // Create a context
 export const GlobalStateContext = createContext();
@@ -16,17 +23,21 @@ export const GlobalStateProvider = ({ children }) => {
   const [cartData, setCartData] = useState([]);
   const [paymentDetails, setPaymentDetails] = useState([]);
   const [count, setCount] = useState([]);
+  const [guestId, setGuestId] = useState("");
 
   useEffect(() => {
     const setGuestIdInCookies = async () => {
-      const guestId = Cookies.get("guestId");
-      if (!guestId) {
+      const storedGuestId = Cookies.get("guestId");
+      if (!storedGuestId) {
         try {
           const newGuestId = await generateGuestId();
           Cookies.set("guestId", newGuestId.data.data.guestId, { expires: 7 });
+          setGuestId(newGuestId.data.data.guestId);
         } catch (error) {
           console.error("Failed to generate guest ID:", error);
         }
+      } else {
+        setGuestId(storedGuestId);
       }
     };
 
@@ -58,7 +69,7 @@ export const GlobalStateProvider = ({ children }) => {
 
   useEffect(() => {
     getCartData();
-  }, []);
+  }, [guestId]);
 
   const removeItemFromCart = (variantId) => {
     const guestId = Cookies.get("guestId");
@@ -103,6 +114,8 @@ export const GlobalStateProvider = ({ children }) => {
       });
   };
 
+
+
   // Pass state and functions to the context value
   const contextValue = {
     email,
@@ -112,6 +125,8 @@ export const GlobalStateProvider = ({ children }) => {
     loading,
     paymentDetails,
     count,
+    guestId,
+    setGuestId,
     setEmail,
     setPassword,
     setFrom,

@@ -1,18 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import logo from "@/assets/images/incendiaLogo.png";
 import Image from "next/image";
-import google from "@/assets/images/google.png";
 import Link from "next/link";
 import { useFormik } from "formik";
 import { LoginSchema } from "@/models/authSchema";
-import { useRouter } from "next/navigation";
+
 import { IoEye } from "react-icons/io5";
 import { IoEyeOff } from "react-icons/io5";
+import { GlobalStateContext } from "@/store/GlobalContext";
 import { login } from "@/config/Api";
-import Cookies from "js-cookie";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const initialValues = {
   email: "",
@@ -20,17 +21,16 @@ const initialValues = {
 };
 
 function Login() {
+  const { setGuestId, guestId } = useContext(GlobalStateContext);
   const [show, setShow] = useState(false);
-  const router = useRouter();
+  const router = useRouter(); // Ensure useRouter is imported and available
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: LoginSchema,
     onSubmit: async (values) => {
-      const guestIdData = Cookies.get("guestId");
-      if (guestIdData) {
-        const guestId = guestIdData;
-
+      
+      if (guestId) {
         const data = {
           guestId: guestId,
           email: values.email,
@@ -40,7 +40,11 @@ function Login() {
         await login(data)
           .then((res) => {
             if (res.data.success) {
-              toast.success("log in succesfully");
+              toast.success("log in successfully");
+              // Set the new guestId received from the login response
+              const newGuestId = res.data.data.guestId; //  replacing with new guest id
+              Cookies.set("guestId", newGuestId, { expires: 7 });
+              setGuestId(newGuestId);
               Cookies.set("userData", JSON.stringify(res.data.data), {
                 expires: 7,
               });
@@ -48,7 +52,7 @@ function Login() {
             }
           })
           .catch((err) => {
-            if (err.response.data.message) {
+            if (err?.response?.data?.message) {
               return toast.error(err.response.data.message);
             }
             toast.error(err.message);

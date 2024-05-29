@@ -57,7 +57,6 @@ function Favourites() {
     }
   };
 
-
   useEffect(() => {
     if (!loaded) {
       return setLoaded(true);
@@ -96,12 +95,13 @@ function Favourites() {
                       ₹ {item?.variant?.price}
                     </strong>
                     &nbsp;&nbsp;
-                    <strike className="text-xs font-medium text-gray-900">
+                    <strike className={`text-xs font-medium text-gray-900 ${item.variant.mrp - item.variant.price == 0 ? "hidden": ""}`}>
                       ₹ {item?.variant?.mrp}
                     </strike>
                     &nbsp;&nbsp;
-                    <span className="text-xs font-medium text-green-300">
-                      0 % off
+                    <span className={`text-xs font-medium text-green-300 ${Math.round(((parseInt(item?.variant?.mrp) - parseInt(item?.variant?.price))/parseInt(item?.variant?.mrp))*100)== 0 ? "hidden": "" } `}>
+                     {Math.round(((parseInt(item?.variant?.mrp) - parseInt(item?.variant?.price))/parseInt(item?.variant?.mrp))*100)}
+                      % off
                     </span>
                   </div>
                 </div>

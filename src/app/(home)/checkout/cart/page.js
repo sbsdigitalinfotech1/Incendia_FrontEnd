@@ -35,14 +35,14 @@ const Cart = () => {
 
   return (
     <>
-      <div className="mx-auto px-6 max-w-2xl md:px-4 py-6 md:py-10 lg:max-w-7xl lg:px-8 h-full  bg-gray-100 p-0">
+      <div className="mx-auto px-2 max-w-2xl md:px-4 py-4 md:py-10 lg:max-w-7xl lg:px-8 h-full  bg-gray-100 p-0">
         <div className="grid grid-cols-12 ">
           {loading ? (
             <div className="lg:col-span-7 bg-white m-1 md:m-3 rounded-md col-span-12 md:p-6 p-0">
               <p>Loading...</p>
             </div>
           ) : cartData.length > 0 ? (
-            <div className="lg:col-span-7 bg-white m-1 md:m-3 rounded-md col-span-12 md:p-6 p-0 max-h-dvh overflow-scroll sc">
+            <div className="lg:col-span-7 bg-white m-1 md:m-3 rounded-md col-span-12 md:p-6 p-4 max-h-dvh overflow-scroll ">
               {cartData.map((item, i) => (
                 <div
                   key={i}
@@ -166,7 +166,7 @@ const Cart = () => {
               ))}
             </div>
           ) : (
-            <div className="lg:col-span-7 bg-white m-1 md:m-3 rounded-md col-span-12 md:p-6 p-0">
+            <div className="lg:col-span-7 bg-white m-1 md:m-3 rounded-md col-span-12 md:p-6 p-4 max-h-dvh  ">
               <Player
                 ref={lottieRef}
                 autoplay
@@ -192,7 +192,7 @@ const Cart = () => {
               </div>
             </div>
           )}
-          <div className="lg:col-span-5 m-3 bg-white p-0 md:p-6 rounded-md col-span-12">
+          <div className="lg:col-span-5 md:m-3 m-1 bg-white p-4 md:p-6 rounded-md col-span-12 ">
             <CheckOutPaymentDetails paymentDetails={paymentDetails} />
           </div>
         </div>
