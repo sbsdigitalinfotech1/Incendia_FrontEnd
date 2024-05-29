@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.11.153:3001/v1/';
-export const IMAGE_URL = 'http://192.168.11.153:3001/';
+// const BASE_URL = 'http://192.168.11.153:3001/v1/';
+const BASE_URL = 'https://incendia-backend.onrender.com/v1/'
+// export const IMAGE_URL = 'http://192.168.11.153:3001/';
+export const IMAGE_URL = 'https://incendia-backend.onrender.com/';
 
 // auth api's
 
