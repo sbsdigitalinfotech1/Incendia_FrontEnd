@@ -1,39 +1,15 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { generateGuestId } from "@/config/Api";
+import toast from "react-hot-toast";
+import { GlobalStateContext } from "@/store/GlobalContext";
 
-const products = [
-  {
-    id: 1,
-    name: "Throwback Hip Bag",
-    href: "#",
-    color: "Salmon",
-    price: "$90.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-    imageAlt:
-      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-  },
-  {
-    id: 2,
-    name: "Medium Stuff Satchel",
-    href: "#",
-    color: "Blue",
-    price: "$32.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-    imageAlt:
-      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-  },
-  // More products...
-];
 
 const ProfileData = [
   {
@@ -55,8 +31,28 @@ const ProfileData = [
 ];
 
 export default function MobileNavbar({ open, setOpen, data, isLogedIn }) {
-
+ const {setGuestId} = useContext(GlobalStateContext);
   const router = useRouter ();
+
+  const handleLogout = async() => {
+    Cookies.remove("userData");
+    Cookies.remove("guestId");
+    await generateGuestId()
+    .then((res)=>{
+      if(res.data.success){
+        Cookies.set("guestId", res.data.data.guestId, { expires: 7 });
+        setGuestId(res.data.data.guestId);
+      }
+    })
+    .catch((err) => {
+      const errorMessage = err.response?.data?.message || err.message;
+      toast.error(errorMessage);
+    });
+    setOpen(false);
+    router.push("/login");
+  };
+
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
@@ -149,11 +145,7 @@ export default function MobileNavbar({ open, setOpen, data, isLogedIn }) {
                       {isLogedIn ? (
                         <div className="mt-6">
                           <div
-                            onClick={() => {
-                              Cookies.remove("userData");
-                              setOpen(false);
-                              router.push('/login');
-                            }}
+                            onClick={handleLogout}
                             className="flex items-center justify-center bg-gray-900 text-white py-2 rounded-md"
                           >
                             Logout

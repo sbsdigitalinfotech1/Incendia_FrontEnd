@@ -5,7 +5,7 @@ import React from "react";
 
 const PaginationUI = ({ count, page, pageSize, setPage }) => {
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 ">
       {page !== 1 && (
         <Button
           className="w-100 h-100 font-bold"
@@ -17,7 +17,7 @@ const PaginationUI = ({ count, page, pageSize, setPage }) => {
       )}
       <Pagination
         total={Math.ceil(count / pageSize)}
-        className="flex justify-end"
+        className="flex justify-end z-0"
         color="primary"
         page={page}
         onChange={setPage}

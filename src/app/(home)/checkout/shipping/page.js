@@ -54,7 +54,7 @@ const Shipping = () => {
       if (userDataString) {
         const userData = JSON.parse(userDataString);
         const userId = userData.id;
-
+        
         const data = {
           userId: userId,
           firstName: values.firstName,
@@ -70,7 +70,7 @@ const Shipping = () => {
 
         await addAddress(data)
           .then((res) => {
-            if (res?.data.success) {
+            if (res?.data.success){
               setLoaded(false);
               toast.success("Saved Succesfully");
               formik.setValues(initialValues);

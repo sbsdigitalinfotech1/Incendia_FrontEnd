@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { GlobalStateContext } from "@/store/GlobalContext";
 import { IMAGE_URL, removeFromCart } from "@/config/Api";
+import Cookies from "js-cookie";
 
 export default function SideCart({ open, setOpen }) {
   const {
@@ -174,7 +175,9 @@ export default function SideCart({ open, setOpen }) {
                       <div className="mt-6">
                         <Link
                           onClick={() => setOpen(false)}
-                          href="/checkout/cart"
+                          href={
+                            Cookies.get("userData") ?
+                            `/checkout/cart`:`/login`}
                           className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                         >
                           Checkout

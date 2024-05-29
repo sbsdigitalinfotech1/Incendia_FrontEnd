@@ -1,9 +1,7 @@
 "use client";
 
 import { useContext, useEffect, useState } from "react";
-import DOMPurify from "dompurify";
 import Image from "next/image";
-import { CiHeart } from "react-icons/ci";
 import voucherIcon from "@/assets/images/voucherIcon.png";
 import { Carousel } from "react-responsive-carousel";
 import { BiSolidOffer } from "react-icons/bi";
@@ -25,6 +23,7 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { GlobalStateContext } from "@/store/GlobalContext";
+import { useRouter } from "next/navigation";
 
 function ProductPage({ params }) {
   const { getCartData } = useContext(GlobalStateContext);
@@ -39,6 +38,8 @@ function ProductPage({ params }) {
   const handleShow = () => {
     setShow(!show);
   };
+
+  const router = useRouter();
 
   useEffect(() => {
     const getProductsData = async (id) => {
@@ -56,7 +57,6 @@ function ProductPage({ params }) {
                 (item) => item.main == true
               )[0].url
             );
-            
           }
         })
         .catch((err) => {
@@ -119,6 +119,8 @@ function ProductPage({ params }) {
           }
           toast.error(err.message);
         });
+    } else {
+      router.push("/login");
     }
   };
 
@@ -173,8 +175,10 @@ function ProductPage({ params }) {
                 {!isFav ? (
                   <IoMdHeartEmpty
                     onClick={() => {
+                      {
+                        Cookies.get("userData") && setIsFav(!isFav);
+                      }
                       addFav(product?.id);
-                      setIsFav(!isFav);
                     }}
                     size={40}
                     className={`p-1.5 rounded-full cursor-pointer bg-gray-100 font-semibold`}
