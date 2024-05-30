@@ -29,10 +29,6 @@ const Cart = () => {
     updateCartData(variantId, value);
   };
 
-  useEffect(() => {
-    getCartData();
-  }, []);
-
   return (
     <>
       <div className="mx-auto px-2 max-w-2xl md:px-4 py-4 md:py-10 lg:max-w-7xl lg:px-8 h-full  bg-gray-100 p-0">
@@ -175,9 +171,8 @@ const Cart = () => {
                 style={{ height: "300px", width: "300px" }}
               />
               <div className="flex items-center justify-center mt-4">
-                <h2 className="text-lg font-normal ">
-                  Your Cart is Empty!
-                </h2> &nbsp; &nbsp;
+                <h2 className="text-lg font-normal ">Your Cart is Empty!</h2>{" "}
+                &nbsp; &nbsp;
                 <p>
                   <Link href="/products">
                     <button

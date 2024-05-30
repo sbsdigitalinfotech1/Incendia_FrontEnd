@@ -27,9 +27,6 @@ export default function SideCart({ open, setOpen }) {
     updateCartData(variantId, value);
   };
 
-  useEffect(() => {
-    getCartData();
-  }, []);
 
   return (
     <Transition.Root show={open} as={Fragment}>
