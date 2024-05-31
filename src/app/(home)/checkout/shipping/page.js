@@ -141,7 +141,7 @@ const Shipping = () => {
 
   return (
     <>
-      <div className="mx-auto px-2 max-w-2xl md:px-4 py-6 md:py-10 lg:max-w-7xl lg:px-8 h-full p-0">
+      <div className="mx-auto px-4 max-w-2xl md:px-4 py-6 md:py-10 lg:max-w-7xl lg:px-8 h-full">
         <div className="grid grid-cols-12 ">
           <div className="lg:col-span-7 bg-white md:m-3 rounded-md col-span-12 md:p-6 p-4 shadow-lg">
             <div className="flex flex-col gap-2 ">
@@ -180,7 +180,6 @@ const Shipping = () => {
                       onClick={() => {
                         setEditPopupVisible(true);
                         setAddrToUpdate(item);
-                        // console.log(item);
                       }}
                     >
                       Edit
@@ -453,7 +452,7 @@ const Shipping = () => {
             )}
           </div>
 
-          <div className="lg:col-span-5 m-3 bg-white p-0 md:p-6 rounded-md col-span-12 md:shadow-lg ">
+          <div className="lg:col-span-5 md:m-3 mt-2 bg-white p-4 md:p-6 rounded-md col-span-12 ">
             <CheckOutPaymentDetails
               updateAddressFun={updateAddressFun}
               selectedOption={selectedOption}

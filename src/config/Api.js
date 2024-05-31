@@ -94,5 +94,5 @@ export const getAvailableColorsAndSizes = async() =>{
     return await axios.get(`${BASE_URL}user/getAvailableColorsAndSizes` );
 }
 export const getProductsFiltered = async(data) =>{
-    return await axios.get(`${BASE_URL}user/getProductsFiltered?sort=${data?.sort}&page=${data?.page}&pageSize=${data?.pageSize}&size=${data?.size}&categoryId=${data?.categoryId}`);
+    return await axios.get(`${BASE_URL}user/getProductsFiltered?sort=${data?.sort}&page=${data?.page}&pageSize=${data?.pageSize}&size=${data?.size}&categoryId=${data?.categoryId}&colorName=${data?.colorName}`);
 }

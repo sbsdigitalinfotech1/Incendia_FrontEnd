@@ -62,8 +62,7 @@ const VerifyOtp = () => {
           }
           toast.error(err.message);
         });
-    } 
-    else if (GlobalState.from == "forgetPassword") {
+    } else if (GlobalState.from == "forgetPassword") {
       var data = {
         email: GlobalState.email,
         otp: value,
@@ -88,7 +87,7 @@ const VerifyOtp = () => {
     if (!loaded) {
       return setLoaded(true);
     }
-    if (GlobalState.from == "" || GlobalState.email== "") {
+    if (GlobalState.from == "" || GlobalState.email == "") {
       router.back();
     }
   }, [loaded]);

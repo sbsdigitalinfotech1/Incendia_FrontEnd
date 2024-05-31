@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
@@ -13,8 +13,14 @@ import {
 import ProductRowFilter from "../ProductRowFilter/ProductRowFilter";
 import Pagination from "@/components/Pagination/PaginationUI";
 import { Skeleton } from "@nextui-org/react";
-import { getAvailableColorsAndSizes, getCategory, getProductsFiltered } from "@/config/Api";
+import {
+  getAvailableColorsAndSizes,
+  getCategory,
+  getProductsFiltered,
+} from "@/config/Api";
 import toast from "react-hot-toast";
+import { Player } from "@lottiefiles/react-lottie-player";
+import noMatchFound from "@/assets/images/noMatchFound";
 
 const sortOptions = [
   { name: "Newest", value: "new", current: false },
@@ -34,8 +40,20 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function ProductFilter({ products, setProducts, loading, count, page, pageSize, setPage,getProductsData,sort,setSort,size, setSize,setCategory }) {
+function ProductFilter({
+  products,
+  loading,
+  count,
+  page,
+  pageSize,
+  setPage,
+  setSort,
+  setSize,
+  setCategoryId,
+  setColorName,
+}) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const lottieRef = useRef(null);
   const [filters, setFilters] = useState([
     // {
     //   id: "color",
@@ -46,16 +64,14 @@ function ProductFilter({ products, setProducts, loading, count, page, pageSize, 
     //       label: "White",
     //       checked: false,
     //       colorCode: "#FFFFFF",
-    //     }, 
+    //     },
     //   ],
     // },
-
     // {
     //   id: "category",
     //   name: "Category",
     //   options: [{ value: "purple", label: "Purple", checked: false }],
     // },
-
     // {
     //   id: "size",
     //   name: "Size",
@@ -81,7 +97,7 @@ function ProductFilter({ products, setProducts, loading, count, page, pageSize, 
             id: "category",
             name: "Category",
             options: resCategory.data.data.rows.map((category) => ({
-              value: category.name,
+              value: category.id,
               label: category.name,
               checked: false,
             })),
@@ -118,14 +134,22 @@ function ProductFilter({ products, setProducts, loading, count, page, pageSize, 
     getData();
   }, []);
 
-  const handleSelect = async(selected) =>{
-    setSort(selected.value)
+  const handleSelect = async (selected) => {
+    setSort(selected.value);
     setPage(1);
-  }
-  const handleSelectSize = async(selected) =>{
-    setSize(selected)
+  };
+  const handleSelectSize = async (selected) => {
+    setSize(selected);
     setPage(1);
-  }
+  };
+  const handleSelectCategory = async (selected) => {
+    setCategoryId(selected);
+    setPage(1);
+  };
+  const handleSelectColor = async (selected) => {
+    setColorName(selected);
+    setPage(1);
+  };
 
   return (
     <>
@@ -220,22 +244,24 @@ function ProductFilter({ products, setProducts, loading, count, page, pageSize, 
                                 </Disclosure.Button>
                               </h3>
                               <Disclosure.Panel className="pt-6">
-                                <div className="space-y-6">
+                                <div className="space-y-4">
                                   {section.id === "color" ? (
                                     <div className="flex flex-wrap gap-2">
                                       {section.options.map(
                                         (option, optionIdx) => (
                                           <div
                                             key={optionIdx}
-                                            className="flex items-center"
+                                            className="relative"
                                           >
                                             <input
                                               id={`filter-desktop-${section.id}-${optionIdx}`}
                                               name={`${section.id}[]`}
                                               defaultValue={option.value}
-                                              type="checkbox"
-                                              defaultChecked={option.checked}
+                                              type="radio"
                                               className="sr-only"
+                                              onChange={() =>
+                                                handleSelectColor(option.value)
+                                              }
                                             />
                                             <label
                                               htmlFor={`filter-desktop-${section.id}-${optionIdx}`}
@@ -260,16 +286,22 @@ function ProductFilter({ products, setProducts, loading, count, page, pageSize, 
                                         className="flex items-center"
                                       >
                                         <input
-                                          id={`filter-mobile-${section.id}-${optionIdx}`}
+                                          id={`filter-desktop-${section.id}-${optionIdx}`}
                                           name={`${section.id}[]`}
                                           defaultValue={option.value}
-                                          type="checkbox"
-                                          defaultChecked={option.checked}
-                                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                          type="radio"
+                                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                                          onChange={() => {
+                                            section.id == "size"
+                                              ? handleSelectSize(option.value)
+                                              : handleSelectCategory(
+                                                  option.value
+                                                );
+                                          }}
                                         />
                                         <label
-                                          htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
-                                          className="ml-3 min-w-0 flex-1 text-gray-500"
+                                          htmlFor={`filter-desktop-${section.id}-${optionIdx}`}
+                                          className="ml-3 text-sm text-gray-600 cursor-pointer"
                                         >
                                           {option.label}
                                         </label>
@@ -322,7 +354,7 @@ function ProductFilter({ products, setProducts, loading, count, page, pageSize, 
                           <Menu.Item key={i}>
                             {({ active }) => (
                               <div
-                                onClick={()=>handleSelect(option)}
+                                onClick={() => handleSelect(option)}
                                 className={classNames(
                                   option.current
                                     ? "font-medium text-gray-900"
@@ -420,6 +452,9 @@ function ProductFilter({ products, setProducts, loading, count, page, pageSize, 
                                         type="checkbox"
                                         defaultChecked={option.checked}
                                         className="sr-only"
+                                        onChange={() =>
+                                          handleSelectColor(option.value)
+                                        }
                                       />
                                       <label
                                         htmlFor={`filter-desktop-${section.id}-${optionIdx}`}
@@ -444,16 +479,18 @@ function ProductFilter({ products, setProducts, loading, count, page, pageSize, 
                                     <input
                                       id={`filter-desktop-${section.id}-${optionIdx}`}
                                       name={`${section.id}[]`}
-                                      Value={option.value}
+                                      defaultValue={option.value}
                                       type="radio"
                                       className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
-                                     
-                                      onChange={() => handleSelectSize(option.value)} 
+                                      onChange={() => {
+                                        section.id == "size"
+                                          ? handleSelectSize(option.value)
+                                          : handleSelectCategory(option.value);
+                                      }}
                                     />
                                     <label
                                       htmlFor={`filter-desktop-${section.id}-${optionIdx}`}
                                       className="ml-3 text-sm text-gray-600 cursor-pointer"
-                                     
                                     >
                                       {option.label}
                                     </label>
@@ -482,7 +519,7 @@ function ProductFilter({ products, setProducts, loading, count, page, pageSize, 
                       />
                     </div>
                   </div>
-                ) : (
+                ) : products.length > 0 ? (
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 md:col-span-3">
                     <Skeleton className="h-64 md:h-96 rounded-md w-full">
                       <div className="  bg-default rounded-md"></div>
@@ -512,6 +549,22 @@ function ProductFilter({ products, setProducts, loading, count, page, pageSize, 
                       <div className="  bg-default rounded-md"></div>
                     </Skeleton>
                   </div>
+                ) : (
+                  <>
+                    <div className="grid col-span-3 max-h-80">
+                      <Player
+                        ref={lottieRef}
+                        autoplay
+                        loop
+                        src={noMatchFound}
+                        style={{ height: "300px", width: "300px" }}
+                      />
+                      <p className="text-center text-lg font-semibold opacity-70">
+                        {" "}
+                        Nothing Matched with your Search ☹ !
+                      </p>
+                    </div>
+                  </>
                 )}
               </div>
             </section>
