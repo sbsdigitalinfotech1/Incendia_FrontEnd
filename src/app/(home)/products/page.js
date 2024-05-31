@@ -12,12 +12,20 @@ function Products() {
   const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState("new");
   const [size, setSize] = useState();
-  const [category, setCategory] = useState();
+  const [categoryId, setCategoryId] = useState("");
+  const [colorName, setColorName] = useState("");
 
   const getProductsData = async (data) => {
     window.scrollTo(0, 0);
     setLoading(true);
-    await getProductsFiltered({ page: data?.page, pageSize: pageSize, sort: data?.sort, size:data?.size , categoryId:category})
+    await getProductsFiltered({
+      page: data?.page,
+      pageSize: pageSize,
+      sort: data?.sort,
+      size: data?.size,
+      categoryId: data?.categoryId,
+      colorName: data?.colorName,
+    })
       .then((res) => {
         if (res.data.success) {
           // console.log(res.data.data.rows);
@@ -39,26 +47,49 @@ function Products() {
   }, [page]);
 
   useEffect(() => {
-    getProductsData({ page: 1, sort: sort });
+    getProductsData({
+      page: 1,
+      sort: sort,
+      size: size,
+      categoryId: categoryId,
+    });
   }, [sort]);
 
   useEffect(() => {
-    getProductsData({ page: 1, sort: sort , size: size});
+    getProductsData({
+      page: 1,
+      sort: sort,
+      size: size,
+      categoryId: categoryId,
+    });
   }, [size]);
 
-  // useEffect(()=>{
-  //   getProductsData({ page: 1, sort: sort , size: size, categoryId:category})
-  // },[category])
+  useEffect(() => {
+    getProductsData({
+      page: 1,
+      sort: sort,
+      size: size,
+      categoryId: categoryId,
+    });
+  }, [categoryId]);
+
+  useEffect(() => {
+    getProductsData({
+      page: 1,
+      sort: sort,
+      size: size,
+      categoryId: categoryId,
+      colorName: colorName,
+    });
+  }, [colorName]);
 
   return (
     <>
       <ProductFilter
-        sort={sort}
         setSort={setSort}
-        size={size}
-        setSize = {setSize}
-        category={category}
-        setCategory={setCategory}
+        setSize={setSize}
+        setCategoryId={setCategoryId}
+        setColorName={setColorName}
         loading={loading}
         count={count}
         products={products}

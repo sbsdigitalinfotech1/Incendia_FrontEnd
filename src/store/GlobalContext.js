@@ -68,7 +68,7 @@ export const GlobalStateProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if(guestId){
+    if (guestId) {
       getCartData();
     }
   }, [guestId]);
