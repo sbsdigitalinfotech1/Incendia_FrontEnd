@@ -10,7 +10,6 @@ import { generateGuestId } from "@/config/Api";
 import toast from "react-hot-toast";
 import { GlobalStateContext } from "@/store/GlobalContext";
 
-
 const ProfileData = [
   {
     title: "Profile",
@@ -31,27 +30,26 @@ const ProfileData = [
 ];
 
 export default function MobileNavbar({ open, setOpen, data, isLogedIn }) {
- const {setGuestId} = useContext(GlobalStateContext);
-  const router = useRouter ();
+  const { setGuestId } = useContext(GlobalStateContext);
+  const router = useRouter();
 
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     Cookies.remove("userData");
     Cookies.remove("guestId");
     await generateGuestId()
-    .then((res)=>{
-      if(res.data.success){
-        Cookies.set("guestId", res.data.data.guestId, { expires: 7 });
-        setGuestId(res.data.data.guestId);
-      }
-    })
-    .catch((err) => {
-      const errorMessage = err.response?.data?.message || err.message;
-      toast.error(errorMessage);
-    });
+      .then((res) => {
+        if (res.data.success) {
+          Cookies.set("guestId", res.data.data.guestId, { expires: 7 });
+          setGuestId(res.data.data.guestId);
+        }
+      })
+      .catch((err) => {
+        const errorMessage = err.response?.data?.message || err.message;
+        toast.error(errorMessage);
+      });
     setOpen(false);
     router.push("/login");
   };
-
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -164,7 +162,6 @@ export default function MobileNavbar({ open, setOpen, data, isLogedIn }) {
                     </div>
                   </div>
                 </Dialog.Panel>
-                
               </Transition.Child>
             </div>
           </div>

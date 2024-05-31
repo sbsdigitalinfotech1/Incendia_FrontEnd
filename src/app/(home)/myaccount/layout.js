@@ -8,33 +8,33 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 
 export default function RootLayout({ children }) {
-  const {setGuestId} = useContext(GlobalStateContext);
+  const { setGuestId } = useContext(GlobalStateContext);
   const router = useRouter();
 
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     Cookies.remove("userData");
     Cookies.remove("guestId");
     await generateGuestId()
-    .then((res)=>{
-      if(res.data.success){
-        Cookies.set("guestId", res.data.data.guestId, { expires: 7 });
-        setGuestId(res.data.data.guestId);
-      }
-    })
-    .catch((err) => {
-      const errorMessage = err.response?.data?.message || err.message;
-      toast.error(errorMessage);
-    });
-    
+      .then((res) => {
+        if (res.data.success) {
+          Cookies.set("guestId", res.data.data.guestId, { expires: 7 });
+          setGuestId(res.data.data.guestId);
+        }
+      })
+      .catch((err) => {
+        const errorMessage = err.response?.data?.message || err.message;
+        toast.error(errorMessage);
+      });
+
     router.push("/login");
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     const userData = Cookies.get("userData");
-    if(!userData){
-       router.push("/login");
+    if (!userData) {
+      router.push("/login");
     }
-  },[])
+  }, []);
 
   return (
     <>

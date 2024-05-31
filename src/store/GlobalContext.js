@@ -23,7 +23,7 @@ export const GlobalStateProvider = ({ children }) => {
   const [cartData, setCartData] = useState([]);
   const [paymentDetails, setPaymentDetails] = useState([]);
   const [count, setCount] = useState([]);
-  const [guestId, setGuestId] = useState("");
+  const [guestId, setGuestId] = useState(null);
 
   useEffect(() => {
     const setGuestIdInCookies = async () => {
@@ -68,7 +68,9 @@ export const GlobalStateProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    getCartData();
+    if(guestId){
+      getCartData();
+    }
   }, [guestId]);
 
   const removeItemFromCart = (variantId) => {
@@ -113,8 +115,6 @@ export const GlobalStateProvider = ({ children }) => {
         toast.error(errorMessage);
       });
   };
-
-
 
   // Pass state and functions to the context value
   const contextValue = {
