@@ -96,30 +96,36 @@ function ProductFilter({
           {
             id: "category",
             name: "Category",
-            options: resCategory.data.data.rows.map((category) => ({
+            options: [
+              { value: "all", label: " Show All", checked: true },
+              ...resCategory.data.data.rows.map((category) => ({
               value: category.id,
               label: category.name,
               checked: false,
-            })),
+            }))
+          ]
           },
           {
             id: "size",
             name: "Size",
-            options: resSize.data.data.sizes.map((item) => ({
+            options: [
+              { value: "all", label: " Show All", checked: true },
+              ...resSize.data.data.sizes.map((item) => ({
               value: item,
               label: item,
               checked: false,
-            })),
+            }))
+          ],
           },
           {
             id: "color",
             name: "Color",
-            options: resSize.data.data.colors.map((category) => ({
+            options:resSize.data.data.colors.map((category) => ({
               value: category.colorName,
               label: category.colorName,
               checked: false,
               colorCode: category.color,
-            })),
+            }))
           },
         ]);
       }
@@ -138,14 +144,29 @@ function ProductFilter({
     setSort(selected.value);
     setPage(1);
   };
+
   const handleSelectSize = async (selected) => {
+    if(selected == "all"){
+      setSize();
+      setPage(1);
+    }
+    else{
     setSize(selected);
     setPage(1);
+    }
   };
+
   const handleSelectCategory = async (selected) => {
+    if(selected == "all"){
+      setCategoryId("");
+      setPage(1);
+    }
+    else{
     setCategoryId(selected);
     setPage(1);
+  }
   };
+
   const handleSelectColor = async (selected) => {
     setColorName(selected);
     setPage(1);
@@ -357,10 +378,10 @@ function ProductFilter({
                                 onClick={() => handleSelect(option)}
                                 className={classNames(
                                   option.current
-                                    ? "font-medium text-gray-900"
+                                    ? "font-medium text-gray-900 "
                                     : "text-gray-500",
                                   active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm"
+                                  "block px-4 py-2 text-sm cursor-pointer"
                                 )}
                               >
                                 {option.name}
@@ -507,7 +528,18 @@ function ProductFilter({
 
                 {/* Product grid */}
 
-                {products.length && !loading ? (
+                {loading ? (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 md:col-span-3">
+                    {Array.from({ length: 12 }).map((_, index) => (
+                      <Skeleton
+                        key={index}
+                        className="h-64 md:h-96 rounded-md w-full"
+                      >
+                        <div className="bg-default rounded-md"></div>
+                      </Skeleton>
+                    ))}
+                  </div>
+                ) : products.length > 0 ? (
                   <div className="lg:col-span-3">
                     <ProductRowFilter products={products} />
                     <div className="mt-12 flex items-center justify-end">
@@ -519,52 +551,19 @@ function ProductFilter({
                       />
                     </div>
                   </div>
-                ) : products.length > 0 ? (
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 md:col-span-3">
-                    <Skeleton className="h-64 md:h-96 rounded-md w-full">
-                      <div className="  bg-default rounded-md"></div>
-                    </Skeleton>
-                    <Skeleton className="h-64 md:h-96 rounded-md w-full">
-                      <div className="  bg-default rounded-md"></div>
-                    </Skeleton>
-                    <Skeleton className="h-64 md:h-96 rounded-md w-full">
-                      <div className="  bg-default rounded-md"></div>
-                    </Skeleton>
-                    <Skeleton className="h-64 md:h-96 rounded-md w-full">
-                      <div className="  bg-default rounded-md"></div>
-                    </Skeleton>
-                    <Skeleton className="h-64 md:h-96 rounded-md w-full">
-                      <div className="  bg-default rounded-md"></div>
-                    </Skeleton>
-                    <Skeleton className="h-64 md:h-96 rounded-md w-full">
-                      <div className="  bg-default rounded-md"></div>
-                    </Skeleton>
-                    <Skeleton className="h-64 md:h-96 rounded-md w-full">
-                      <div className="  bg-default rounded-md"></div>
-                    </Skeleton>
-                    <Skeleton className="h-64 md:h-96 rounded-md w-full">
-                      <div className="  bg-default rounded-md"></div>
-                    </Skeleton>
-                    <Skeleton className="h-64 md:h-96 rounded-md w-full">
-                      <div className="  bg-default rounded-md"></div>
-                    </Skeleton>
-                  </div>
                 ) : (
-                  <>
-                    <div className="grid col-span-3 max-h-80">
-                      <Player
-                        ref={lottieRef}
-                        autoplay
-                        loop
-                        src={noMatchFound}
-                        style={{ height: "300px", width: "300px" }}
-                      />
-                      <p className="text-center text-lg font-semibold opacity-70">
-                        {" "}
-                        Nothing Matched with your Search ☹ !
-                      </p>
-                    </div>
-                  </>
+                  <div className="grid col-span-3 max-h-80">
+                    <Player
+                      ref={lottieRef}
+                      autoplay
+                      loop
+                      src={noMatchFound}
+                      style={{ height: "300px", width: "300px" }}
+                    />
+                    <p className="text-center text-lg font-semibold opacity-70">
+                      No Match Found 🙁!
+                    </p>
+                  </div>
                 )}
               </div>
             </section>

@@ -75,7 +75,7 @@ const CheckOutPaymentDetails = ({ updateAddressFun, selectedOption, paymentDetai
         <p className="bg-green-600 text-white p-1.5 py-2 text-sm mt-2 flex items-center justify-center">
           You Saved ₹{paymentDetails.totalDiscount} on this order
         </p>
-       { updateAddressFun?<Link href="/">
+       { updateAddressFun?<Link href="/myaccount/orders">
           <button
             onClick={() =>
               updateAddressFun({ id: selectedOption, active: true })
