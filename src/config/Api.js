@@ -96,3 +96,12 @@ export const getAvailableColorsAndSizes = async() =>{
 export const getProductsFiltered = async(data) =>{
     return await axios.get(`${BASE_URL}user/getProductsFiltered?sort=${data?.sort}&page=${data?.page}&pageSize=${data?.pageSize}&size=${data?.size}&categoryId=${data?.categoryId}&colorName=${data?.colorName}`);
 }
+
+// order api's
+export const makeOrder = async(data) =>{
+  return await axios.post(`${BASE_URL}user/makeOrder`, data);
+}
+
+export const getOrders = async(data) =>{
+  return await axios.get(`${BASE_URL}user/getOrders?userId=${data?.userId}&orderId=${data?.orderId}` );
+}

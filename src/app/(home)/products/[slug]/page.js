@@ -378,8 +378,10 @@ function ProductPage({ params }) {
                     ADD TO CART
                   </button>
                   <button className="col-span-6 md:col-span-12 lg:col-span-7 p-3 bg-yellow-300 hover:bg-yellow-400 text-black font-semibold flex items-center justify-center gap-1 rounded-md">
+                    <Link href={`/buyProduct?variantId=${product.id}&qty=${quantity}`}>
                     <FaRegArrowAltCircleRight className="inline" size={20} />{" "}
                     BUY NOW
+                    </Link>
                   </button>
                 </div>
               </div>
