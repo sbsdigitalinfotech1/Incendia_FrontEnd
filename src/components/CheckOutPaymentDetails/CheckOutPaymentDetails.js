@@ -1,10 +1,46 @@
-"use client"
+"use client";
 
 import React from "react";
 import { BiSolidDiscount } from "react-icons/bi";
 import Link from "next/link";
+import { makeOrder } from "@/config/Api";
+import toast from "react-hot-toast";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
-const CheckOutPaymentDetails = ({ updateAddressFun, selectedOption, paymentDetails }) => {
+const CheckOutPaymentDetails = ({ product,  updateAddressFun,  selectedOption,  paymentDetails}) => {
+const router = useRouter();
+
+  const makeOrderSuccess = async () => {
+    const userDataString = Cookies.get("userData");
+    if (userDataString) {
+      const userData = JSON.parse(userDataString);
+      const userId = userData.id;
+
+      const data = {
+        products: product,
+        userId: userId,
+        paymentType: "online",
+        addressId: selectedOption,
+      };
+
+      await makeOrder(data)
+        .then((res) => {
+          if (res.data?.success) {
+            toast.success(res.data?.data?.message);
+            router.push("/myaccount/orders")
+          }
+        })
+        .catch((err) => {
+          if (err.response?.data?.message) {
+            return toast.error(err.response?.data?.message);
+          }
+          toast.error(err.message);
+        });
+    }
+  };
+  
+
   return (
     <>
       <div className="  bg-white border p-4 shadow-md rounded-md ">
@@ -42,9 +78,7 @@ const CheckOutPaymentDetails = ({ updateAddressFun, selectedOption, paymentDetai
         </p>
       </div>
       <div className="mt-6 bg-white border p-4 shadow-md rounded-md py-3 ">
-        <h3 className="font-bold text-lg opacity-85">
-          PRICE DETAILS 
-        </h3>
+        <h3 className="font-bold text-lg opacity-85">PRICE DETAILS</h3>
         <hr />
         <div className="flex items-center justify-between text-sm my-3">
           <p>Total MRP (Inc. of Taxes)</p>
@@ -75,23 +109,32 @@ const CheckOutPaymentDetails = ({ updateAddressFun, selectedOption, paymentDetai
         <p className="bg-green-600 text-white p-1.5 py-2 text-sm mt-2 flex items-center justify-center">
           You Saved ₹{paymentDetails.totalDiscount} on this order
         </p>
-       { updateAddressFun?<Link href="/myaccount/orders">
-          <button
-            onClick={() =>
-              updateAddressFun({ id: selectedOption, active: true })
+        {updateAddressFun ? (
+            <button
+              onClick={() => {
+                makeOrderSuccess();
+                updateAddressFun({ id: selectedOption, active: true });
+              }}
+              className="bg-teal-500 hover:bg-teal-600 text-white p-1.5 py-3 mt-4 flex items-center justify-center w-full font-bold text-xl"
+            >
+              {paymentDetails && `CHECKOUT SECURELY`}
+            </button>
+          
+        ) : (
+          <Link
+            href={
+              paymentDetails?.grandtotal != 0
+                ? `/checkout/shipping`
+                : `/products`
             }
-            className="bg-teal-500 hover:bg-teal-600 text-white p-1.5 py-3 mt-4 flex items-center justify-center w-full font-bold text-xl"
           >
-            {paymentDetails && `CHECKOUT SECURELY`}
-          </button>
-        </Link>:
-        <Link href={paymentDetails?.grandtotal != 0 ? `/checkout/shipping`: `/products`}>
-          <button
-            className="bg-teal-500 hover:bg-teal-600 text-white p-1.5 py-3 mt-4 flex items-center justify-center w-full font-bold text-xl"
-          >
-            {paymentDetails?.grandtotal != 0 ? `CHECKOUT SECURELY`: `CONTINUE SHOPPING`}
-          </button>
-        </Link>}
+            <button className="bg-teal-500 hover:bg-teal-600 text-white p-1.5 py-3 mt-4 flex items-center justify-center w-full font-bold text-xl">
+              {paymentDetails?.grandtotal != 0
+                ? `CHECKOUT SECURELY`
+                : `CONTINUE SHOPPING`}
+            </button>
+          </Link>
+        )}
       </div>
     </>
   );

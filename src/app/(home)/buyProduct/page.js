@@ -528,8 +528,16 @@ const BuyProduct = () => {
               <h3 className="font-bold text-lg opacity-85">PRICE DETAILS</h3>
               <hr />
               <div className="flex items-center justify-between text-sm my-3">
+                <p>Offer Price for single item</p>
+                <p>{productDetail?.mrp}</p>
+              </div>
+              <div className="flex items-center justify-between text-sm my-3">
+                <p>Quantity</p>
+                <p>{qty}</p>
+              </div>
+              <div className="flex items-center justify-between text-sm my-3">
                 <p>Total MRP (Inc. of Taxes)</p>
-                <p>₹{productDetail?.mrp}</p>
+                <p>₹{qty * productDetail?.mrp}</p>
               </div>
               <div className="flex items-center justify-between text-sm my-3">
                 <p>Incendia Discount</p>
@@ -545,9 +553,9 @@ const BuyProduct = () => {
               <div className="flex items-center justify-between text-sm my-3">
                 <p>Cart Total</p>
                 <p>
-                  ₹
-                  {productDetail?.mrp -
-                    [productDetail?.mrp - productDetail?.price]}
+                  ₹ 
+                  {qty *[ productDetail?.mrp -
+                    [productDetail?.mrp - productDetail?.price]]}
                 </p>
               </div>
             </div>
@@ -557,8 +565,8 @@ const BuyProduct = () => {
                 <p className="">Total Amount</p>
                 <p>
                   ₹
-                  {productDetail?.mrp -
-                    [productDetail?.mrp - productDetail?.price]}
+                  {qty *[ productDetail?.mrp -
+                    [productDetail?.mrp - productDetail?.price]]}
                 </p>
               </div>
               <p className="bg-green-600 text-white p-1.5 py-2 text-sm mt-2 flex items-center justify-center">

@@ -379,7 +379,7 @@ function ProductPage({ params }) {
                   </button>
                   <button className="col-span-6 md:col-span-12 lg:col-span-7 p-3 bg-yellow-300 hover:bg-yellow-400 text-black font-semibold flex items-center justify-center gap-1 rounded-md">
                     <Link href={`/buyProduct?variantId=${product.id}&qty=${quantity}`}>
-                    <FaRegArrowAltCircleRight className="inline" size={20} />{" "}
+                    <FaRegArrowAltCircleRight className="inline" size={20} />
                     BUY NOW
                     </Link>
                   </button>
@@ -411,50 +411,6 @@ function ProductPage({ params }) {
             <div className="bg-gray-100 py-6">
               <div className="px-6">
                 <h2 className="font-semibold mb-3">Product Highlights</h2>
-                {/* <table className="min-w-full divide-y divide-gray-200">
-                  <tbody className=" divide-gray-200 text-sm mt-5">
-                    <tr>
-                      <td className=" py-2 whitespace-nowrap font-semibold">
-                        Fabric:
-                      </td>
-                      <td className=" py-2 whitespace-nowrap">Carbon Cotton</td>
-                    </tr>
-                    <tr>
-                      <td className=" py-2 whitespace-nowrap font-semibold">
-                        Neck:
-                      </td>
-                      <td className=" py-2 whitespace-nowrap">
-                        Classic Collar
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className=" py-2 whitespace-nowrap font-semibold">
-                        Pattern:
-                      </td>
-                      <td className=" py-2 whitespace-nowrap">Solid</td>
-                    </tr>
-                    <tr>
-                      <td className=" py-2 whitespace-nowrap font-semibold">
-                        Sleeve:
-                      </td>
-                      <td className=" py-2 whitespace-nowrap">Full-Sleeves</td>
-                    </tr>
-                    <tr>
-                      <td className=" py-2 whitespace-nowrap font-semibold">
-                        Fit:
-                      </td>
-                      <td className=" py-2 whitespace-nowrap">Regular-fit</td>
-                    </tr>
-                    <tr>
-                      <td className=" py-2 whitespace-nowrap font-semibold">
-                        Style:
-                      </td>
-                      <td className=" py-2 whitespace-nowrap">
-                        Formal & Casual Wear
-                      </td>
-                    </tr>
-                  </tbody>
-                </table> */}
                 <div className="prose">
                   <div
                     className="text-sm"
