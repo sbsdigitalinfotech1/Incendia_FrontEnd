@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 function Products() {
   const [products, setProducts] = useState([]);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(12);
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -52,6 +52,7 @@ function Products() {
       sort: sort,
       size: size,
       categoryId: categoryId,
+      colorName: colorName,
     });
   }, [sort]);
 
@@ -61,6 +62,7 @@ function Products() {
       sort: sort,
       size: size,
       categoryId: categoryId,
+      colorName: colorName,
     });
   }, [size]);
 
@@ -70,6 +72,7 @@ function Products() {
       sort: sort,
       size: size,
       categoryId: categoryId,
+      colorName: colorName,
     });
   }, [categoryId]);
 

@@ -3,6 +3,7 @@
 import ProductRow from "@/components/ProductRow/ProductRow";
 import { getProducts } from "@/config/Api";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -137,12 +138,12 @@ export default function Home() {
                   </div>
                 </div>
 
-                <a
-                  href="#"
+                <Link
+                  href="/products"
                   className="inline-block rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-center font-medium text-white hover:bg-indigo-700"
                 >
                   Shop Collection
-                </a>
+                </Link>
               </div>
             </div>
           </div>

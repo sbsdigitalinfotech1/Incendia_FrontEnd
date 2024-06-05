@@ -11,14 +11,7 @@ import { GlobalStateContext } from "@/store/GlobalContext";
 import Link from "next/link";
 
 const Cart = () => {
-  const {
-    cartData,
-    loading,
-    paymentDetails,
-    removeItemFromCart,
-    getCartData,
-    updateCartData,
-  } = useContext(GlobalStateContext);
+  const {cartData, loading, paymentDetails, removeItemFromCart, getCartData, updateCartData, } = useContext(GlobalStateContext);
   const lottieRef = useRef(null);
 
   const handleRemoveItem = (variantId) => {

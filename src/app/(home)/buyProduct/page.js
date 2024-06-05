@@ -2,13 +2,23 @@
 
 import EditAddressPopup from "@/components/EditAddressPopup/EditAddressPopup";
 import React, { useContext, useEffect, useState } from "react";
-import CheckOutPaymentDetails from "@/components/CheckOutPaymentDetails/CheckOutPaymentDetails";
+// import CheckOutPaymentDetails from "@/components/CheckOutPaymentDetails/CheckOutPaymentDetails";
 import { useFormik } from "formik";
 import { ShippingSchema } from "@/models/authSchema";
-import { addAddress, getAddress, updateAddress } from "@/config/Api";
+import {
+  addAddress,
+  getAddress,
+  getProducts,
+  makeOrder,
+  updateAddress,
+} from "@/config/Api";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
-import { GlobalStateContext } from "@/store/GlobalContext";
+// import { GlobalStateContext } from "@/store/GlobalContext";
+import Link from "next/link";
+// import { BiSolidDiscount } from "react-icons/bi";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const initialValues = {
   firstName: "",
@@ -22,15 +32,21 @@ const initialValues = {
   Address: "",
 };
 
-const Shipping = () => {
-  const {paymentDetails} = useContext(GlobalStateContext);
+const BuyProduct = () => {
+  const searchParams = useSearchParams();
+  const variantId = searchParams.get("variantId");
+  const qty = searchParams.get("qty");
+
+  const [productDetail, setProductDetail] = useState([]);
   const [show, setShow] = useState(false);
   const [rows, setRows] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  //   const [isLoading, setIsLoading] = useState(false);
   const [editPopupVisible, setEditPopupVisible] = useState(false);
 
   const [selectedOption, setSelectedOption] = useState(rows.selectedId);
   const [addrToUpdate, setAddrToUpdate] = useState([]);
+
+  const router = useRouter();
 
   const handleDropDown = () => {
     setShow(!show);
@@ -54,7 +70,7 @@ const Shipping = () => {
       if (userDataString) {
         const userData = JSON.parse(userDataString);
         const userId = userData.id;
-        
+
         const data = {
           userId: userId,
           firstName: values.firstName,
@@ -70,7 +86,7 @@ const Shipping = () => {
 
         await addAddress(data)
           .then((res) => {
-            if (res?.data.success){
+            if (res?.data.success) {
               setLoaded(false);
               toast.success("Saved Succesfully");
               formik.setValues(initialValues);
@@ -87,13 +103,36 @@ const Shipping = () => {
     },
   });
 
+  // getting the payment details of selected product ***********************************
+  const getProductsData = async () => {
+    const data = {
+      id: variantId,
+    };
+
+    await getProducts(data)
+      .then((res) => {
+        if (res.data.success) {
+          setProductDetail(res.data.data.rows[0]);
+        }
+      })
+      .catch((err) => {
+        if (err.response?.data?.message) {
+          return toast.error(err.response?.data?.message);
+        }
+        toast.error(err.message);
+      });
+  };
+
+  useEffect(() => {
+    getProductsData();
+  }, []);
+
   const getAddressData = async (userId) => {
     await getAddress(userId)
       .then((res) => {
         if (res?.data?.success) {
-          // console.log(res?.data?.data?.rows);
+          console.log(res?.data?.data?.rows);
           setRows(res.data.data.rows);
-          console.log(res.data.data.rows);
           setSelectedOption(
             res.data.data.rows.filter((item) => item.active == true)[0]?.id
           );
@@ -139,10 +178,40 @@ const Shipping = () => {
     }
   }, [loaded]);
 
+  const makeOrderSuccess = async () => {
+    const userDataString = Cookies.get("userData");
+    if (userDataString) {
+      const userData = JSON.parse(userDataString);
+      const userId = userData.id;
+
+      const data = {
+        products: [{ variantId: variantId, qty: qty }],
+        userId: userId,
+        paymentType: "online",
+        addressId: selectedOption,
+      };
+
+      await makeOrder(data)
+        .then((res) => {
+          if (res.data?.success) {
+            toast.success(res.data?.data?.message);
+            router.push("/myaccount/orders")
+          }
+        })
+        .catch((err) => {
+          if (err.response?.data?.message) {
+            return toast.error(err.response?.data?.message);
+          }
+          toast.error(err.message);
+        });
+    }
+  };
+
   return (
     <>
       <div className="mx-auto px-4 max-w-2xl md:px-4 py-6 md:py-10 lg:max-w-7xl lg:px-8 h-full">
         <div className="grid grid-cols-12 ">
+          {/* Address Data layout    **********************************/}
           <div className="lg:col-span-7 bg-white md:m-3 rounded-md col-span-12 md:p-6 p-4 shadow-lg">
             <div className="flex flex-col gap-2 ">
               {rows.map((item) => (
@@ -189,10 +258,11 @@ const Shipping = () => {
               ))}
             </div>
 
-            <button onClick={handleDropDown} className="text-xl w-full hover:shadow-xl font-semibold opacity-85 p-5 mt-3 cursor-pointer border-2 rounded-lg shadow-sm flex items-center justify-start">
-            <div >
-              + Add New Address
-            </div>
+            <button
+              onClick={handleDropDown}
+              className="text-xl w-full hover:shadow-xl font-semibold opacity-85 p-5 mt-3 cursor-pointer border-2 rounded-lg shadow-sm flex items-center justify-start"
+            >
+              <div>+ Add New Address</div>
             </button>
 
             {show ? (
@@ -451,13 +521,59 @@ const Shipping = () => {
               ""
             )}
           </div>
+          {/* Payment Detail layout  **********************************/}
 
           <div className="lg:col-span-5 md:m-3 mt-2 bg-white p-4 md:p-6 rounded-md col-span-12 ">
-            <CheckOutPaymentDetails
-              updateAddressFun={updateAddressFun}
-              selectedOption={selectedOption}
-              paymentDetails={paymentDetails}
-            />
+            <div className="mt-6 bg-white border p-4 shadow-md rounded-md py-3 ">
+              <h3 className="font-bold text-lg opacity-85">PRICE DETAILS</h3>
+              <hr />
+              <div className="flex items-center justify-between text-sm my-3">
+                <p>Total MRP (Inc. of Taxes)</p>
+                <p>₹{productDetail?.mrp}</p>
+              </div>
+              <div className="flex items-center justify-between text-sm my-3">
+                <p>Incendia Discount</p>
+                <p>- ₹{productDetail?.mrp - productDetail?.price}</p>
+              </div>
+              <div className="flex items-center justify-between text-sm my-3">
+                <p>Shipping</p>
+                <div>
+                  <span className="line-through">₹49 </span>&nbsp;
+                  <span className="text-green-500">Free</span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between text-sm my-3">
+                <p>Cart Total</p>
+                <p>
+                  ₹
+                  {productDetail?.mrp -
+                    [productDetail?.mrp - productDetail?.price]}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 bg-white border p-4 shadow-md rounded-md py-3">
+              <div className="flex justify-between items-center font-bold text-lg opacity-85">
+                <p className="">Total Amount</p>
+                <p>
+                  ₹
+                  {productDetail?.mrp -
+                    [productDetail?.mrp - productDetail?.price]}
+                </p>
+              </div>
+              <p className="bg-green-600 text-white p-1.5 py-2 text-sm mt-2 flex items-center justify-center">
+                You Saved ₹{productDetail?.mrp - productDetail?.price} on this
+                order
+              </p>
+              {updateAddressFun && (
+                <button
+                  onClick={() => makeOrderSuccess()}
+                  className="bg-teal-500 hover:bg-teal-600 text-white p-1.5 py-3 mt-4 flex items-center justify-center w-full font-bold text-xl"
+                >
+                  CHECKOUT SECURELY
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -473,4 +589,4 @@ const Shipping = () => {
   );
 };
 
-export default Shipping;
+export default BuyProduct;

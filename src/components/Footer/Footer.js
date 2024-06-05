@@ -46,7 +46,7 @@ function Footer() {
       },
       {
         title: "About",
-        link: "/",
+        link: "/aboutus",
       },
       {
         title: "Press release",
@@ -70,7 +70,7 @@ function Footer() {
       
       {
         title: "Contact",
-        link: "/",
+        link: "/contact",
       },
       {
         title: "Report a scam",
@@ -84,7 +84,7 @@ function Footer() {
     sideText: `Sign up now and be the first to know about exclusive offers,
     latest fashion news & style tips!`,
     CopyrightContent: `The content of this site is copyright-protected and is the
-    property of H & M Hennes & Mauritz AB.`,
+    property of Incendia`,
 
     socialMedia: [
       {
@@ -119,7 +119,7 @@ function Footer() {
             <ul>
               {footerContent.shop.map((item,i) => (
                 <Link href={item.link} key={i}>
-                  <li>{item.title}</li>
+                  <li className="hover:text-blue-500">{item.title}</li>
                 </Link>
               ))}
             </ul>
@@ -129,7 +129,7 @@ function Footer() {
             <ul>
               {footerContent.corpInfo.map((item,i) => (
                 <Link href={item.link} key={i}>
-                  <li>{item.title}</li>
+                  <li className="hover:text-blue-500">{item.title}</li>
                 </Link>
               ))}
             </ul>
@@ -139,7 +139,7 @@ function Footer() {
             <ul>
               {footerContent.help.map((item,i) => (
                 <Link href={item.link} key={i}>
-                  <li>{item.title}</li>
+                  <li className="hover:text-blue-500">{item.title}</li>
                 </Link>
               ))}
             </ul>
