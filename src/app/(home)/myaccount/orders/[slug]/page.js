@@ -3,26 +3,18 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { GrInProgress } from "react-icons/gr";
-import Link from "next/link";
 import { GiWallet } from "react-icons/gi";
-import ViewBreakUpModal from "@/components/ViewBreakUpModal/ViewBreakUpModal.js";
 import { IMAGE_URL, getOrders } from "@/config/Api";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
+import { FaShippingFast } from "react-icons/fa";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import { MdShoppingCartCheckout } from "react-icons/md";
 
 const OrderDetails = ({ params }) => {
   const orderId = params.slug;
   const [orderDetails, setOrderDetails] = useState([]);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
 
   const getOrderDetails = async () => {
     const userDataString = Cookies.get("userData");
@@ -89,6 +81,49 @@ const OrderDetails = ({ params }) => {
   // console.log(`Date: ${date}`);
   // console.log(`Time: ${time}`);
 
+
+  const renderStatusButton = (status) => {
+    switch (status) {
+      case 0:
+        return (
+          <button className="flex justify-center gap-1 items-center text-xs md:text-sm font-semibold text-white bg-yellow-500 px-3 rounded-md py-2">
+            <GrInProgress size={15} />
+            Pending
+          </button>
+        );
+      case 1:
+        return (
+          <button className="flex justify-center gap-1 items-center text-xs md:text-sm font-semibold text-white bg-blue-500 px-3 rounded-md py-2">
+            <MdShoppingCartCheckout size={15} />
+            Ordered
+          </button>
+        );
+      case 2:
+        return (
+          <button className="flex justify-center gap-1 items-center text-xs md:text-sm font-semibold text-white bg-purple-500 px-3 rounded-md py-2">
+            <FaShippingFast size={15} />
+            Dispatched
+          </button>
+        );
+      case 3:
+        return (
+          <button className="flex justify-center gap-1 items-center text-xs md:text-sm font-semibold text-white bg-green-500 px-3 rounded-md py-2">
+            <IoMdCheckmarkCircleOutline size={15} />
+            Delivered
+          </button>
+        );
+      case 4:
+        return (
+          <button className="flex justify-center gap-1 items-center text-xs md:text-sm font-semibold text-white bg-red-500 px-3 rounded-md py-2">
+            <AiOutlineCloseCircle size={15} />
+            Cancelled
+          </button>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
       <h3 className="text-sm font-semibold">Order {orderDetails.orderId}</h3>
@@ -126,17 +161,17 @@ const OrderDetails = ({ params }) => {
             Qty : {orderDetails?.qty}
           </div>
           <p className="font-semibold text-sm mt-3">
-            Rs.{orderDetails?.variant?.price}
+            Rs.{orderDetails?.qty * orderDetails?.variant?.price}
           </p>
         </div>
       </div>
       <hr />
       <div className="flex items-center justify-between my-4">
         <div>
-          <button className="flex justify-center gap-1 items-center text-xs md:text-sm font-semibold text-white bg-green-500 px-4 rounded-md py-3">
-            <GrInProgress size={15} />
-            Processing
-          </button>
+          
+            
+            {renderStatusButton(orderDetails?.status)}
+          
         </div>
         <div className="text-sm opacity-80">{`${date}  ${time}`}</div>
       </div>
@@ -144,15 +179,7 @@ const OrderDetails = ({ params }) => {
       <div className="flex items-center justify-between font-semibold  my-4">
         <div>Total Order Price</div>
         <div className="flex flex-col items-center justify-end">
-          ₹ {orderDetails?.priceAtTimeOfPay}
-          <Link
-            href="#"
-            className="text-green-500 underline font-normal text-sm"
-            onClick={openModal}
-          >
-            View Breakup
-          </Link>
-          {isModalOpen && <ViewBreakUpModal onClose={closeModal} />}
+          ₹ {orderDetails?.qty * orderDetails?.priceAtTimeOfPay}
         </div>
       </div>
       <hr />
@@ -168,7 +195,7 @@ const OrderDetails = ({ params }) => {
         <h3 className="font-semibold">Payment Method</h3>
         <div className="flex justify-start items-center gap-1 text-md">
           <GiWallet size={25} />
-          COD
+          {orderDetails?.paymentType}
         </div>
       </div>
       <hr />

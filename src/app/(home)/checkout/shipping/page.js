@@ -23,7 +23,14 @@ const initialValues = {
 };
 
 const Shipping = () => {
-  const {paymentDetails} = useContext(GlobalStateContext);
+  const {
+    cartData,
+    loading,
+    paymentDetails,
+    removeItemFromCart,
+    getCartData,
+    updateCartData,
+  } = useContext(GlobalStateContext);
   const [show, setShow] = useState(false);
   const [rows, setRows] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -31,6 +38,21 @@ const Shipping = () => {
 
   const [selectedOption, setSelectedOption] = useState(rows.selectedId);
   const [addrToUpdate, setAddrToUpdate] = useState([]);
+  const [product, setProduct] = useState([]);
+  const getProducts = () => {
+    var hh = [];
+    cartData?.map(
+      (item) =>
+        (hh = [
+          ...hh,
+          {
+            variantId: item.variantId,
+            qty: item.qty,
+          },
+        ])
+    );
+    setProduct(hh);
+  };
 
   const handleDropDown = () => {
     setShow(!show);
@@ -54,7 +76,7 @@ const Shipping = () => {
       if (userDataString) {
         const userData = JSON.parse(userDataString);
         const userId = userData.id;
-        
+
         const data = {
           userId: userId,
           firstName: values.firstName,
@@ -70,7 +92,7 @@ const Shipping = () => {
 
         await addAddress(data)
           .then((res) => {
-            if (res?.data.success){
+            if (res?.data.success) {
               setLoaded(false);
               toast.success("Saved Succesfully");
               formik.setValues(initialValues);
@@ -91,9 +113,7 @@ const Shipping = () => {
     await getAddress(userId)
       .then((res) => {
         if (res?.data?.success) {
-          // console.log(res?.data?.data?.rows);
           setRows(res.data.data.rows);
-          console.log(res.data.data.rows);
           setSelectedOption(
             res.data.data.rows.filter((item) => item.active == true)[0]?.id
           );
@@ -138,6 +158,11 @@ const Shipping = () => {
       getAddressData(userId);
     }
   }, [loaded]);
+
+  useEffect(() => {
+    setProduct([]);
+    getProducts();
+  }, [cartData]);
 
   return (
     <>
@@ -189,10 +214,11 @@ const Shipping = () => {
               ))}
             </div>
 
-            <button onClick={handleDropDown} className="text-xl w-full hover:shadow-xl font-semibold opacity-85 p-5 mt-3 cursor-pointer border-2 rounded-lg shadow-sm flex items-center justify-start">
-            <div >
-              + Add New Address
-            </div>
+            <button
+              onClick={handleDropDown}
+              className="text-xl w-full hover:shadow-xl font-semibold opacity-85 p-5 mt-3 cursor-pointer border-2 rounded-lg shadow-sm flex items-center justify-start"
+            >
+              <div>+ Add New Address</div>
             </button>
 
             {show ? (
@@ -457,6 +483,7 @@ const Shipping = () => {
               updateAddressFun={updateAddressFun}
               selectedOption={selectedOption}
               paymentDetails={paymentDetails}
+              product={product}
             />
           </div>
         </div>
