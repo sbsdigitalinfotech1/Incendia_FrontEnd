@@ -32,7 +32,7 @@ const initialValues = {
   Address: "",
 };
 
-const BuyProduct = () => {
+const Page = () => {
   const searchParams = useSearchParams();
   const variantId = searchParams.get("variantId");
   const qty = searchParams.get("qty");
@@ -73,15 +73,15 @@ const BuyProduct = () => {
 
         const data = {
           userId: userId,
-          firstName: values.firstName,
-          lastName: values.lastName,
-          email: values.email,
-          phone: values.phone,
-          pincode: values.pincode,
-          addressLine1: values.Address,
-          addressLine2: values.town,
-          city: values.city,
-          state: values.state,
+          firstName: values?.firstName,
+          lastName: values?.lastName,
+          email: values?.email,
+          phone: values?.phone,
+          pincode: values?.pincode,
+          addressLine1: values?.Address,
+          addressLine2: values?.town,
+          city: values?.city,
+          state: values?.state,
         };
 
         await addAddress(data)
@@ -214,9 +214,9 @@ const BuyProduct = () => {
           {/* Address Data layout    **********************************/}
           <div className="lg:col-span-7 bg-white md:m-3 rounded-md col-span-12 md:p-6 p-4 shadow-lg">
             <div className="flex flex-col gap-2 ">
-              {rows.map((item) => (
+              {rows.map((item,index) => (
                 <div
-                  key={item.id}
+                  key={index}
                   className={`relative hover:shadow-xl text-sm p-6 pl-12 cursor-pointer border-2 rounded-lg shadow-sm ${
                     selectedOption === item.id ? "border-green-400" : ""
                   }`}
@@ -233,13 +233,13 @@ const BuyProduct = () => {
                       )}
                     </div>
                   </div>
-                  <p>{`${item.firstName} ${item.lastName}, ${item.addressLine1}, ${item.addressLine2},${item.town}, ${item.city}, ${item.state}, PIN: ${item.pincode}`}</p>
-                  <p className="mt-2">Contact Number: {item.phone}</p>
+                  <p>{`${item?.firstName} ${item?.lastName}, ${item?.addressLine1}, ${item?.addressLine2},${item?.town}, ${item?.city}, ${item?.state}, PIN: ${item?.pincode}`}</p>
+                  <p className="mt-2">Contact Number: {item?.phone}</p>
                   <div className="flex items-center justify-start gap-2 mt-3">
                     <button
                       className="flex items-center justify-center px-5 py-1 rounded-lg border-2 border-gray-400"
                       onClick={() =>
-                        updateAddressFun({ id: item.id, status: false })
+                        updateAddressFun({ id: item?.id, status: false })
                       }
                     >
                       Remove
@@ -597,4 +597,4 @@ const BuyProduct = () => {
   );
 };
 
-export default BuyProduct;
+export default Page;
