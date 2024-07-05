@@ -1,5 +1,6 @@
 "use client"
 
+import { Image } from "@nextui-org/react";
 import React, { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 
@@ -35,10 +36,13 @@ function Page() {
     <div className="mx-auto py-6 md:py-10 bg-gray-100">
       <div className="grid md:grid-cols-2 md:gap-8 grid-cols-1 gap-2">
         <div className=" ">
-          <img
+          <Image
+           removeWrapper
+           quality={75}
+           radius="none"
             src="https://images.unsplash.com/photo-1531973576160-7125cd663d86"
             alt="image"
-            className="h-4/5 w-full object-cover object-center rounded-r-3xl"
+            className="h-4/5 w-full object-cover object-center rounded-r-3xl z-0"
           />
         </div>
         <div className="md:w-3/4 w-full px-6 mb-3">
