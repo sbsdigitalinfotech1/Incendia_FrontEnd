@@ -4,6 +4,7 @@ import Link from "next/link";
 import { IMAGE_URL, getFavourite, updateFavourite } from "@/config/Api";
 import toast from "react-hot-toast";
 import Cookies from "js-cookie";
+import { Image } from "@nextui-org/react";
 
 function Favourites() {
   const [FavProducts, setFavProducts] = useState([]);
@@ -71,13 +72,15 @@ function Favourites() {
           <div key={index} className="relative">
             <Link href={`/products/${item.variantId}`}>
               <div className=" relative  w-full overflow-hidden rounded-md bg-gray-200  group-hover:opacity-75 lg:h-100">
-                <img
+                <Image
+                radius="none"
+                removeWrapper
                   src={`${IMAGE_URL + item.variant.productPhotos[0].url}`}
                   alt="product image"
                   onError={(e) => {
                     e.target.src = "";
                   }}
-                  className="h-full w-full object-cover object-center lg:h-full lg:w-full aspect-9/12"
+                  className="h-full w-full object-cover object-center lg:h-full lg:w-full aspect-9/12 z-0"
                 />
               </div>
 
@@ -108,7 +111,7 @@ function Favourites() {
               </div>
             </Link>
             <button
-              className="absolute z-20 top-1.5 right-1.5 py-0.5 px-2 bg-white rounded-full text-sm cursor-pointer"
+              className="absolute z-0 top-1.5 right-1.5 py-0.5 px-2 bg-white rounded-full text-sm cursor-pointer"
               onClick={() => removeFav(item.variantId)}
             >
               X

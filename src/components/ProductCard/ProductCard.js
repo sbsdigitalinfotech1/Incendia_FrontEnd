@@ -1,5 +1,5 @@
 import { IMAGE_URL } from "@/config/Api";
-import { Skeleton } from "@nextui-org/react";
+import { Image, Skeleton } from "@nextui-org/react";
 import React from "react";
 import { CiHeart } from "react-icons/ci";
 
@@ -11,10 +11,11 @@ function ProductCard({ product }) {
     return (
       <div className="group relative">
         <div className="relative w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75">
-          <img
+          <Image
+           radius="none"
             src={`${IMAGE_URL + productImage}`}
             alt="Product Image"
-            className="h-full w-full object-cover object-center lg:h-full lg:w-full aspect-9/12"
+            className="h-full w-full object-cover object-center lg:h-full lg:w-full aspect-9/12 z-0"
           />
         </div>
         <button className="absolute top-1.5 right-1.5 py-0.5 px-2 text-sm cursor-pointer z-8">

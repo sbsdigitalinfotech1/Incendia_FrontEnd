@@ -1,7 +1,6 @@
 "use client";
 
 import { useContext, useEffect, useState } from "react";
-import Image from "next/image";
 import voucherIcon from "@/assets/images/voucherIcon.png";
 import { Carousel } from "react-responsive-carousel";
 import { BiSolidOffer } from "react-icons/bi";
@@ -10,7 +9,7 @@ import { FaRegArrowAltCircleRight } from "react-icons/fa";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import ship from "@/assets/images/ship.jpg";
 import cod from "@/assets/images/cod.jpg";
-import { Skeleton, Slider } from "@nextui-org/react";
+import { Image, Skeleton, Slider } from "@nextui-org/react";
 import { FaRegStar } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import {
@@ -158,11 +157,11 @@ function ProductPage({ params }) {
             <div className="col-span-6  gap-2 rounded-sm">
               <Carousel style={{ width: "100%" }} emulateTouch infiniteLoop>
                 <div>
-                  <img alt="" src={`${IMAGE_URL + productMainImage}`} />
+                  <Image alt="" src={`${IMAGE_URL + productMainImage}`} radius="none"/>
                 </div>
                 {productPhotos.map((item, i) => (
                   <div key={i}>
-                    <img alt="" src={`${IMAGE_URL + item.url}`} />
+                    <img alt="" src={`${IMAGE_URL + item.url}`}/>
                   </div>
                 ))}
               </Carousel>
