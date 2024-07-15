@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import logo from "@/assets/images/incendiaLogo.png";
 import Image from "next/image";
-// import google from "@/assets/images/google.png";
 import { useFormik } from "formik";
 import { SignupSchema } from "@/models/authSchema";
 import { useRouter } from "next/navigation";
@@ -12,7 +11,6 @@ import { IoEyeOff } from "react-icons/io5";
 import { register, sendOTP } from "@/config/Api";
 import { toast } from "react-hot-toast";
 import { useGlobalState } from "@/store/GlobalContext";
-// import { redirect } from "next/navigation";
 
 const initialValues = {
   firstName: "",
@@ -24,6 +22,7 @@ const initialValues = {
 };
 
 function Register() {
+  
   const router = useRouter();
   const [show, setShow] = useState(false);
   const GlobalState = useGlobalState();

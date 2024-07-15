@@ -10,6 +10,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      aspectRatio:{
+      "9/12": "9/12",
+      },
       container: {
         center: true,
         padding: "15px",
@@ -43,5 +46,5 @@ module.exports = {
       },
     },
   },
-  plugins: [nextui()],
+  plugins: [nextui(),require('@tailwindcss/typography')],
 };

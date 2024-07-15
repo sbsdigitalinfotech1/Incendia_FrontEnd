@@ -1,9 +1,10 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import { useFormik } from "formik";
 import { ProfileSchema } from "@/models/authSchema";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const initialValues = {
   firstName: "",
@@ -12,12 +13,10 @@ const initialValues = {
   phone: "",
   Birth: "",
 };
-
-
-
 const Profile = () => {
-
   const router = useRouter();
+  const [userData, setUserData] = useState(null);
+  const [loaded, setLoaded] = useState(false);
 
   const formik = useFormik({
     validationSchema: ProfileSchema,
@@ -27,6 +26,28 @@ const Profile = () => {
       router.push("/login");
     },
   });
+
+  useEffect(() => {
+    if (!loaded) {
+      setLoaded(true);
+    }
+    const userDataString = Cookies.get("userData");
+    if (userDataString) {
+      setUserData(JSON.parse(userDataString));
+    }
+  }, [loaded]);
+
+  useEffect(() => {
+    if (userData) {
+      formik.setValues({
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        email: userData.email,
+        phone: userData.phone,
+        Birth: userData.Birth,
+      });
+    }
+  }, [userData]);
 
   return (
     <form className="space-y-6" onSubmit={formik.handleSubmit}>

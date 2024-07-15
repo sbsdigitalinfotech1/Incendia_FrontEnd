@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
@@ -11,14 +11,23 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
 import ProductRowFilter from "../ProductRowFilter/ProductRowFilter";
+import Pagination from "@/components/Pagination/PaginationUI";
+import { Skeleton } from "@nextui-org/react";
+import {
+  getAvailableColorsAndSizes,
+  getCategory,
+  getProductsFiltered,
+} from "@/config/Api";
+import toast from "react-hot-toast";
+import { Player } from "@lottiefiles/react-lottie-player";
+import noMatchFound from "@/assets/images/noMatchFound";
 
 const sortOptions = [
-  { name: "Most Popular", href: "#", current: true },
-  { name: "Best Rating", href: "#", current: false },
-  { name: "Newest", href: "#", current: false },
-  { name: "Price: Low to High", href: "#", current: false },
-  { name: "Price: High to Low", href: "#", current: false },
+  { name: "Newest", value: "new", current: false },
+  { name: "Price: Low to High", value: "lth", current: false },
+  { name: "Price: High to Low", value: "htl", current: false },
 ];
+
 const subCategories = [
   { name: "Totes", href: "#" },
   { name: "Backpacks", href: "#" },
@@ -26,50 +35,143 @@ const subCategories = [
   { name: "Hip Bags", href: "#" },
   { name: "Laptop Sleeves", href: "#" },
 ];
-const filters = [
-  {
-    id: "color",
-    name: "Color",
-    options: [
-      { value: "white", label: "White", checked: false },
-      { value: "beige", label: "Beige", checked: false },
-      { value: "blue", label: "Blue", checked: true },
-      { value: "brown", label: "Brown", checked: false },
-      { value: "green", label: "Green", checked: false },
-      { value: "purple", label: "Purple", checked: false },
-    ],
-  },
-  {
-    id: "category",
-    name: "Category",
-    options: [
-      { value: "new-arrivals", label: "New Arrivals", checked: false },
-      { value: "sale", label: "Sale", checked: false },
-      { value: "travel", label: "Travel", checked: true },
-      { value: "organization", label: "Organization", checked: false },
-      { value: "accessories", label: "Accessories", checked: false },
-    ],
-  },
-  {
-    id: "size",
-    name: "Size",
-    options: [
-      { value: "2l", label: "2L", checked: false },
-      { value: "6l", label: "6L", checked: false },
-      { value: "12l", label: "12L", checked: false },
-      { value: "18l", label: "18L", checked: false },
-      { value: "20l", label: "20L", checked: false },
-      { value: "40l", label: "40L", checked: true },
-    ],
-  },
-];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function ProductFilter({ products }) {
+function ProductFilter({
+  products,
+  loading,
+  count,
+  page,
+  pageSize,
+  setPage,
+  setSort,
+  setSize,
+  setCategoryId,
+  setColorName,
+}) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const lottieRef = useRef(null);
+  const [filters, setFilters] = useState([
+    // {
+    //   id: "color",
+    //   name: "Color",
+    //   options: [
+    //     {
+    //       value: "white",
+    //       label: "White",
+    //       checked: false,
+    //       colorCode: "#FFFFFF",
+    //     },
+    //   ],
+    // },
+    // {
+    //   id: "category",
+    //   name: "Category",
+    //   options: [{ value: "purple", label: "Purple", checked: false }],
+    // },
+    // {
+    //   id: "size",
+    //   name: "Size",
+    //   options: [
+    //     { value: "2l", label: "2L", checked: false },
+    //     { value: "6l", label: "6L", checked: false },
+    //     { value: "12l", label: "12L", checked: false },
+    //     { value: "18l", label: "18L", checked: false },
+    //     { value: "20l", label: "20L", checked: false },
+    //     { value: "40l", label: "40L", checked: true },
+    //   ],
+    // },
+  ]);
+
+  const getData = async () => {
+    try {
+      const resCategory = await getCategory();
+      const resSize = await getAvailableColorsAndSizes();
+      if (resSize.data.success && resCategory.data.success) {
+        setFilters([
+          ...filters,
+          {
+            id: "category",
+            name: "Category",
+            options: [
+              { value: "all", label: " Show All", checked: true },
+              ...resCategory.data.data.rows.map((category) => ({
+              value: category.id,
+              label: category.name,
+              checked: false,
+            }))
+          ]
+          },
+          {
+            id: "size",
+            name: "Size",
+            options: [
+              { value: "all", label: " Show All", checked: true },
+              ...resSize.data.data.sizes.map((item) => ({
+              value: item,
+              label: item,
+              checked: false,
+            }))
+          ],
+          },
+          {
+            id: "color",
+            name: "Color",
+            options:resSize.data.data.colors.map((category) => ({
+              value: category.colorName,
+              label: category.colorName,
+              checked: false,
+              colorCode: category.color,
+            }))
+          },
+        ]);
+      }
+    } catch (err) {
+      toast.dismiss();
+      const errorMessage = err.response?.data?.message || err.message;
+      toast.error(errorMessage);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const handleSelect = async (selected) => {
+    setSort(selected.value);
+    setPage(1);
+  };
+
+  const handleSelectSize = async (selected) => {
+    if(selected == "all"){
+      setSize();
+      setPage(1);
+    }
+    else{
+    setSize(selected);
+    setPage(1);
+    }
+  };
+
+  const handleSelectCategory = async (selected) => {
+    if(selected == "all"){
+      setCategoryId("");
+      setPage(1);
+    }
+    else{
+    setCategoryId(selected);
+    setPage(1);
+  }
+  };
+
+  const handleSelectColor = async (selected) => {
+    setColorName(selected);
+    setPage(1);
+  };
+
   return (
     <>
       <div className="bg-white">
@@ -163,28 +265,70 @@ function ProductFilter({ products }) {
                                 </Disclosure.Button>
                               </h3>
                               <Disclosure.Panel className="pt-6">
-                                <div className="space-y-6">
-                                  {section.options.map((option, optionIdx) => (
-                                    <div
-                                      key={optionIdx}
-                                      className="flex items-center"
-                                    >
-                                      <input
-                                        id={`filter-mobile-${section.id}-${optionIdx}`}
-                                        name={`${section.id}[]`}
-                                        defaultValue={option.value}
-                                        type="checkbox"
-                                        defaultChecked={option.checked}
-                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                      />
-                                      <label
-                                        htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
-                                        className="ml-3 min-w-0 flex-1 text-gray-500"
-                                      >
-                                        {option.label}
-                                      </label>
+                                <div className="space-y-4">
+                                  {section.id === "color" ? (
+                                    <div className="flex flex-wrap gap-2">
+                                      {section.options.map(
+                                        (option, optionIdx) => (
+                                          <div
+                                            key={optionIdx}
+                                            className="relative"
+                                          >
+                                            <input
+                                              id={`filter-desktop-${section.id}-${optionIdx}`}
+                                              name={`${section.id}[]`}
+                                              defaultValue={option.value}
+                                              type="radio"
+                                              className="sr-only"
+                                              onChange={() =>
+                                                handleSelectColor(option.value)
+                                              }
+                                            />
+                                            <label
+                                              htmlFor={`filter-desktop-${section.id}-${optionIdx}`}
+                                              className="cursor-pointer"
+                                            >
+                                              <span
+                                                className="inline-block h-8 w-8 rounded-full border border-gray-300"
+                                                style={{
+                                                  backgroundColor:
+                                                    option.colorCode,
+                                                }}
+                                              ></span>
+                                            </label>
+                                          </div>
+                                        )
+                                      )}
                                     </div>
-                                  ))}
+                                  ) : (
+                                    section.options.map((option, optionIdx) => (
+                                      <div
+                                        key={optionIdx}
+                                        className="flex items-center"
+                                      >
+                                        <input
+                                          id={`filter-desktop-${section.id}-${optionIdx}`}
+                                          name={`${section.id}[]`}
+                                          defaultValue={option.value}
+                                          type="radio"
+                                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                                          onChange={() => {
+                                            section.id == "size"
+                                              ? handleSelectSize(option.value)
+                                              : handleSelectCategory(
+                                                  option.value
+                                                );
+                                          }}
+                                        />
+                                        <label
+                                          htmlFor={`filter-desktop-${section.id}-${optionIdx}`}
+                                          className="ml-3 text-sm text-gray-600 cursor-pointer"
+                                        >
+                                          {option.label}
+                                        </label>
+                                      </div>
+                                    ))
+                                  )}
                                 </div>
                               </Disclosure.Panel>
                             </>
@@ -230,18 +374,18 @@ function ProductFilter({ products }) {
                         {sortOptions.map((option, i) => (
                           <Menu.Item key={i}>
                             {({ active }) => (
-                              <a
-                                href={option.href}
+                              <div
+                                onClick={() => handleSelect(option)}
                                 className={classNames(
                                   option.current
-                                    ? "font-medium text-gray-900"
+                                    ? "font-medium text-gray-900 "
                                     : "text-gray-500",
                                   active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm"
+                                  "block px-4 py-2 text-sm cursor-pointer"
                                 )}
                               >
                                 {option.name}
-                              </a>
+                              </div>
                             )}
                           </Menu.Item>
                         ))}
@@ -318,27 +462,62 @@ function ProductFilter({ products }) {
                           </h3>
                           <Disclosure.Panel className="pt-6">
                             <div className="space-y-4">
-                              {section.options.map((option, optionIdx) => (
-                                <div
-                                  key={optionIdx}
-                                  className="flex items-center"
-                                >
-                                  <input
-                                    id={`filter-${section.id}-${optionIdx}`}
-                                    name={`${section.id}[]`}
-                                    defaultValue={option.value}
-                                    type="checkbox"
-                                    defaultChecked={option.checked}
-                                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                  />
-                                  <label
-                                    htmlFor={`filter-${section.id}-${optionIdx}`}
-                                    className="ml-3 text-sm text-gray-600"
-                                  >
-                                    {option.label}
-                                  </label>
+                              {section.id === "color" ? (
+                                <div className="flex flex-wrap gap-2">
+                                  {section.options.map((option, optionIdx) => (
+                                    <div key={optionIdx} className="relative">
+                                      <input
+                                        id={`filter-desktop-${section.id}-${optionIdx}`}
+                                        name={`${section.id}[]`}
+                                        defaultValue={option.value}
+                                        type="checkbox"
+                                        defaultChecked={option.checked}
+                                        className="sr-only"
+                                        onChange={() =>
+                                          handleSelectColor(option.value)
+                                        }
+                                      />
+                                      <label
+                                        htmlFor={`filter-desktop-${section.id}-${optionIdx}`}
+                                        className="cursor-pointer"
+                                      >
+                                        <span
+                                          className="inline-block h-8 w-8 rounded-full border border-gray-300"
+                                          style={{
+                                            backgroundColor: option.colorCode,
+                                          }}
+                                        ></span>
+                                      </label>
+                                    </div>
+                                  ))}
                                 </div>
-                              ))}
+                              ) : (
+                                section.options.map((option, optionIdx) => (
+                                  <div
+                                    key={optionIdx}
+                                    className="flex items-center"
+                                  >
+                                    <input
+                                      id={`filter-desktop-${section.id}-${optionIdx}`}
+                                      name={`${section.id}[]`}
+                                      defaultValue={option.value}
+                                      type="radio"
+                                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+                                      onChange={() => {
+                                        section.id == "size"
+                                          ? handleSelectSize(option.value)
+                                          : handleSelectCategory(option.value);
+                                      }}
+                                    />
+                                    <label
+                                      htmlFor={`filter-desktop-${section.id}-${optionIdx}`}
+                                      className="ml-3 text-sm text-gray-600 cursor-pointer"
+                                    >
+                                      {option.label}
+                                    </label>
+                                  </div>
+                                ))
+                              )}
                             </div>
                           </Disclosure.Panel>
                         </>
@@ -348,9 +527,44 @@ function ProductFilter({ products }) {
                 </form>
 
                 {/* Product grid */}
-                <div className="lg:col-span-3">
-                  <ProductRowFilter products={products} />
-                </div>
+
+                {loading ? (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 md:col-span-3">
+                    {Array.from({ length: 12 }).map((_, index) => (
+                      <Skeleton
+                        key={index}
+                        className="h-64 md:h-96 rounded-md w-full"
+                      >
+                        <div className="bg-default rounded-md"></div>
+                      </Skeleton>
+                    ))}
+                  </div>
+                ) : products.length > 0 ? (
+                  <div className="lg:col-span-3">
+                    <ProductRowFilter products={products} />
+                    <div className="mt-12 flex items-center justify-end">
+                      <Pagination
+                        count={count}
+                        page={page}
+                        pageSize={pageSize}
+                        setPage={setPage}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid col-span-3 max-h-80">
+                    <Player
+                      ref={lottieRef}
+                      autoplay
+                      loop
+                      src={noMatchFound}
+                      style={{ height: "300px", width: "300px" }}
+                    />
+                    <p className="text-center text-lg font-semibold opacity-70">
+                      No Match Found 🙁!
+                    </p>
+                  </div>
+                )}
               </div>
             </section>
           </main>
