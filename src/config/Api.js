@@ -2,10 +2,10 @@ import axios from "axios";
 
 // const BASE_URL = 'http://192.168.11.153:3001/v1/';
 // const BASE_URL = "https://incendia-backend.onrender.com/v1/";
-const BASE_URL = "https://122.176.52.15:3010/v1/";
+const BASE_URL = "https://1239-122-176-52-15.ngrok-free.app/v1/";
 // export const IMAGE_URL = 'http://192.168.11.153:3001/';
 // export const IMAGE_URL = "https://incendia-backend.onrender.com/";
-export const IMAGE_URL = "https://122.176.52.15:3010/";
+export const IMAGE_URL = "https://1239-122-176-52-15.ngrok-free.app/";
 
 // auth api's
 
