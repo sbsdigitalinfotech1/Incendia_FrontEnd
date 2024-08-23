@@ -2,10 +2,10 @@ import axios from "axios";
 
 // const BASE_URL = 'http://192.168.11.153:3001/v1/';
 // const BASE_URL = "https://incendia-backend.onrender.com/v1/";
-const BASE_URL = "https://pipeandsection.com:3010/v1/";
+const BASE_URL = "http://pipeandsection.com:3010/v1/";
 // export const IMAGE_URL = 'http://192.168.11.153:3001/';
 // export const IMAGE_URL = "https://incendia-backend.onrender.com/";
-export const IMAGE_URL = "https://pipeandsection.com:3010/";
+export const IMAGE_URL = "http://pipeandsection.com:3010/";
 
 // auth api's
 
