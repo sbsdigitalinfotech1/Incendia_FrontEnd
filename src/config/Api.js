@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 
 // const BASE_URL = 'http://192.168.11.153:3001/v1/';
 // const BASE_URL = "https://incendia-backend.onrender.com/v1/";
-const BASE_URL = "https://incendiabackend.pipeandsection.com/v1/";
+export const BASE_URL = "https://incendiabackend.pipeandsection.com/v1/";
 // export const IMAGE_URL = 'http://192.168.11.153:3001/';
 // export const IMAGE_URL = "https://incendia-backend.onrender.com/";
 export const IMAGE_URL = "https://incendiabackend.pipeandsection.com/";
