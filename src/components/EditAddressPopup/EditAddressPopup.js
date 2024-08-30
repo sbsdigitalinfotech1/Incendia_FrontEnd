@@ -41,8 +41,6 @@ const EditAddressPopup = ({ setLoaded, handleCloseEditPopup, addrToUpdate }) => 
           state: values.state,
         };
 
-        console.log(data);
-
         await updateAddress(data)
           .then((res) => {
             if (res?.data?.success) {

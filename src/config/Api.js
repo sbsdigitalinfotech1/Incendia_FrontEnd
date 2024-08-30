@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 // const BASE_URL = 'http://192.168.11.153:3001/v1/';
 // const BASE_URL = "https://incendia-backend.onrender.com/v1/";
@@ -7,6 +8,29 @@ const BASE_URL = "https://incendiabackend.pipeandsection.com/v1/";
 // export const IMAGE_URL = "https://incendia-backend.onrender.com/";
 export const IMAGE_URL = "https://incendiabackend.pipeandsection.com/";
 
+// Create an Axios instance
+const apiClient = axios.create({
+  baseURL: BASE_URL, // Replace with your API base URL
+});
+
+// Add a request interceptor to include the Bearer token
+apiClient.interceptors.request.use(
+  (config) => {
+    const userData = JSON.parse(Cookies.get("userData"));
+    var token;
+    if(userData){
+      token = userData?.token;
+    }
+    if (token) {
+      config.headers["Authorization"] = `${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
+
 // auth api's
 
 export const register = async (data) => {
@@ -14,7 +38,7 @@ export const register = async (data) => {
 };
 
 export const login = async (data) => {
-  return await axios.post(`${BASE_URL}user/login`, data);
+  return await axios.post(`${BASE_URL}user/login`, data,{withCredentials: true});
 };
 
 export const sendOTP = async (data) => {
@@ -40,11 +64,11 @@ export const generateGuestId = async (data) => {
 // get api
 
 export const getAddress = async (userId) => {
-  return await axios.get(`${BASE_URL}user/getAddress?userId=${userId}`);
+  return await apiClient.get(`${BASE_URL}user/getAddress`);
 };
 
 export const getFavourite = async (userId) => {
-  return await axios.get(`${BASE_URL}user/getFavourite?userId=${userId}`);
+  return await apiClient.get(`${BASE_URL}user/getFavourite`);
 };
 
 export const getProducts = async (data) => {
@@ -56,17 +80,17 @@ export const getProducts = async (data) => {
 // post api
 
 export const addAddress = async (data) => {
-  return await axios.post(`${BASE_URL}user/addAddress`, data);
+  return await apiClient.post(`${BASE_URL}user/addAddress`, data);
 };
 
 // update api
 
 export const updateAddress = async (data) => {
-  return await axios.patch(`${BASE_URL}user/updateAddress`, data);
+  return await apiClient.patch(`${BASE_URL}user/updateAddress`, data);
 };
 
 export const updateFavourite = async (data) => {
-  return await axios.patch(`${BASE_URL}user/updateFavourite`, data);
+  return await apiClient.patch(`${BASE_URL}user/updateFavourite`, data);
 };
 
 // cart api's
@@ -90,7 +114,7 @@ export const updateCart = async (data) => {
 // Filter product api's
 
 export const getCategory = async(data) =>{
-    return await axios.get(`${BASE_URL}admin/getCategory`, data);
+    return await axios.get(`${BASE_URL}user/getCategory`, data);
 }
 export const getAvailableColorsAndSizes = async() =>{
     return await axios.get(`${BASE_URL}user/getAvailableColorsAndSizes` );
@@ -101,9 +125,9 @@ export const getProductsFiltered = async(data) =>{
 
 // order api's
 export const makeOrder = async(data) =>{
-  return await axios.post(`${BASE_URL}user/makeOrder`, data);
+  return await apiClient.post(`${BASE_URL}user/makeOrder`, data);
 }
 
 export const getOrders = async(data) =>{
-  return await axios.get(`${BASE_URL}user/getOrders?userId=${data?.userId}&orderId=${data?.orderId}` );
+  return await apiClient.get(`${BASE_URL}user/getOrders?userId=${data?.userId}&orderId=${data?.orderId}` );
 }

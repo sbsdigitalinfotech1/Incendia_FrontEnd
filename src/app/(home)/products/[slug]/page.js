@@ -98,13 +98,8 @@ function ProductPage({ params }) {
 
   // Add to Favourite *******************************************************
   const addFav = async (id) => {
-    const userDataString = Cookies.get("userData");
-    if (userDataString) {
-      const userData = JSON.parse(userDataString);
-      const userId = userData.id;
 
       const data = {
-        userId: userId,
         id: id,
       };
       await updateFavourite(data)
@@ -119,10 +114,7 @@ function ProductPage({ params }) {
           }
           toast.error(err.message);
         });
-    } else {
-      router.push("/login");
-    }
-  };
+  }
 
   const rating = {
     row: [

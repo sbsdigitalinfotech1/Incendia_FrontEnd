@@ -9,17 +9,19 @@ import { IoMdCheckmarkCircleOutline } from "react-icons/io"; // Example for deli
 import { AiOutlineCloseCircle } from "react-icons/ai"; // Example for cancelled
 import { IMAGE_URL, getOrders } from "@/config/Api";
 import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 
 const Orders = () => {
   const [orderData, setOrderData] = useState([]);
 
   const getOrderData = async () => {
+
     const userDataString = Cookies.get("userData");
     if (userDataString) {
       const userData = JSON.parse(userDataString);
-      const userId = userData.id;
+      const userId = Number(userData.id);
 
-      await getOrders(userId)
+      await getOrders({userId:userId})
         .then((res) => {
           if (res.data.success) {
             setOrderData(res.data.data.rows);
@@ -99,6 +101,7 @@ const Orders = () => {
             <div className="grid grid-cols-12 gap-5 p-6">
               <div className="col-span-4 md:col-span-2">
                 <div className="relative aspect-[3/4]">
+                <Link href={`/products/${item?.variantId}`}>
                   <Image
                     src={IMAGE_URL + item.variant.productPhotos[0].url}
                     fill={true}
@@ -106,6 +109,7 @@ const Orders = () => {
                     alt=""
                     className="rounded-lg"
                   />
+                  </Link>
                 </div>
               </div>
               <div className="col-span-8 md:col-span-10">

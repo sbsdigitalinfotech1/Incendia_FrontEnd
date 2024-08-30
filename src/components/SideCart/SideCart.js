@@ -7,6 +7,8 @@ import Image from "next/image";
 import { GlobalStateContext } from "@/store/GlobalContext";
 import { IMAGE_URL, removeFromCart } from "@/config/Api";
 import Cookies from "js-cookie";
+import { Player } from "@lottiefiles/react-lottie-player";
+import empty from "@/assets/images/empty.json";
 
 export default function SideCart({ open, setOpen }) {
   const {
@@ -26,7 +28,6 @@ export default function SideCart({ open, setOpen }) {
   const handleUpdateCart = (variantId, value) => {
     updateCartData(variantId, value);
   };
-
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -75,90 +76,118 @@ export default function SideCart({ open, setOpen }) {
                         </div>
                       </div>
 
-                      <div className="mt-8">
-                        <div className="flow-root">
-                          <ul
-                            role="list"
-                            className="-my-6 divide-y divide-gray-200"
-                          >
-                            {cartData.map((product, i) => (
-                              <li key={i} className="flex py-6">
-                                <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 relative">
-                                  <Link
-                                    href={`/products/${product.variantId}`}
-                                    onClick={() => {
-                                      setOpen(false);
-                                    }}
-                                  >
-                                    <Image
-                                      src={`${
-                                        IMAGE_URL +
-                                        product.variant.productPhotos[0].url
-                                      }`}
-                                      alt="image"
-                                      className="h-full w-full object-cover object-center"
-                                      fill
-                                      style={{
-                                        objectFit: "cover",
-                                        objectPosition: "center",
+                      {cartData.length > 0 ? (
+                        <div className="mt-8">
+                          <div className="flow-root">
+                            <ul
+                              role="list"
+                              className="-my-6 divide-y divide-gray-200"
+                            >
+                              {cartData.map((product, i) => (
+                                <li key={i} className="flex py-6">
+                                  <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 relative">
+                                    <Link
+                                      href={`/products/${product.variantId}`}
+                                      onClick={() => {
+                                        setOpen(false);
                                       }}
-                                    />
-                                  </Link>
-                                </div>
-
-                                <div className="ml-4 flex flex-1 flex-col">
-                                  <div>
-                                    <div className="flex justify-between text-base font-medium text-gray-900">
-                                      <h3>{product.variant.name}</h3>
-                                      <p className="ml-4">{product.price}</p>
-                                    </div>
-                                    <p className="mt-1 text-sm text-gray-500">
-                                      {product.variant.product.name}
-                                    </p>
-                                  </div>
-                                  <div className="flex flex-1 items-end justify-between text-sm">
-                                    <p className="text-gray-500">
-                                      <select
-                                        className="cursor-pointer px-4 w-1/2 md:w-auto sm:px-8 py-1 border border-gray-300 bg-gray-100 rounded-md min-w-16"
-                                        value={product.qty}
-                                        onChange={(e) => {
-                                          handleUpdateCart(
-                                            product.variantId,
-                                            e.target.value
-                                          );
+                                    >
+                                      <Image
+                                        src={`${
+                                          IMAGE_URL +
+                                          product.variant.productPhotos[0].url
+                                        }`}
+                                        alt="image"
+                                        className="h-full w-full object-cover object-center"
+                                        fill
+                                        style={{
+                                          objectFit: "cover",
+                                          objectPosition: "center",
                                         }}
-                                      >
-                                        <option value={1}>1</option>
-                                        <option value={2}>2</option>
-                                        <option value={3}>3</option>
-                                        <option value={4}>4</option>
-                                        <option value={5}>5</option>
-                                        <option value={6}>6</option>
-                                        <option value={7}>7</option>
-                                        <option value={8}>8</option>
-                                        <option value={9}>9</option>
-                                        <option value={10}>10</option>
-                                      </select>
-                                    </p>
+                                      />
+                                    </Link>
+                                  </div>
 
-                                    <div className="flex">
-                                      <button
-                                        type="button"
-                                        className="font-medium text-indigo-600 hover:text-indigo-500"
-                                        onClick={() =>
-                                          handleRemoveItem(product.variantId)
-                                        }
-                                      >
-                                        Remove
-                                      </button>
+                                  <div className="ml-4 flex flex-1 flex-col">
+                                    <div>
+                                      <div className="flex justify-between text-base font-medium text-gray-900">
+                                        <h3>{product.variant.name}</h3>
+                                        <p className="ml-4">{product.price}</p>
+                                      </div>
+                                      <p className="mt-1 text-sm text-gray-500">
+                                        {product.variant.product.name}
+                                      </p>
+                                    </div>
+                                    <div className="flex flex-1 items-end justify-between text-sm">
+                                      <p className="text-gray-500">
+                                        <select
+                                          className="cursor-pointer px-4 w-1/2 md:w-auto sm:px-8 py-1 border border-gray-300 bg-gray-100 rounded-md min-w-16"
+                                          value={product.qty}
+                                          onChange={(e) => {
+                                            handleUpdateCart(
+                                              product.variantId,
+                                              e.target.value
+                                            );
+                                          }}
+                                        >
+                                          <option value={1}>1</option>
+                                          <option value={2}>2</option>
+                                          <option value={3}>3</option>
+                                          <option value={4}>4</option>
+                                          <option value={5}>5</option>
+                                          <option value={6}>6</option>
+                                          <option value={7}>7</option>
+                                          <option value={8}>8</option>
+                                          <option value={9}>9</option>
+                                          <option value={10}>10</option>
+                                        </select>
+                                      </p>
+
+                                      <div className="flex">
+                                        <button
+                                          type="button"
+                                          className="font-medium text-indigo-600 hover:text-indigo-500"
+                                          onClick={() =>
+                                            handleRemoveItem(product.variantId)
+                                          }
+                                        >
+                                          Remove
+                                        </button>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        <div className="lg:col-span-7 bg-white m-1 md:m-3 rounded-md col-span-12 md:p-6 p-4 max-h-dvh  ">
+                          <Player
+                            ref={lottieRef}
+                            autoplay
+                            loop
+                            src={empty}
+                            // style={{ height: "300px", width: "300px" }}
+                          />
+                          <div className="flex items-center justify-center mt-4">
+                            <h2 className="text-lg font-normal ">
+                              Your Cart is Empty!
+                            </h2>
+                            {/* <p>
+                              <Link href="/products">
+                                <button
+                                  type="button"
+                                  className="font-medium text-indigo-600 hover:text-indigo-500"
+                                >
+                                  Continue Shopping
+                                  <span className="font-bold"> &rarr;</span>
+                                </button>
+                              </Link>
+                            </p> */}
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
@@ -173,8 +202,10 @@ export default function SideCart({ open, setOpen }) {
                         <Link
                           onClick={() => setOpen(false)}
                           href={
-                            Cookies.get("userData") ?
-                            `/checkout/cart`:`/login`}
+                            Cookies.get("userData")
+                              ? `/checkout/cart`
+                              : `/login`
+                          }
                           className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                         >
                           Checkout

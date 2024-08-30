@@ -26,7 +26,7 @@ const Shipping = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [editPopupVisible, setEditPopupVisible] = useState(false);
 
-  const [selectedOption, setSelectedOption] = useState(rows.selectedId);
+  const [selectedOption, setSelectedOption] = useState(null);
   const [addrToUpdate, setAddrToUpdate] = useState([]);
 
   const handleDropDown = () => {
@@ -91,12 +91,13 @@ const Shipping = () => {
           // console.log(res?.data?.data?.rows);
           setRows(res.data.data.rows);
           console.log(res.data.data.rows);
-          setSelectedOption(
-            res.data.data.rows.filter((item) => item.active == true)[0].id
-          );
+          if(res.data.data.rows.length){setSelectedOption(
+            res.data.data.rows.filter((item) => item.active == true)[0].id ?? null
+          );}
         }
       })
       .catch((err) => {
+        console.log(err);
         if (err.response.data.message) {
           return toast.error(err.response.data.message);
         }

@@ -6,10 +6,11 @@ import {
   removeFromCart,
   updateCart,
 } from "@/config/Api";
+
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 // Create a context
 export const GlobalStateContext = createContext();

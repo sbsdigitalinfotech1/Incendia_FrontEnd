@@ -1,22 +1,21 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { IMAGE_URL, getFavourite, updateFavourite } from "@/config/Api";
 import toast from "react-hot-toast";
-import Cookies from "js-cookie";
 import { Image } from "@nextui-org/react";
+import { Player } from "@lottiefiles/react-lottie-player";
+import noMatchFound from "@/assets/images/noMatchFound"
 
 function Favourites() {
   const [FavProducts, setFavProducts] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
-  const getFavouriteData = async () => {
-    const userDataString = Cookies.get("userData");
-    if (userDataString) {
-      const userData = JSON.parse(userDataString);
-      const userId = userData.id;
+  const lottieRef = useRef(null);
 
-      await getFavourite(userId)
+  const getFavouriteData = async () => {
+
+      await getFavourite()
         .then((res) => {
           if (res.data.success) {
             console.log(res.data.data.rows);
@@ -29,17 +28,12 @@ function Favourites() {
           }
           toast.error(err.message);
         });
-    }
+    
   };
 
   const removeFav = async (id) => {
-    const userDataString = Cookies.get("userData");
-    if (userDataString) {
-      const userData = JSON.parse(userDataString);
-      const userId = userData.id;
 
       const data = {
-        userId: userId,
         id: id,
       };
       await updateFavourite(data)
@@ -55,7 +49,7 @@ function Favourites() {
           }
           toast.error(err.message);
         });
-    }
+    
   };
 
   useEffect(() => {
@@ -68,7 +62,7 @@ function Favourites() {
   return (
     <>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {FavProducts.map((item, index) => (
+        {FavProducts.length > 0 ? FavProducts.map((item, index) => (
           <div key={index} className="relative">
             <Link href={`/products/${item.variantId}`}>
               <div className=" relative  w-full overflow-hidden rounded-md bg-gray-200  group-hover:opacity-75 lg:h-100">
@@ -117,7 +111,20 @@ function Favourites() {
               X
             </button>
           </div>
-        ))}
+        )): (
+          <div className="grid col-span-3 max-h-80">
+                    <Player
+                      ref={lottieRef}
+                      autoplay
+                      loop
+                      src={noMatchFound}
+                      style={{ height: "300px", width: "300px" }}
+                    />
+                    <p className="text-center text-lg font-semibold opacity-70">
+                      No Favourites Found 🙁!
+                    </p>
+                  </div>
+        )}
       </div>
     </>
   );

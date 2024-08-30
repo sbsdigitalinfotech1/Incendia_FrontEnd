@@ -11,6 +11,7 @@ import { FaShippingFast } from "react-icons/fa";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { MdShoppingCartCheckout } from "react-icons/md";
+import Link from "next/link";
 
 const OrderDetails = ({ params }) => {
   const orderId = params.slug;
@@ -131,6 +132,7 @@ const OrderDetails = ({ params }) => {
       <div className="grid grid-cols-12 gap-5 py-6 pr-6">
         <div className=" col-span-4 md:col-span-2">
           <div className="relative aspect-[3/4]">
+          <Link href={`/products/${orderDetails?.variantId}`}>
             <Image
               src={IMAGE_URL + orderDetails?.variant?.productPhotos[0].url}
               fill={true}
@@ -138,6 +140,7 @@ const OrderDetails = ({ params }) => {
               alt=""
               className="rounded-lg"
             />
+            </Link>
           </div>
         </div>
         <div className="col-span-8 md:col-span-10">
