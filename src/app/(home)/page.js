@@ -76,7 +76,7 @@ export default function Home() {
                         <div className="h-64 w-44 overflow-hidden rounded-lg sm:opacity-0 lg:opacity-100 relative">
                           <Image
                             fill
-                            src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-01.jpg"
+                            src="/heroImages/1.jpg"
                             alt=""
                             className="h-full w-full object-cover object-center"
                           />
@@ -84,33 +84,7 @@ export default function Home() {
                         <div className="h-64 w-44 overflow-hidden rounded-lg relative">
                           <Image
                             fill
-                            src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-02.jpg"
-                            alt=""
-                            className="h-full w-full object-cover object-center"
-                          />
-                        </div>
-                      </div>
-                      <div className="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
-                        <div className="h-64 w-44 overflow-hidden rounded-lg relative">
-                          <Image
-                            fill
-                            src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-03.jpg"
-                            alt=""
-                            className="h-full w-full object-cover object-center"
-                          />
-                        </div>
-                        <div className="h-64 w-44 overflow-hidden rounded-lg relative">
-                          <Image
-                            fill
-                            src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-04.jpg"
-                            alt=""
-                            className="h-full w-full object-cover object-center"
-                          />
-                        </div>
-                        <div className="h-64 w-44 overflow-hidden rounded-lg relative">
-                          <Image
-                            fill
-                            src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-05.jpg"
+                            src="/heroImages/2.jpg"
                             alt=""
                             className="h-full w-full object-cover object-center"
                           />
@@ -120,7 +94,7 @@ export default function Home() {
                         <div className="h-64 w-44 overflow-hidden rounded-lg relative">
                           <Image
                             fill
-                            src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-06.jpg"
+                            src="/heroImages/3.jpg"
                             alt=""
                             className="h-full w-full object-cover object-center"
                           />
@@ -128,7 +102,33 @@ export default function Home() {
                         <div className="h-64 w-44 overflow-hidden rounded-lg relative">
                           <Image
                             fill
-                            src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-07.jpg"
+                            src="/heroImages/4.jpg"
+                            alt=""
+                            className="h-full w-full object-cover object-center"
+                          />
+                        </div>
+                        <div className="h-64 w-44 overflow-hidden rounded-lg relative">
+                          <Image
+                            fill
+                            src="/heroImages/5.jpg"
+                            alt=""
+                            className="h-full w-full object-cover object-center"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
+                        <div className="h-64 w-44 overflow-hidden rounded-lg relative">
+                          <Image
+                            fill
+                            src="/heroImages/6.jpg"
+                            alt=""
+                            className="h-full w-full object-cover object-center"
+                          />
+                        </div>
+                        <div className="h-64 w-44 overflow-hidden rounded-lg relative">
+                          <Image
+                            fill
+                            src="/heroImages/7.jpg"
                             alt=""
                             className="h-full w-full object-cover object-center"
                           />
